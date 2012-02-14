@@ -7,6 +7,7 @@
             <table:column id="c_com_chariot_games_quizzo_model_Answer_question" property="question" z="2Rt//SwLOqKq+N9W1Dvr5k97Vsg="/>
             <table:column id="c_com_chariot_games_quizzo_model_Answer_questionOrder" property="questionOrder" z="5E34JU/e73IMPRexw/OyYtHY2dk="/>
             <table:column id="c_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" property="isCorrectAnswer" z="UZwtogQKHNDqf5YX0Kqe+5aSDqk="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_answerText" property="answerText" z="brA5FovL71a635zkNr1k607BMN4="/>
         </table:table>
     </page:list>
 </div>

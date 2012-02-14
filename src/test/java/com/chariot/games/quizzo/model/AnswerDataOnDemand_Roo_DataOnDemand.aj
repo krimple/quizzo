@@ -38,10 +38,16 @@ privileged aspect AnswerDataOnDemand_Roo_DataOnDemand {
     
     public Answer AnswerDataOnDemand.getNewTransientAnswer(int index) {
         Answer obj = new Answer();
+        setAnswerText(obj, index);
         setIsCorrectAnswer(obj, index);
         setQuestion(obj, index);
         setQuestionOrder(obj, index);
         return obj;
+    }
+    
+    public void AnswerDataOnDemand.setAnswerText(Answer obj, int index) {
+        String answerText = "answerText_" + index;
+        obj.setAnswerText(answerText);
     }
     
     public void AnswerDataOnDemand.setIsCorrectAnswer(Answer obj, int index) {

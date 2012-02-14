@@ -6,5 +6,6 @@
         <field:select field="question" id="c_com_chariot_games_quizzo_model_Answer_question" itemValue="id" items="${questions}" path="/questions" z="msnB9lnQIXiCQ+bCfCSlDW6fTvE="/>
         <field:input field="questionOrder" id="c_com_chariot_games_quizzo_model_Answer_questionOrder" required="true" validationMessageCode="field_invalid_integer" z="q7vECwwYWEjNq/QIvhhgOU21Flw="/>
         <field:checkbox field="isCorrectAnswer" id="c_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" z="/Gq0xdaX0O3USUVtTuLC1jk+a0Y="/>
+        <field:input field="answerText" id="c_com_chariot_games_quizzo_model_Answer_answerText" required="true" z="GIvskAfLcAOfFawqNBZqi7a30mU="/>
     </form:update>
 </div>

@@ -1,5 +1,6 @@
 package com.chariot.games.quizzo.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
@@ -15,6 +16,10 @@ public class Answer {
 
     @ManyToOne
     private Question question;
+
+    @NotNull
+    @Length(max = 200)
+    String answerText;
 
     @NotNull
     @Column(name = "question_order")

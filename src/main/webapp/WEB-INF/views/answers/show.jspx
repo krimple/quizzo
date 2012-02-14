@@ -6,5 +6,6 @@
         <field:display field="question" id="s_com_chariot_games_quizzo_model_Answer_question" object="${answer}" z="D2ECa0unP8ymUUQSL2h4R9hCTYE="/>
         <field:display field="questionOrder" id="s_com_chariot_games_quizzo_model_Answer_questionOrder" object="${answer}" z="qm6Sitn6uCBuWb3b5En7fmjYOhk="/>
         <field:display field="isCorrectAnswer" id="s_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" object="${answer}" z="npJXQgIk2daVxNANAzUU7cTEFds="/>
+        <field:display field="answerText" id="s_com_chariot_games_quizzo_model_Answer_answerText" object="${answer}" z="dcBb7sGPY40vF2q+iR1ojwO3r9Y="/>
     </page:show>
 </div>

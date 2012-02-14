@@ -16,6 +16,14 @@ privileged aspect Answer_Roo_JavaBean {
         this.question = question;
     }
     
+    public String Answer.getAnswerText() {
+        return this.answerText;
+    }
+    
+    public void Answer.setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
+    
     public Integer Answer.getQuestionOrder() {
         return this.questionOrder;
     }
