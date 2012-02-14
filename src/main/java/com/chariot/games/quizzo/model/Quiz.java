@@ -23,7 +23,4 @@ public class Quiz {
     @OrderColumn(name = "question_order")
     private List<Question> questions = new ArrayList<Question>();
 
-    @Column(name = "question_order")
-    private Integer questionOrder;
-
 }

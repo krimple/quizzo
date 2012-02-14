@@ -5,7 +5,6 @@
     <page:list id="pl_com_chariot_games_quizzo_model_Quiz" items="${quizes}" z="6rKp40YLcApplwebERMtcOxa/CI=">
         <table:table data="${quizes}" id="l_com_chariot_games_quizzo_model_Quiz" path="/quizes" z="ccPAUMjyHKaojaC5+grrI/uO27U=">
             <table:column id="c_com_chariot_games_quizzo_model_Quiz_name" property="name" z="Vli4XNpatIxJaDMikj9x2Fc/Iv8="/>
-            <table:column id="c_com_chariot_games_quizzo_model_Quiz_questionOrder" property="questionOrder" z="6IGKmiN+BQGhDyMhEBKYtSEy1mM="/>
         </table:table>
     </page:list>
 </div>

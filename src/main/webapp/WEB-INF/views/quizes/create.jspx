@@ -5,7 +5,6 @@
     <form:create id="fc_com_chariot_games_quizzo_model_Quiz" modelAttribute="quiz" path="/quizes" render="${empty dependencies}" z="lDmrrNg+Z+JtYwfzzVCEiJ2Pfck=">
         <field:input field="name" id="c_com_chariot_games_quizzo_model_Quiz_name" z="wVPhI9aChKFcdnYZW9VJH1uWaJg="/>
         <field:simple field="questions" id="c_com_chariot_games_quizzo_model_Quiz_questions" messageCode="entity_reference_not_managed" messageCodeAttribute="Question" z="y4pebvy0WlaKQ6ib4efWkj6TT0U="/>
-        <field:input field="questionOrder" id="c_com_chariot_games_quizzo_model_Quiz_questionOrder" validationMessageCode="field_invalid_integer" z="5wDbdACx02+YeaMjPTLBOFJPau8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_chariot_games_quizzo_model_Quiz" render="${not empty dependencies}" z="4OLH6ERgMhAw/cg/AzwgpHgJwNU="/>
 </div>

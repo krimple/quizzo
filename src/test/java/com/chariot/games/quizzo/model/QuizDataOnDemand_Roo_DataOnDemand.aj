@@ -34,18 +34,12 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
     public Quiz QuizDataOnDemand.getNewTransientQuiz(int index) {
         Quiz obj = new Quiz();
         setName(obj, index);
-        setQuestionOrder(obj, index);
         return obj;
     }
     
     public void QuizDataOnDemand.setName(Quiz obj, int index) {
         String name = "name_" + index;
         obj.setName(name);
-    }
-    
-    public void QuizDataOnDemand.setQuestionOrder(Quiz obj, int index) {
-        Integer questionOrder = new Integer(index);
-        obj.setQuestionOrder(questionOrder);
     }
     
     public Quiz QuizDataOnDemand.getSpecificQuiz(int index) {

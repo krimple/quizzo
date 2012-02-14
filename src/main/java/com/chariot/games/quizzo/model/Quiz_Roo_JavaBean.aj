@@ -25,12 +25,4 @@ privileged aspect Quiz_Roo_JavaBean {
         this.questions = questions;
     }
     
-    public Integer Quiz.getQuestionOrder() {
-        return this.questionOrder;
-    }
-    
-    public void Quiz.setQuestionOrder(Integer questionOrder) {
-        this.questionOrder = questionOrder;
-    }
-    
 }

@@ -94,7 +94,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Quiz, String> ApplicationConversionServiceFactoryBean.getQuizToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Quiz, java.lang.String>() {
             public String convert(Quiz quiz) {
-                return new StringBuilder().append(quiz.getName()).append(" ").append(quiz.getQuestionOrder()).toString();
+                return new StringBuilder().append(quiz.getName()).toString();
             }
         };
     }
