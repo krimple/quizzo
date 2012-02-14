@@ -46,7 +46,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Answer, String> ApplicationConversionServiceFactoryBean.getAnswerToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Answer, java.lang.String>() {
             public String convert(Answer answer) {
-                return new StringBuilder().toString();
+                return new StringBuilder().append(answer.getQuestionOrder()).toString();
             }
         };
     }
@@ -70,7 +70,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Question, String> ApplicationConversionServiceFactoryBean.getQuestionToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Question, java.lang.String>() {
             public String convert(Question question) {
-                return new StringBuilder().toString();
+                return new StringBuilder().append(question.getRelativeOrder()).append(" ").append(question.getQuestionText()).toString();
             }
         };
     }
@@ -94,7 +94,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Quiz, String> ApplicationConversionServiceFactoryBean.getQuizToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Quiz, java.lang.String>() {
             public String convert(Quiz quiz) {
-                return new StringBuilder().toString();
+                return new StringBuilder().append(quiz.getName()).append(" ").append(quiz.getQuestionOrder()).toString();
             }
         };
     }
@@ -118,7 +118,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Team, String> ApplicationConversionServiceFactoryBean.getTeamToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Team, java.lang.String>() {
             public String convert(Team team) {
-                return new StringBuilder().toString();
+                return new StringBuilder().append(team.getTeamName()).toString();
             }
         };
     }

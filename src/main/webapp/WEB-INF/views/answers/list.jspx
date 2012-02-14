@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_chariot_games_quizzo_model_Answer" items="${answers}" z="Dg6+KqqUa5o58mqkTEWIL/YB0qY=">
+        <table:table data="${answers}" id="l_com_chariot_games_quizzo_model_Answer" path="/answers" z="5/hNh61l3LorpK95aoJ+j/DvuKo=">
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_question" property="question" z="2Rt//SwLOqKq+N9W1Dvr5k97Vsg="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_questionOrder" property="questionOrder" z="5E34JU/e73IMPRexw/OyYtHY2dk="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" property="isCorrectAnswer" z="UZwtogQKHNDqf5YX0Kqe+5aSDqk="/>
+        </table:table>
+    </page:list>
+</div>

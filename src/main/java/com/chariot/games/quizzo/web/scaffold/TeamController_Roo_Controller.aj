@@ -4,6 +4,7 @@
 package com.chariot.games.quizzo.web.scaffold;
 
 import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.TeamMemberService;
 import com.chariot.games.quizzo.service.TeamService;
 import com.chariot.games.quizzo.web.scaffold.TeamController;
 import java.io.UnsupportedEncodingException;
@@ -23,6 +24,9 @@ privileged aspect TeamController_Roo_Controller {
     
     @Autowired
     TeamService TeamController.teamService;
+    
+    @Autowired
+    TeamMemberService TeamController.teamMemberService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TeamController.create(@Valid Team team, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect TeamController_Roo_Controller {
     
     void TeamController.populateEditForm(Model uiModel, Team team) {
         uiModel.addAttribute("team", team);
+        uiModel.addAttribute("teammembers", teamMemberService.findAllTeamMembers());
     }
     
     String TeamController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

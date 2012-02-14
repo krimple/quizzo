@@ -4,9 +4,13 @@
 package com.chariot.games.quizzo.web.scaffold;
 
 import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.service.AnswerService;
 import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.web.scaffold.QuestionController;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,12 @@ privileged aspect QuestionController_Roo_Controller {
     @Autowired
     QuestionService QuestionController.questionService;
     
+    @Autowired
+    AnswerService QuestionController.answerService;
+    
+    @Autowired
+    QuizService QuestionController.quizService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QuestionController.create(@Valid Question question, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -38,6 +48,11 @@ privileged aspect QuestionController_Roo_Controller {
     @RequestMapping(params = "form", produces = "text/html")
     public String QuestionController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Question());
+        List<String[]> dependencies = new ArrayList<String[]>();
+        if (quizService.countAllQuizes() == 0) {
+            dependencies.add(new String[] { "quiz", "quizes" });
+        }
+        uiModel.addAttribute("dependencies", dependencies);
         return "questions/create";
     }
     
@@ -91,6 +106,8 @@ privileged aspect QuestionController_Roo_Controller {
     
     void QuestionController.populateEditForm(Model uiModel, Question question) {
         uiModel.addAttribute("question", question);
+        uiModel.addAttribute("answers", answerService.findAllAnswers());
+        uiModel.addAttribute("quizes", quizService.findAllQuizes());
     }
     
     String QuestionController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
