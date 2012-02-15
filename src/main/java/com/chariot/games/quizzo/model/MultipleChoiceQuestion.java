@@ -8,4 +8,6 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooJpaEntity
 public class MultipleChoiceQuestion extends Question {
+
+
 }
