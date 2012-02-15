@@ -5,6 +5,8 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.Vote;
+import java.util.Set;
 
 privileged aspect Answer_Roo_JavaBean {
     
@@ -24,12 +26,12 @@ privileged aspect Answer_Roo_JavaBean {
         this.answerText = answerText;
     }
     
-    public Integer Answer.getQuestionOrder() {
-        return this.questionOrder;
+    public Integer Answer.getAnswerOrder() {
+        return this.answerOrder;
     }
     
-    public void Answer.setQuestionOrder(Integer questionOrder) {
-        this.questionOrder = questionOrder;
+    public void Answer.setAnswerOrder(Integer answerOrder) {
+        this.answerOrder = answerOrder;
     }
     
     public Boolean Answer.getIsCorrectAnswer() {
@@ -38,6 +40,14 @@ privileged aspect Answer_Roo_JavaBean {
     
     public void Answer.setIsCorrectAnswer(Boolean isCorrectAnswer) {
         this.isCorrectAnswer = isCorrectAnswer;
+    }
+    
+    public Set<Vote> Answer.getAnswerVotes() {
+        return this.answerVotes;
+    }
+    
+    public void Answer.setAnswerVotes(Set<Vote> answerVotes) {
+        this.answerVotes = answerVotes;
     }
     
 }

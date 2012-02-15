@@ -1,0 +1,42 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+     xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:form="http://www.springframework.org/tags/form" version="2.0"
+     xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:message var="app_name" code="application_name" htmlEscape="false"/>
+    <spring:message var="title" code="welcome_titlepane" arguments="${app_name}" htmlEscape="false"/>
+    <util:panel id="title" title="${title}">
+        <form:form method="POST" modelAttribute="quiz">
+
+            <h3>
+                Take the Quiz! - ${quiz.name}
+            </h3>
+
+            <p>
+                <h4>Questions</h4>
+
+                <c:forEach items="${quiz.questions}" var="question" varStatus="questionItem">
+                    <section id="question">
+                        <span class="question_number">${questionItem.index + 1}</span>
+                        <span class="questionText">Question: ${question.questionText}</span>
+                        <h4>Answers</h4>
+                        <c:forEach items="${question.answers}" var="answer" varStatus="answerItem">
+
+                            <section class="answer">
+                                <span class="answer_number">${answerItem.index + 1}</span>
+                                <span class="answer_text">${answer.answerText}</span>
+                                <span class="answer_vote">
+                                    <form:checkbox
+                                            path="questions[${questionItem.index}].answers[${answerItem.index}].vote"
+                                            />
+                                </span>
+                            </section>
+
+                        </c:forEach>
+                    </section>
+                </c:forEach>
+            </p>
+            <input type="submit" value="submit"/>
+        </form:form>
+    </util:panel>
+</div>

@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_com_chariot_games_quizzo_model_Vote" object="${vote}" path="/votes" z="VOEyB/6lRYW4+HQ0ZSc6C3/uBQk=">
-        <field:display field="question" id="s_com_chariot_games_quizzo_model_Vote_question" object="${vote}" z="hiVjBcbh80791Gdr8LbTesJIk0o="/>
-        <field:display field="textAnswer" id="s_com_chariot_games_quizzo_model_Vote_textAnswer" object="${vote}" z="sEJhUlxHdsoImDSAUR5pgy/uplQ="/>
+        <field:display field="vote" id="s_com_chariot_games_quizzo_model_Vote_vote" object="${vote}" z="6IYjMeRt6jVYIJZrYyHJV1Bx2gI="/>
     </page:show>
 </div>

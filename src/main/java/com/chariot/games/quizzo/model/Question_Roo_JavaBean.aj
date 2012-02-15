@@ -6,7 +6,7 @@ package com.chariot.games.quizzo.model;
 import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
-import java.util.List;
+import java.util.Set;
 
 privileged aspect Question_Roo_JavaBean {
     
@@ -18,14 +18,6 @@ privileged aspect Question_Roo_JavaBean {
         this.quiz = quiz;
     }
     
-    public int Question.getRelativeOrder() {
-        return this.relativeOrder;
-    }
-    
-    public void Question.setRelativeOrder(int relativeOrder) {
-        this.relativeOrder = relativeOrder;
-    }
-    
     public String Question.getQuestionText() {
         return this.questionText;
     }
@@ -34,11 +26,11 @@ privileged aspect Question_Roo_JavaBean {
         this.questionText = questionText;
     }
     
-    public List<Answer> Question.getAnswers() {
+    public Set<Answer> Question.getAnswers() {
         return this.answers;
     }
     
-    public void Question.setAnswers(List<Answer> answers) {
+    public void Question.setAnswers(Set<Answer> answers) {
         this.answers = answers;
     }
     

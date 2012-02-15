@@ -36,11 +36,6 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
         obj.setQuestionText(questionText);
     }
     
-    public void QuestionDataOnDemand.setRelativeOrder(Question obj, int index) {
-        int relativeOrder = index;
-        obj.setRelativeOrder(relativeOrder);
-    }
-    
     public Question QuestionDataOnDemand.getSpecificQuestion(int index) {
         init();
         if (index < 0) {

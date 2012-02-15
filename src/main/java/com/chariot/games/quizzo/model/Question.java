@@ -1,39 +1,31 @@
 package com.chariot.games.quizzo.model;
 
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.validation.constraints.Max;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 @RooJavaBean
 @RooToString
 @RooJpaEntity
 public class Question {
-    @ManyToOne
-    @NotNull
-    private Quiz quiz;
 
-    @NotNull
-    private int relativeOrder;
+  @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinColumn(name = "quiz_id")
+  @NotNull
+  private Quiz quiz;
 
-    @Length(max = 500)
-    @NotNull
-    private String questionText;
+  @Length(max = 500)
+  @NotNull
+  private String questionText;
 
-    @OneToMany
-    @JoinColumn(name = "question_id")
-    @OrderColumn(name = "question_order")
-    private List<Answer> answers = new ArrayList<Answer>();
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+  @OrderBy("answerOrder ASC")
+  private Set<Answer> answers = new TreeSet<Answer>();
 
 }

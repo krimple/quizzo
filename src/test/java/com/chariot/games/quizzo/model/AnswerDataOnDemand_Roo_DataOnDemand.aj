@@ -7,7 +7,6 @@ import com.chariot.games.quizzo.db.AnswerRepository;
 import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.AnswerDataOnDemand;
 import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.QuestionDataOnDemand;
 import com.chariot.games.quizzo.service.AnswerService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -28,9 +27,6 @@ privileged aspect AnswerDataOnDemand_Roo_DataOnDemand {
     private List<Answer> AnswerDataOnDemand.data;
     
     @Autowired
-    private QuestionDataOnDemand AnswerDataOnDemand.questionDataOnDemand;
-    
-    @Autowired
     AnswerService AnswerDataOnDemand.answerService;
     
     @Autowired
@@ -38,11 +34,16 @@ privileged aspect AnswerDataOnDemand_Roo_DataOnDemand {
     
     public Answer AnswerDataOnDemand.getNewTransientAnswer(int index) {
         Answer obj = new Answer();
+        setAnswerOrder(obj, index);
         setAnswerText(obj, index);
         setIsCorrectAnswer(obj, index);
         setQuestion(obj, index);
-        setQuestionOrder(obj, index);
         return obj;
+    }
+    
+    public void AnswerDataOnDemand.setAnswerOrder(Answer obj, int index) {
+        Integer answerOrder = new Integer(index);
+        obj.setAnswerOrder(answerOrder);
     }
     
     public void AnswerDataOnDemand.setAnswerText(Answer obj, int index) {
@@ -56,13 +57,8 @@ privileged aspect AnswerDataOnDemand_Roo_DataOnDemand {
     }
     
     public void AnswerDataOnDemand.setQuestion(Answer obj, int index) {
-        Question question = questionDataOnDemand.getRandomQuestion();
+        Question question = null;
         obj.setQuestion(question);
-    }
-    
-    public void AnswerDataOnDemand.setQuestionOrder(Answer obj, int index) {
-        Integer questionOrder = new Integer(index);
-        obj.setQuestionOrder(questionOrder);
     }
     
     public Answer AnswerDataOnDemand.getSpecificAnswer(int index) {

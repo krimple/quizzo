@@ -46,7 +46,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Answer, String> ApplicationConversionServiceFactoryBean.getAnswerToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Answer, java.lang.String>() {
             public String convert(Answer answer) {
-                return new StringBuilder().append(answer.getAnswerText()).append(" ").append(answer.getQuestionOrder()).toString();
+                return new StringBuilder().append(answer.getAnswerText()).append(" ").append(answer.getAnswerOrder()).toString();
             }
         };
     }
@@ -70,7 +70,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Question, String> ApplicationConversionServiceFactoryBean.getQuestionToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Question, java.lang.String>() {
             public String convert(Question question) {
-                return new StringBuilder().append(question.getRelativeOrder()).append(" ").append(question.getQuestionText()).toString();
+                return new StringBuilder().append(question.getQuestionText()).toString();
             }
         };
     }
@@ -166,7 +166,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Vote, String> ApplicationConversionServiceFactoryBean.getVoteToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Vote, java.lang.String>() {
             public String convert(Vote vote) {
-                return new StringBuilder().append(vote.getTextAnswer()).toString();
+                return new StringBuilder().toString();
             }
         };
     }

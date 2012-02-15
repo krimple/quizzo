@@ -5,6 +5,7 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class Team {
     @Length(max = 100)
     private String teamName;
 
-    @OneToMany
-    @JoinColumn(name = "team_id")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id")    
     private Set<TeamMember> teamMembers = new HashSet<TeamMember>();
 }

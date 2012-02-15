@@ -13,6 +13,8 @@
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
     <mvc:resources location="/, classpath:/META-INF/web-resources/" mapping="/resources/**" />
+    <!--mvc:resources location="/, /WEB-INF/classes/dojo_toolkit, classpath:/META-INF/web-resources/" mapping="/resources/**" -->
+    <!-- was classpath:/META-INF/web-resources/ -->
 
     <!-- Allows for mapping the DispatcherServlet to "/" by forwarding static resource
     requests to the container's default Servlet -->
@@ -50,6 +52,7 @@
     The default behaviour of DispatcherServlet - is to propagate all exceptions to the servlet
     container: this will happen - here with all other types of exceptions. -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
+
         <property name="exceptionMappings">
             <props>
                 <prop key=".DataAccessException">dataAccessFailure</prop>
@@ -73,6 +76,7 @@
         <value>/WEB-INF/views/**/views.xml</value>
       </list>
     </property>
+    <property name="checkRefresh" value="true" />
   </bean>
 <bean class="com.chariot.games.quizzo.web.scaffold.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
 </beans>

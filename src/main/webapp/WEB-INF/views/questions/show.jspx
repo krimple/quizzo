@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_com_chariot_games_quizzo_model_Question" object="${question}" path="/questions" z="+SXJongZZozQCysdJrRPLFdusuc=">
         <field:display field="quiz" id="s_com_chariot_games_quizzo_model_Question_quiz" object="${question}" z="SBvZY1fPSwrXBnxqiApHq3U9wkI="/>
-        <field:display field="relativeOrder" id="s_com_chariot_games_quizzo_model_Question_relativeOrder" object="${question}" z="pa0E1FoboP7G7rdgj5lzXyRL48I="/>
         <field:display field="questionText" id="s_com_chariot_games_quizzo_model_Question_questionText" object="${question}" z="X4w5aYLw642GjYnpVi0URwjmkuc="/>
+        <field:display field="answers" id="s_com_chariot_games_quizzo_model_Question_answers" object="${question}" z="hCxBwsunCyKrcb0QaAy+4vAn1WE="/>
     </page:show>
 </div>

@@ -3,35 +3,16 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Vote;
-import java.util.Set;
 
 privileged aspect Vote_Roo_JavaBean {
     
-    public Question Vote.getQuestion() {
-        return this.question;
+    public boolean Vote.isVote() {
+        return this.vote;
     }
     
-    public void Vote.setQuestion(Question question) {
-        this.question = question;
-    }
-    
-    public Set<Answer> Vote.getAnswers() {
-        return this.answers;
-    }
-    
-    public void Vote.setAnswers(Set<Answer> answers) {
-        this.answers = answers;
-    }
-    
-    public String Vote.getTextAnswer() {
-        return this.textAnswer;
-    }
-    
-    public void Vote.setTextAnswer(String textAnswer) {
-        this.textAnswer = textAnswer;
+    public void Vote.setVote(boolean vote) {
+        this.vote = vote;
     }
     
 }

@@ -13,7 +13,7 @@
         <roo.version>1.2.1.RELEASE</roo.version>
         <slf4j.version>1.6.4</slf4j.version>
         <spring.version>3.1.0.RELEASE</spring.version>
-    <spring-security.version>3.1.0.RELEASE</spring-security.version>
+        <spring-security.version>3.1.0.RELEASE</spring-security.version>
     </properties>
     <repositories>
         <repository>
@@ -143,11 +143,6 @@
             <artifactId>spring-aspects</artifactId>
             <version>${spring.version}</version>
         </dependency>
-    <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>1.8.0.10</version>
-        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -233,7 +228,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-    <dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
@@ -291,12 +286,12 @@
             <artifactId>commons-codec</artifactId>
             <version>1.5</version>
         </dependency>
-    <dependency>
+        <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
             <version>2.2.2</version>
         </dependency>
-    <dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>${spring-security.version}</version>
@@ -328,10 +323,23 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring-security.version}</version>
         </dependency>
-    <dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>1.0.2.RELEASE</version>
+        </dependency>
+        <!-- for dojo war overlay -->
+        <dependency>
+            <groupId>org.dojotoolkit</groupId>
+            <artifactId>dojo-war</artifactId>
+            <version>1.7.1</version>
+            <type>war</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.18</version>
         </dependency>
     </dependencies>
     <build>
@@ -340,6 +348,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
+                <configuration>
+                    <overlays>
+                        <overlay>
+                            <groupId>org.dojotoolkit</groupId>
+                            <artifactId>dojo-war</artifactId>
+                            <excludes>
+                                <exclude>META-INF/**</exclude>
+                                <exclude>WEB-INF/**</exclude>
+                                <exclude>build-report.txt</exclude>
+                            </excludes>
+                            <targetPath>WEB-INF/classes/dojo_toolkit</targetPath>
+                        </overlay>
+                    </overlays>
+                </configuration>
                 <!-- <configuration> <webXml>target/web.xml</webXml> </configuration> -->
             </plugin>
             <plugin>
@@ -478,5 +500,30 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-dependency-plugin</artifactId>-->
+        <!--<executions>-->
+        <!--<execution>-->
+        <!--<id>unpack dojo</id>-->
+        <!--<phase>generate-sources</phase>-->
+        <!--<goals>-->
+        <!--<goal>unpack</goal>-->
+        <!--</goals>-->
+        <!--<configuration>-->
+        <!--<artifactItems>-->
+        <!--<artifactItem>-->
+        <!--<groupId>org.dojotoolkit</groupId>-->
+        <!--<artifactId>dojo</artifactId>-->
+        <!--<version>1.7.1</version>-->
+        <!--<type>zip</type>-->
+        <!--</artifactItem>-->
+        <!--</artifactItems>-->
+        <!--<outputDirectory>${project.build.directory}/dojo</outputDirectory>-->
+        <!--</configuration>-->
+        <!--</execution>-->
+        <!--</executions>-->
+        <!--</plugin>-->
+
     </build>
 </project>

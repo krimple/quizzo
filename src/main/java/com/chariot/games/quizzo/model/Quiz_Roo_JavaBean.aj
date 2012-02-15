@@ -5,7 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
-import java.util.List;
+import java.util.Set;
 
 privileged aspect Quiz_Roo_JavaBean {
     
@@ -17,11 +17,11 @@ privileged aspect Quiz_Roo_JavaBean {
         this.name = name;
     }
     
-    public List<Question> Quiz.getQuestions() {
+    public Set<Question> Quiz.getQuestions() {
         return this.questions;
     }
     
-    public void Quiz.setQuestions(List<Question> questions) {
+    public void Quiz.setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
     

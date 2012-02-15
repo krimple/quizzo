@@ -13,7 +13,6 @@ public class QuestionDataOnDemand {
         Question obj = new Question();
         setQuestionText(obj, index);
         setQuiz(obj, index);
-        setRelativeOrder(obj, index);
         return obj;
     }
 

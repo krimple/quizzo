@@ -5,9 +5,10 @@
     <page:list id="pl_com_chariot_games_quizzo_model_Answer" items="${answers}" z="Dg6+KqqUa5o58mqkTEWIL/YB0qY=">
         <table:table data="${answers}" id="l_com_chariot_games_quizzo_model_Answer" path="/answers" z="5/hNh61l3LorpK95aoJ+j/DvuKo=">
             <table:column id="c_com_chariot_games_quizzo_model_Answer_question" property="question" z="2Rt//SwLOqKq+N9W1Dvr5k97Vsg="/>
-            <table:column id="c_com_chariot_games_quizzo_model_Answer_questionOrder" property="questionOrder" z="5E34JU/e73IMPRexw/OyYtHY2dk="/>
             <table:column id="c_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" property="isCorrectAnswer" z="UZwtogQKHNDqf5YX0Kqe+5aSDqk="/>
             <table:column id="c_com_chariot_games_quizzo_model_Answer_answerText" property="answerText" z="brA5FovL71a635zkNr1k607BMN4="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_answerOrder" property="answerOrder" z="ixtl2rf7MYckQ3qIrj21e34nFHo="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Answer_answerVotes" property="answerVotes" z="9dSURpCvFp/zTfvOHYRc1xSgQKY="/>
         </table:table>
     </page:list>
 </div>

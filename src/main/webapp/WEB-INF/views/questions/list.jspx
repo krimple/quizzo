@@ -5,8 +5,8 @@
     <page:list id="pl_com_chariot_games_quizzo_model_Question" items="${questions}" z="C8YefdKS7OGe7q6e3sv4Q2mRWVs=">
         <table:table data="${questions}" id="l_com_chariot_games_quizzo_model_Question" path="/questions" z="2QwLD4YnQOGx3bbKUK1bJPQaXOo=">
             <table:column id="c_com_chariot_games_quizzo_model_Question_quiz" property="quiz" z="BY6cenxU1K6a80UptCPkGJSAAMI="/>
-            <table:column id="c_com_chariot_games_quizzo_model_Question_relativeOrder" property="relativeOrder" z="6j8zhtw2oJXRMteBzhVzFUkqpWI="/>
             <table:column id="c_com_chariot_games_quizzo_model_Question_questionText" property="questionText" z="F/gy3tENzEvG0XXDmwsjw7Tc6nw="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Question_answers" property="answers" z="1M4Vg8KT0EWZ79BflbTDSf27bJU="/>
         </table:table>
     </page:list>
 </div>

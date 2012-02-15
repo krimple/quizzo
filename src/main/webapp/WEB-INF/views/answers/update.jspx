@@ -3,9 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_com_chariot_games_quizzo_model_Answer" modelAttribute="answer" path="/answers" versionField="Version" z="aiYEOI6IMRvNVoyF0G0UNN6Gi1w=">
-        <field:select field="question" id="c_com_chariot_games_quizzo_model_Answer_question" itemValue="id" items="${questions}" path="/questions" z="msnB9lnQIXiCQ+bCfCSlDW6fTvE="/>
-        <field:input field="questionOrder" id="c_com_chariot_games_quizzo_model_Answer_questionOrder" required="true" validationMessageCode="field_invalid_integer" z="q7vECwwYWEjNq/QIvhhgOU21Flw="/>
+        <field:input field="question" id="c_com_chariot_games_quizzo_model_Answer_question" z="74slTqUZFdmhQZZYqq0h90dQd7Y="/>
         <field:checkbox field="isCorrectAnswer" id="c_com_chariot_games_quizzo_model_Answer_isCorrectAnswer" z="/Gq0xdaX0O3USUVtTuLC1jk+a0Y="/>
         <field:input field="answerText" id="c_com_chariot_games_quizzo_model_Answer_answerText" required="true" z="GIvskAfLcAOfFawqNBZqi7a30mU="/>
+        <field:input field="answerOrder" id="c_com_chariot_games_quizzo_model_Answer_answerOrder" required="true" validationMessageCode="field_invalid_integer" z="Qjmybf8o6s7gNQeKLH0uwik+SNI="/>
+        <field:input field="answerVotes" id="c_com_chariot_games_quizzo_model_Answer_answerVotes" z="qDr2/n3lYS4m+GG7g2A5DraOPq4="/>
     </form:update>
 </div>

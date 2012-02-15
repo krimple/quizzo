@@ -4,8 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_com_chariot_games_quizzo_model_Vote" items="${votes}" z="RgWM/6WcyZ7fsBxm8snWpXulAhA=">
         <table:table data="${votes}" id="l_com_chariot_games_quizzo_model_Vote" path="/votes" z="NFBdWRRgRdG1JVp9blzsOIGdH7s=">
-            <table:column id="c_com_chariot_games_quizzo_model_Vote_question" property="question" z="SKL36AS3mfrJpciTQEbp6YO1rQk="/>
-            <table:column id="c_com_chariot_games_quizzo_model_Vote_textAnswer" property="textAnswer" z="ZAwAcUlIYYyE5fsnNdCxg/qwpOU="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Vote_vote" property="vote" z="HxmLw7EllD1Iw16wq8oI0qwhRB4="/>
         </table:table>
     </page:list>
 </div>
