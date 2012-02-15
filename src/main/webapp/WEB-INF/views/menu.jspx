@@ -2,6 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
+    <nav>
     <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
         <menu:category id="c_question" z="SR0L0iZw9fVnYZY0B/dk7XBq6eQ=">
             <menu:item id="i_question_new" messageCode="global_menu_new" url="/questions?form" z="7Bx54/bA+53IAlm/YYWnirDy13E="/>
@@ -24,4 +25,5 @@
             <menu:item id="i_vote_list" messageCode="global_menu_list" url="/votes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="jWYHYqbX/oDcUde2y1TEbIC0YAI="/>
         </menu:category>
     </menu:menu>
+    </nav>
 </div>

@@ -5,5 +5,6 @@
     <form:update id="fu_com_chariot_games_quizzo_model_Vote" modelAttribute="vote" path="/votes" versionField="Version" z="qBY405KfDdNx4POzN/N1l+lZZVs=">
         <field:select field="question" id="c_com_chariot_games_quizzo_model_Vote_question" itemValue="id" items="${questions}" path="/questions" z="faHLh6PmnVifogyv9keYXEj5rqc="/>
         <field:simple field="answers" id="c_com_chariot_games_quizzo_model_Vote_answers" messageCode="entity_reference_not_managed" messageCodeAttribute="Answer" z="aWjExSQaMm0DpzU6Orb5qTR/z5g="/>
+        <field:input field="textAnswer" id="c_com_chariot_games_quizzo_model_Vote_textAnswer" z="RPpwNOn2HTdFANLhN+yDATMH1Kk="/>
     </form:update>
 </div>

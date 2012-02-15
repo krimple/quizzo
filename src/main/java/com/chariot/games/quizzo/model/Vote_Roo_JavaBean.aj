@@ -26,4 +26,12 @@ privileged aspect Vote_Roo_JavaBean {
         this.answers = answers;
     }
     
+    public String Vote.getTextAnswer() {
+        return this.textAnswer;
+    }
+    
+    public void Vote.setTextAnswer(String textAnswer) {
+        this.textAnswer = textAnswer;
+    }
+    
 }

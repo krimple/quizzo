@@ -4,5 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_com_chariot_games_quizzo_model_Vote" object="${vote}" path="/votes" z="VOEyB/6lRYW4+HQ0ZSc6C3/uBQk=">
         <field:display field="question" id="s_com_chariot_games_quizzo_model_Vote_question" object="${vote}" z="hiVjBcbh80791Gdr8LbTesJIk0o="/>
+        <field:display field="textAnswer" id="s_com_chariot_games_quizzo_model_Vote_textAnswer" object="${vote}" z="sEJhUlxHdsoImDSAUR5pgy/uplQ="/>
     </page:show>
 </div>

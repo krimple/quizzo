@@ -166,7 +166,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Vote, String> ApplicationConversionServiceFactoryBean.getVoteToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Vote, java.lang.String>() {
             public String convert(Vote vote) {
-                return new StringBuilder().toString();
+                return new StringBuilder().append(vote.getTextAnswer()).toString();
             }
         };
     }

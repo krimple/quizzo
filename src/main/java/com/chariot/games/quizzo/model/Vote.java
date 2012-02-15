@@ -1,5 +1,6 @@
 package com.chariot.games.quizzo.model;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
@@ -21,4 +22,7 @@ public class Vote {
     @OneToMany
     @JoinColumn(name = "question_id")
     private Set<Answer> answers = new HashSet<Answer>();
+
+    @Length( min = 0, max = 200)
+    private String textAnswer;
 }
