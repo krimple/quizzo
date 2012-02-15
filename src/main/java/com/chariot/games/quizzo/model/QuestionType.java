@@ -8,5 +8,5 @@ package com.chariot.games.quizzo.model;
  * To change this template use File | Settings | File Templates.
  */
 public enum QuestionType{
-     MULTIPLE_CHOICE, OPEN_ENDED;
+     TRUE_FALSE, MULTIPLE_CHOICE, OPEN_ENDED;
 }

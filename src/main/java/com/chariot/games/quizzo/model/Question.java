@@ -10,14 +10,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
+
 @RooJavaBean
 @RooToString
-@RooJpaEntity
+@RooJpaEntity(inheritanceType = "TABLE_PER_CLASS")
 public class Question {
 
   @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn(name = "quiz_id")
-  @NotNull
   private Quiz quiz;
 
   @Length(max = 500)

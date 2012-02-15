@@ -8,6 +8,7 @@ import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.Team;
 import com.chariot.games.quizzo.model.TeamMember;
+import com.chariot.games.quizzo.model.TrueFalseQuestion;
 import com.chariot.games.quizzo.model.Vote;
 import com.chariot.games.quizzo.service.AnswerService;
 import com.chariot.games.quizzo.service.QuestionService;
@@ -163,6 +164,22 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
+    public Converter<TrueFalseQuestion, String> ApplicationConversionServiceFactoryBean.getTrueFalseQuestionToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.TrueFalseQuestion, java.lang.String>() {
+            public String convert(TrueFalseQuestion trueFalseQuestion) {
+                return new StringBuilder().append(trueFalseQuestion.getQuestionText()).toString();
+            }
+        };
+    }
+    
+    public Converter<String, TrueFalseQuestion> ApplicationConversionServiceFactoryBean.getStringToTrueFalseQuestionConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, com.chariot.games.quizzo.model.TrueFalseQuestion>() {
+            public com.chariot.games.quizzo.model.TrueFalseQuestion convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), TrueFalseQuestion.class);
+            }
+        };
+    }
+    
     public Converter<Vote, String> ApplicationConversionServiceFactoryBean.getVoteToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Vote, java.lang.String>() {
             public String convert(Vote vote) {
@@ -203,6 +220,8 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getTeamMemberToStringConverter());
         registry.addConverter(getIdToTeamMemberConverter());
         registry.addConverter(getStringToTeamMemberConverter());
+        registry.addConverter(getTrueFalseQuestionToStringConverter());
+        registry.addConverter(getStringToTrueFalseQuestionConverter());
         registry.addConverter(getVoteToStringConverter());
         registry.addConverter(getIdToVoteConverter());
         registry.addConverter(getStringToVoteConverter());
