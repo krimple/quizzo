@@ -3,6 +3,9 @@
 
 package com.chariot.games.quizzo.model.quiz;
 
+import com.chariot.games.quizzo.model.quiz.Choice;
+import com.chariot.games.quizzo.model.quiz.ChoiceBuilder;
+
 privileged aspect ChoiceBuilder_Roo_JavaBean {
     
     public Choice ChoiceBuilder.getChoice() {

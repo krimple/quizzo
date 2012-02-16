@@ -3,6 +3,7 @@
 
 package com.chariot.games.quizzo.model.quiz;
 
+import com.chariot.games.quizzo.model.quiz.Score;
 import java.math.BigDecimal;
 
 privileged aspect Score_Roo_JavaBean {

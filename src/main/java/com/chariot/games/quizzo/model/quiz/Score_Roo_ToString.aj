@@ -3,6 +3,7 @@
 
 package com.chariot.games.quizzo.model.quiz;
 
+import com.chariot.games.quizzo.model.quiz.Score;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

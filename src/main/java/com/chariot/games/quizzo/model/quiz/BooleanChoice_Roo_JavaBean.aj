@@ -3,6 +3,8 @@
 
 package com.chariot.games.quizzo.model.quiz;
 
+import com.chariot.games.quizzo.model.quiz.BooleanChoice;
+
 privileged aspect BooleanChoice_Roo_JavaBean {
     
     public boolean BooleanChoice.isCorrectValue() {
