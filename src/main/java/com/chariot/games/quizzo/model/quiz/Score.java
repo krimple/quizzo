@@ -8,7 +8,5 @@ import java.math.BigDecimal;
 @RooJavaBean
 @RooToString
 public class Score {
-
   private BigDecimal value;
-
 }
