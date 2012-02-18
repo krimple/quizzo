@@ -3,7 +3,10 @@ package com.chariot.games.quizzo.model.quiz;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * This is meant to live as a Spring singleton bean
@@ -12,19 +15,27 @@ import java.util.List;
 @Component("quiz")
 public class QuizBean implements Quiz {
 
-  @Override
-  public Team setupTeam(String name, String description, List<String> teamMembers) {
-    Team team = new Team(name, description);
+  private GameState gameState = GameState.NOT_STARTED;
 
+
+  Map<UUID, Team> teams = new HashMap<UUID, Team>();
+
+  @Override
+  public UUID setupTeam(String name, String description, List<String> teamMembers) {
+    assert gameState == GameState.NOT_STARTED;
+    Team team = new Team(name, description);
+    UUID uuid = UUID.randomUUID();
+    teams.put(uuid, team);
+    return uuid;
   }
 
   @Override
-  public Score submitAnswers(String teamId, Question question, List<QuizAnswer> answers) {
+  public Score submitAnswers(UUID team, List<QuizAnswer> answers) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
   @Override
-  public Score getTeamScore(String teamId) {
+  public Score getTeamScore(UUID team) {
     return null;  //To change body of implemented methods use File | Settings | File Templates.
   }
 
@@ -55,11 +66,17 @@ public class QuizBean implements Quiz {
 
   @Override
   public void startGame() {
-    //To change body of implemented methods use File | Settings | File Templates.
+    assert gameState == GameState.NOT_STARTED;
+    gameState = GameState.IN_PROGRESS;
   }
 
   @Override
   public void endGame() {
-    //To change body of implemented methods use File | Settings | File Templates.
+    assert gameState == GameState.IN_PROGRESS;
+      gameState = GameState.COMPLETE;
+  }
+
+  public GameState getGameState() {
+      return this.gameState;
   }
 }

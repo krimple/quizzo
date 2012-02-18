@@ -1,12 +1,13 @@
 package com.chariot.games.quizzo.model.quiz;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface Quiz {
-  
-  Team setupTeam(String name, String description, List<String> teamMembers);
-  Score submitAnswers(String teamId, Question question, List<QuizAnswer> answers);
-  Score getTeamScore(String teamId);
+
+  UUID setupTeam(String name, String description, List<String> teamMembers);
+  Score submitAnswers(UUID team, List<QuizAnswer> answers);
+  Score getTeamScore(UUID team);
   List<Score> getAllScores();
   void getNextQuestion();
   void getPreviousQuestion();
@@ -14,5 +15,4 @@ public interface Quiz {
   void closeVoting();
   void startGame();
   void endGame();
-  
 }
