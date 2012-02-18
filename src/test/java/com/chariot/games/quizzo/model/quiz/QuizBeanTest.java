@@ -7,37 +7,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
 public class QuizBeanTest {
 
-    QuizBean quizBean;
+  QuizBean quizBean;
 
-    @Before
-    public void setUp() {
-        quizBean = new QuizBean();
-    }
+  @Before
+  public void setUp() {
+    quizBean = new QuizBean();
+  }
 
-    @Test
-    public void testCreateTeamMembers() {
-        List<String> teamMembers = generateTestTeam();
-        UUID uuid = quizBean.setupTeam("The Birds", "Fly on us, we'll poop on you.",
-                teamMembers);
-        assertNotNull(uuid);
-    }
+  @Test
+  public void testCreateTeamMembers() {
+    UUID teamToken = generateAndAddTeam();
+    assertNotNull(teamToken);
+    assertEquals(GameState.NOT_STARTED, quizBean.getGameState());
+  }
 
-    private List<String> generateTestTeam() {
-        List<String> teamMembers = new ArrayList<String>();
-        teamMembers.add("Ken");
-        teamMembers.add("Mark");
-        return teamMembers;
-    }
+  @Test
+  public void testStartQuiz() {
+    generateAndAddTeam();
+    quizBean.startGame();
+    assertEquals(GameState.IN_PROGRESS, quizBean.getGameState());
+  }
 
-    @Test(expected = AssertionError.class)
-    public void testCreateTeamMembersFailIfNotStarted() {
-        quizBean.startGame();
-        quizBean.setupTeam("The coyotes", "Don't go shopping for Acme", generateTestTeam());
-    }
+  @Test
+  public void testSetupTeamMembers() {
+    UUID teamToken = generateAndAddTeam();
+    assertNotNull(teamToken);
+    assertEquals(GameState.NOT_STARTED, quizBean.getGameState());
+  }
 
-    public void test
+  private UUID generateAndAddTeam() {
+    List<String> teamMembers = new ArrayList<String>();
+    teamMembers.add("Ken");
+    teamMembers.add("Mark");
+    UUID uuid = quizBean.setupTeam("The Birds", "Fly on us, we'll poop on you.",
+        teamMembers);
+    return uuid;
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testCreateTeamMembersFailWhenStarted() {
+    quizBean.startGame();
+    generateAndAddTeam();
+  }
+
+  @Test
+  public void testCloseVoting() {
+    quizBean.closeVoting();
+    throw new RuntimeException("FINISH ME");
+  }
 }

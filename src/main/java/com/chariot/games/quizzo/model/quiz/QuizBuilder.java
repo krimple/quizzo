@@ -8,5 +8,4 @@ public class QuizBuilder {
         quiz = new QuizBean();
     }
 
-    public QuizBuilder
 }

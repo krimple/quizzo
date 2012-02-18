@@ -16,13 +16,11 @@ import java.util.UUID;
 public class QuizBean implements Quiz {
 
   private GameState gameState = GameState.NOT_STARTED;
-
-
   Map<UUID, Team> teams = new HashMap<UUID, Team>();
 
   @Override
-  public UUID setupTeam(String name, String description, List<String> teamMembers) {
-    assert gameState == GameState.NOT_STARTED;
+  public UUID setupTeam(String name, String description, List<String> teamMembers) throws IllegalStateException {
+    if (gameState != GameState.NOT_STARTED) throw new IllegalStateException("Teams cannot be set up once the game is in play");
     Team team = new Team(name, description);
     UUID uuid = UUID.randomUUID();
     teams.put(uuid, team);
