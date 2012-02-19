@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_com_chariot_games_quizzo_model_Vote" modelAttribute="vote" path="/votes" versionField="Version" z="qBY405KfDdNx4POzN/N1l+lZZVs=">
-        <field:checkbox field="vote" id="c_com_chariot_games_quizzo_model_Vote_vote" z="UaYTL4RxidptE1HTuAPjmeZl6uI="/>
-    </form:update>
-</div>
