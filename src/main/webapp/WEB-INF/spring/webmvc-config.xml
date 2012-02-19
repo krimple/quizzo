@@ -78,5 +78,5 @@
     </property>
     <property name="checkRefresh" value="true" />
   </bean>
-<bean class="com.chariot.games.quizzo.web.scaffold.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
+<bean class="com.chariot.games.quizzo.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
 </beans>

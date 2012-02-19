@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_com_chariot_games_quizzo_model_Vote" object="${vote}" path="/votes" z="VOEyB/6lRYW4+HQ0ZSc6C3/uBQk=">
-        <field:display field="vote" id="s_com_chariot_games_quizzo_model_Vote_vote" object="${vote}" z="6IYjMeRt6jVYIJZrYyHJV1Bx2gI="/>
-    </page:show>
-</div>
