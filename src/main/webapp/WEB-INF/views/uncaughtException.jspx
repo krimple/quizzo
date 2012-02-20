@@ -32,6 +32,19 @@
                         </c:forEach>
                     </c:if>
                 </util:panel>
+
+                <c:if test="${not empty rootCause}">
+                  <util:panel id="_fullStackTrace"
+                        title="Full Stack Trace" openPane="false">
+                    <h4>Full Stack Trace</h4>
+                    <br/>
+                    <div style="overflow: auto;"
+                         dojoType="dijit.layout.ContentPane">
+                      <pre><c:out value="${rootCause}"/></pre>
+                    </div>
+                  </util:panel>
+                </c:if>
+
             </p>
         </c:if>
     </util:panel>
