@@ -6,6 +6,7 @@
     <spring:message var="title" code="error_uncaughtexception_title" htmlEscape="false"/>
     <util:panel id="title" title="${title}">
         <h2>${fn:escapeXml(title)}</h2>
+        <h3>Please see error log for full details.</h3>
 
         <p>
             <spring:message code="error_uncaughtexception_problemdescription"/>
@@ -18,19 +19,6 @@
                 <spring:message var="message" code="exception_message" htmlEscape="false"/>
                 <util:panel id="_message" title="${message}" openPane="false">
                     <c:out value="${exception.localizedMessage}"/>
-                </util:panel>
-                <spring:message var="stacktrace" code="exception_stacktrace" htmlEscape="false"/>
-                <util:panel id="_exception" title="${stacktrace}" openPane="false">
-                    <c:forEach items="${exception.stackTrace}" var="trace">
-                        <c:out value="${trace}"/>
-                        <br/>
-                    </c:forEach>
-                    <c:if test="not empty ${exception.cause}">
-                        <c:forEach items="${exception.cause.stackTrace}" var="trace">
-                            <c:out value="${trace}"/>
-                            <br/>
-                        </c:forEach>
-                    </c:if>
                 </util:panel>
             </p>
         </c:if>

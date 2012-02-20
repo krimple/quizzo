@@ -1,0 +1,23 @@
+<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <spring:message var="title" code="webflow_state1_title" htmlEscape="false"/>
+    <util:panel id="title" title="${title}">
+        <h1>${fn:escapeXml(title)}</h1>
+
+        <p>
+            Register Team Members
+        </p>
+
+        <form method="POST">
+            <div class="submit">
+                <input type="submit" id="back" name="_eventId_back" value="back"/>
+                <input type="submit" id="add-team-member" name="_eventId_add-team-member" value="Add Team Member"/>
+                <input type="submit" id="remove-team-member" name="_eventId_remove-team-member"
+                       value="Remove Team Member"/>
+                <input type="submit" id="continue" name="_eventId_continue" value="Ready to play!"/>
+            </div>
+        </form>
+    </util:panel>
+</div>

@@ -1,0 +1,19 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+     xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:form="http://www.springframework.org/tags/form"
+     version="2.0">
+  <jsp:directive.page contentType="text/html;charset=UTF-8" />
+  <jsp:output omit-xml-declaration="yes" />
+  <spring:message var="title" code="webflow_state1_title" htmlEscape="false" />
+  <util:panel id="title" title="${title}">
+    <h1>Set up your quiz team...</h1>
+    <form:form method="POST" commandName="team">
+      <div class="submit">
+        <label for="name">Team Name</label> <form:input id="name" path="name" maxlength="80"/>
+        <input type="submit" id="cancel" name="_eventId_continue" value="Continue" />
+      </div>
+    </form:form>
+  </util:panel>
+</div>

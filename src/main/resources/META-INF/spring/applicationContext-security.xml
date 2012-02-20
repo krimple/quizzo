@@ -22,8 +22,9 @@
         <authentication-provider>
             <password-encoder hash="sha-256" />
             <user-service>
-                <user name="admin" password="fd8429e5539b9bcbe374b3a045168c87c9ee973b7f9b52c09f0ce7dbe4116b46" authorities="ROLE_ADMIN,ROLE_USER" />
-                <user name="user" password="fd8429e5539b9bcbe374b3a045168c87c9ee973b7f9b52c09f0ce7dbe4116b46" authorities="ROLE_USER" />
+                <!-- passwd is the password for these two users -->
+                <user name="admin" password="0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb" authorities="ROLE_ADMIN,ROLE_USER" />
+                <user name="user" password="0d6be69b264717f2dd33652e212b173104b4a647b7c11ae72e9885f11cd312fb" authorities="ROLE_USER" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

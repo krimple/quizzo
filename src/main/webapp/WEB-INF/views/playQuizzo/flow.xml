@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+    
+    <view-state id="register-team" view="playQuizzo/register-team" model="team">
+        <var name="team" class="com.chariot.games.quizzo.model.Team" />
+        <transition on="continue" to="register-team-members">
+            <evaluate expression="team.save()"/>
+            <evaluate expression="team.errors()"/>
+        </transition>
+    </view-state>
+
+    <view-state id="register-team-members" view="playQuizzo/register-team-members">
+        <transition on="continue" to="ready-to-play"/>
+        <transition on="add-team-member"/>
+        <transition on="remove-team-member"/>
+        <transition on="back" to="register-team"/>
+    </view-state>
+
+    <view-state id="ready-to-play" view="playQuizzo/ready-to-play">
+        <transition on="go" to="play-round">
+            <!-- TODO: configure check to see whether game is in progress -->
+        </transition>
+    </view-state>
+
+    <view-state id="play-round" view="playQuizzo/play-round">
+        <transition on="submit-answer" to="play-round"/>
+        <transition on="finish" to="game-over"/>
+    </view-state>
+
+    <end-state id="game-over" view="playQuizzo/game-over"/>
+
+</flow>
