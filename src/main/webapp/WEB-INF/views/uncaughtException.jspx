@@ -6,6 +6,7 @@
     <spring:message var="title" code="error_uncaughtexception_title" htmlEscape="false"/>
     <util:panel id="title" title="${title}">
         <h2>${fn:escapeXml(title)}</h2>
+        <h3>Please see error log for full details.</h3>
 
         <p>
             <spring:message code="error_uncaughtexception_problemdescription"/>
@@ -19,32 +20,6 @@
                 <util:panel id="_message" title="${message}" openPane="false">
                     <c:out value="${exception.localizedMessage}"/>
                 </util:panel>
-                <spring:message var="stacktrace" code="exception_stacktrace" htmlEscape="false"/>
-                <util:panel id="_exception" title="${stacktrace}" openPane="false">
-                    <c:forEach items="${exception.stackTrace}" var="trace">
-                        <c:out value="${trace}"/>
-                        <br/>
-                    </c:forEach>
-                    <c:if test="not empty ${exception.cause}">
-                        <c:forEach items="${exception.cause.stackTrace}" var="trace">
-                            <c:out value="${trace}"/>
-                            <br/>
-                        </c:forEach>
-                    </c:if>
-                </util:panel>
-
-                <c:if test="${not empty rootCause}">
-                  <util:panel id="_fullStackTrace"
-                        title="Full Stack Trace" openPane="false">
-                    <h4>Full Stack Trace</h4>
-                    <br/>
-                    <div style="overflow: auto;"
-                         dojoType="dijit.layout.ContentPane">
-                      <pre><c:out value="${rootCause}"/></pre>
-                    </div>
-                  </util:panel>
-                </c:if>
-
             </p>
         </c:if>
     </util:panel>
