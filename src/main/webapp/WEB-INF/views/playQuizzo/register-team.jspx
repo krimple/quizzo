@@ -3,10 +3,7 @@
   <jsp:output omit-xml-declaration="yes" />
   <spring:message var="title" code="webflow_state1_title" htmlEscape="false" />
   <util:panel id="title" title="${title}">
-    <h1>${fn:escapeXml(title)}</h1>
-    <p>
-      Register team
-    </p>
+    <h1>Set up your quiz team...</h1>
     <form method="POST">
       <div class="submit">
         <input type="submit" id="cancel" name="_eventId_continue" value="Continue" />
