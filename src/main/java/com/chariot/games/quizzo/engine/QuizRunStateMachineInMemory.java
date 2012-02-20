@@ -1,31 +1,35 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.Team;
+
+
+import com.chariot.games.quizzo.model.*;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.stereotype.Component;
+
+import java.util.Set;
 
 @RooJavaBean
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   private QuizRun quizRun;
+  private Set<Question> questions;
+  private int currentQuestionIndex = -1;
 
   @Override
   public void startQuiz(Long quizId) {
     Quiz quiz = Quiz.findQuiz(quizId);
+    quizRun = new QuizRun();
     quizRun.setQuiz(quiz);
-
-
-
-    //To change body of implemented methods use File | Settings | File Templates.
+    quizRun.setText("It's a new day");
+    quizRun.persist();
+    questions = quiz.getQuestions();
   }
 
   @Override
   public void nextQuestion() {
-    //To change body of implemented methods use File | Settings | File Templates.
+    currentQuestionIndex++;
+    assert currentQuestionIndex < (questions.size() - 1);
   }
 
   @Override
