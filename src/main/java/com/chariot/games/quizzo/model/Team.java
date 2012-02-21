@@ -6,9 +6,15 @@ import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RooJavaBean
 @RooToString
@@ -16,13 +22,31 @@ import java.util.List;
 @RooSerializable
 public class Team {
 
-    @NotNull
-    @Size(max = 80)
-    private String name;
+  @NotNull
+  @Size(max = 80)
+  private String name;
 
-    @NotNull
-    private String mission;
+  @NotNull
+  private String mission;
 
-    @ElementCollection
-    private List<TeamMember> teamMembers;
+  @ElementCollection
+  private List<TeamMember> teamMembers = new ArrayList<TeamMember>();
+
+  @OneToMany
+  private Set<Answer> answers = new HashSet<Answer>();
+
+  @NotNull
+  @ManyToOne(optional = false)
+  private QuizRun quizRun;
+
+  public BigDecimal calculateTotalScore() {
+    BigDecimal score = new BigDecimal("0.0");
+    for (Answer answer: answers) {
+     for (Choice choice: answer.getChoices()) {
+       score = score.add(choice.getPointValue());
+     }
+    }
+    return score;
+  }
+
 }

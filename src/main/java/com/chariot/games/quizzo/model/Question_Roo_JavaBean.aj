@@ -10,6 +10,14 @@ import java.util.Set;
 
 privileged aspect Question_Roo_JavaBean {
     
+    public short Question.getSortOrder() {
+        return this.sortOrder;
+    }
+    
+    public void Question.setSortOrder(short sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+    
     public Quiz Question.getQuiz() {
         return this.quiz;
     }

@@ -6,6 +6,8 @@
         <field:textarea field="name" id="c_com_chariot_games_quizzo_model_Team_name" required="true" z="lA67gp6mr49AVIt1CMtQK3WezaU="/>
         <field:input field="mission" id="c_com_chariot_games_quizzo_model_Team_mission" required="true" z="o5HpBXK200Sb0QhTq3iLjy+afH8="/>
         <field:input field="teamMembers" id="c_com_chariot_games_quizzo_model_Team_teamMembers" z="q4Vrmxa0PF6yCc/msfWI9pV6V6U="/>
+        <field:simple field="answers" id="c_com_chariot_games_quizzo_model_Team_answers" messageCode="entity_reference_not_managed" messageCodeAttribute="Answer" z="pIwS5Kjz7SUXffg/77svVoBkSCY="/>
+        <field:select field="quizRun" id="c_com_chariot_games_quizzo_model_Team_quizRun" itemValue="id" items="${quizruns}" path="/admin/quizruns" required="true" z="fY7yCfOewRnoKQj4tnWrDVuMPAE="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_chariot_games_quizzo_model_Team" render="${not empty dependencies}" z="+2r3yD0HrLedd+v3B2E/QfPJ8Z4="/>
 </div>

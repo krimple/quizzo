@@ -3,9 +3,9 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunState;
 
 privileged aspect QuizRun_Roo_JavaBean {
     
@@ -25,20 +25,12 @@ privileged aspect QuizRun_Roo_JavaBean {
         this.text = text;
     }
     
-    public Boolean QuizRun.getCorrect() {
-        return this.correct;
+    public QuizRunState QuizRun.getRunState() {
+        return this.runState;
     }
     
-    public void QuizRun.setCorrect(Boolean correct) {
-        this.correct = correct;
-    }
-    
-    public Question QuizRun.getQuestion() {
-        return this.question;
-    }
-    
-    public void QuizRun.setQuestion(Question question) {
-        this.question = question;
+    public void QuizRun.setRunState(QuizRunState runState) {
+        this.runState = runState;
     }
     
 }

@@ -3,12 +3,13 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunState;
 import com.chariot.games.quizzo.web.QuizRunController;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -40,9 +41,6 @@ privileged aspect QuizRunController_Roo_Controller {
         List<String[]> dependencies = new ArrayList<String[]>();
         if (Quiz.countQuizes() == 0) {
             dependencies.add(new String[] { "quiz", "quizes" });
-        }
-        if (Question.countQuestions() == 0) {
-            dependencies.add(new String[] { "question", "questions" });
         }
         uiModel.addAttribute("dependencies", dependencies);
         return "admin/quizruns/create";
@@ -98,8 +96,8 @@ privileged aspect QuizRunController_Roo_Controller {
     
     void QuizRunController.populateEditForm(Model uiModel, QuizRun quizRun) {
         uiModel.addAttribute("quizRun", quizRun);
-        uiModel.addAttribute("questions", Question.findAllQuestions());
         uiModel.addAttribute("quizes", Quiz.findAllQuizes());
+        uiModel.addAttribute("quizrunstates", Arrays.asList(QuizRunState.values()));
     }
     
     String QuizRunController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

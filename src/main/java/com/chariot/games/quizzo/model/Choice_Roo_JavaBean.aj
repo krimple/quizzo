@@ -5,6 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
+import java.math.BigDecimal;
 
 privileged aspect Choice_Roo_JavaBean {
     
@@ -16,12 +17,12 @@ privileged aspect Choice_Roo_JavaBean {
         this.text = text;
     }
     
-    public Boolean Choice.getCorrect() {
-        return this.correct;
+    public BigDecimal Choice.getPointValue() {
+        return this.pointValue;
     }
     
-    public void Choice.setCorrect(Boolean correct) {
-        this.correct = correct;
+    public void Choice.setPointValue(BigDecimal pointValue) {
+        this.pointValue = pointValue;
     }
     
     public Question Choice.getQuestion() {
@@ -30,6 +31,14 @@ privileged aspect Choice_Roo_JavaBean {
     
     public void Choice.setQuestion(Question question) {
         this.question = question;
+    }
+    
+    public short Choice.getSortOrder() {
+        return this.sortOrder;
+    }
+    
+    public void Choice.setSortOrder(short sortOrder) {
+        this.sortOrder = sortOrder;
     }
     
 }

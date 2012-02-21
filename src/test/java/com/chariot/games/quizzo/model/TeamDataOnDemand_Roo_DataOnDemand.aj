@@ -3,6 +3,8 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
 import com.chariot.games.quizzo.model.Team;
 import com.chariot.games.quizzo.model.TeamDataOnDemand;
 import java.security.SecureRandom;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
@@ -22,10 +25,14 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
     
     private List<Team> TeamDataOnDemand.data;
     
+    @Autowired
+    private QuizRunDataOnDemand TeamDataOnDemand.quizRunDataOnDemand;
+    
     public Team TeamDataOnDemand.getNewTransientTeam(int index) {
         Team obj = new Team();
         setMission(obj, index);
         setName(obj, index);
+        setQuizRun(obj, index);
         return obj;
     }
     
@@ -40,6 +47,11 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
             name = name.substring(0, 80);
         }
         obj.setName(name);
+    }
+    
+    public void TeamDataOnDemand.setQuizRun(Team obj, int index) {
+        QuizRun quizRun = quizRunDataOnDemand.getRandomQuizRun();
+        obj.setQuizRun(quizRun);
     }
     
     public Team TeamDataOnDemand.getSpecificTeam(int index) {

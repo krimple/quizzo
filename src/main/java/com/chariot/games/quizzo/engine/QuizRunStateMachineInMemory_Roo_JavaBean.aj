@@ -3,10 +3,19 @@
 
 package com.chariot.games.quizzo.engine;
 
+import com.chariot.games.quizzo.engine.QuizRun;
 import com.chariot.games.quizzo.engine.QuizRunStateMachineInMemory;
-import com.chariot.games.quizzo.model.QuizRun;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
+    
+    public JdbcTemplate QuizRunStateMachineInMemory.getJdbcTemplate() {
+        return this.jdbcTemplate;
+    }
+    
+    public void QuizRunStateMachineInMemory.setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
     
     public QuizRun QuizRunStateMachineInMemory.getQuizRun() {
         return this.quizRun;
@@ -14,6 +23,10 @@ privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
     
     public void QuizRunStateMachineInMemory.setQuizRun(QuizRun quizRun) {
         this.quizRun = quizRun;
+    }
+    
+    public void QuizRunStateMachineInMemory.setCurrentQuestionId(Long currentQuestionId) {
+        this.currentQuestionId = currentQuestionId;
     }
     
 }

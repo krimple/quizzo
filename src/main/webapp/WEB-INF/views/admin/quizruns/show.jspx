@@ -5,7 +5,6 @@
     <page:show id="ps_com_chariot_games_quizzo_model_QuizRun" object="${quizrun}" path="/admin/quizruns" z="BEhOy/dCK0F42jp+0ePtGxZUXdg=">
         <field:display field="quiz" id="s_com_chariot_games_quizzo_model_QuizRun_quiz" object="${quizrun}" z="Jul2583XpOPxHFUkwKCpkGl23mw="/>
         <field:display field="text" id="s_com_chariot_games_quizzo_model_QuizRun_text" object="${quizrun}" z="Yg9xVhaiB1RrgW7uRIsYPF0sWPY="/>
-        <field:display field="correct" id="s_com_chariot_games_quizzo_model_QuizRun_correct" object="${quizrun}" z="f2Vm1efWDD2Xej/PsPST8kB8gtE="/>
-        <field:display field="question" id="s_com_chariot_games_quizzo_model_QuizRun_question" object="${quizrun}" z="QY+2US2S/SpA+760T3bcalabcgQ="/>
+        <field:display field="runState" id="s_com_chariot_games_quizzo_model_QuizRun_runState" object="${quizrun}" z="Mkg6aWrSlAqDABIqPZAFwk4p8vw="/>
     </page:show>
 </div>

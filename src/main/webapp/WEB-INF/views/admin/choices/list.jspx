@@ -5,8 +5,9 @@
     <page:list id="pl_com_chariot_games_quizzo_model_Choice" items="${choices}" z="32ZAyOHGllRz3k1EasvODLQBq7M=">
         <table:table data="${choices}" id="l_com_chariot_games_quizzo_model_Choice" path="/admin/choices" z="Z0yB5B6KeEfBqpAjHA2RVMqPSZc=">
             <table:column id="c_com_chariot_games_quizzo_model_Choice_text" property="text" z="q60EV+rJcAlyATR3zLhAPdeSL3M="/>
-            <table:column id="c_com_chariot_games_quizzo_model_Choice_correct" property="correct" z="WuenDEhryJs5hyhroH0JsUFMtFI="/>
             <table:column id="c_com_chariot_games_quizzo_model_Choice_question" property="question" z="5ZVHToWfJmDcYhP0pd/jZidLFJM="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Choice_sortOrder" property="sortOrder" z="voM3wwhRX7a0T0LxjakdPLNPu6c="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Choice_pointValue" property="pointValue" z="lUSPEDlsMEibD4PuYZOWygEWlS4="/>
         </table:table>
     </page:list>
 </div>
