@@ -4,7 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_com_chariot_games_quizzo_model_Choice" modelAttribute="choice" path="/admin/choices" versionField="Version" z="quvOQYPCMdk/YHWDFKD93x5+4dw=">
         <field:textarea field="text" id="c_com_chariot_games_quizzo_model_Choice_text" required="true" z="dzVn2JxE1Ixc44AVhKN6gQefKds="/>
-        <field:checkbox field="correct" id="c_com_chariot_games_quizzo_model_Choice_correct" z="qvJyhQz2qa1Ke/7GCP09l06soYg="/>
         <field:select field="question" id="c_com_chariot_games_quizzo_model_Choice_question" itemValue="id" items="${questions}" path="/admin/questions" required="true" z="wFaYcicXPWARFkDeBRY01iB3S70="/>
+        <field:input field="sortOrder" id="c_com_chariot_games_quizzo_model_Choice_sortOrder" z="KZYfnSjfuvGT5NzLN//z2ApfbRk="/>
+        <field:input decimalMax="1000" decimalMin="-1000" field="pointValue" id="c_com_chariot_games_quizzo_model_Choice_pointValue" required="true" validationMessageCode="field_invalid_number" z="wku5OkCpZXucjpGl+ForB9uGuIk="/>
     </form:update>
 </div>

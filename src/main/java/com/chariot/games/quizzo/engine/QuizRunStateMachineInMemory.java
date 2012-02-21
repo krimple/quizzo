@@ -1,20 +1,16 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
 import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 @RooJavaBean
 @Component(value = "quizStateMachine")
@@ -27,11 +23,15 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
       jdbcTemplate = new JdbcTemplate(datasource);
   }
 
+  /**
+   * The quiz under execution by this instance
+   */
   private QuizRun quizRun;
-  private Long currentQuestionId;
 
-  @OneToMany
-  private Map<Team, Set<Answer>> answersByTeam = new HashMap<Team, Set<Answer>>();
+  /**
+   * Our key to the current question ID. All questions are sorted by a sort order.
+   */
+  private Long currentQuestionId;
 
   @Override
   @Transactional
@@ -43,20 +43,27 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     quizRun.persist();
     quizRun.flush();
 
-    setupFirstQuestion(quizRun);
+    setupFirstQuestion();
   }
 
+  @Transactional
   private void setupFirstQuestion() {
+    assert quizRun.getRunState() == QuizRunState.NOT_STARTED;
+    quizRun.setRunState(QuizRunState.IN_PROGRESS);
     currentQuestionId = jdbcTemplate.queryForLong("select question_id from questions q" +
         " where quiz_id = ? and " +
         " sort_order = ( " +
         "   select min(sort_order)" +
         "   from questions q2 " +
         "   where q2.quiz_id = q.quiz_id)", quizRun.getQuiz().getId());
+
   }
 
   @Override
-  public void nextQuestion() {
+  @Transactional(readOnly = true)
+  public boolean nextQuestion() {
+
+    assert quizRun.getRunState() == QuizRunState.IN_PROGRESS;
     currentQuestionId = jdbcTemplate.queryForLong("select question_id from questions q" +
             " where quiz_id = ? and " +
             " sort_order = ( " +
@@ -64,11 +71,27 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
             "   from questions q2 " +
             "   where q2.quiz_id = q.quiz_id " +
         "             and q2.sort_order > ?)", quizRun.getQuiz().getId(), currentQuestionId);
+    if (currentQuestionId == null) {
+      quizRun.setRunState(QuizRunState.COMPLETE);
+      return false;
+    }
+
+    return true;
   }
 
   @Override
-  public void getScores() {
-    //To change body of implemented methods use File | Settings | File Templates.
+  public Map<String, BigDecimal> getScores() {
+    Map<String, BigDecimal> scores = new HashMap<String, BigDecimal>();
+    Query query = Team.entityManager().createQuery("select t from Teams t where " +
+        " t.quizRun.id = :id").setParameter("id", quizRun.getId());
+    List<Team> teams = query.getResultList();
+    Iterator<Team> itTeams = teams.iterator();
+    while (itTeams.hasNext()) {
+      Team team = itTeams.next();
+
+    }
+
+    return null;
   }
 
   @Override
@@ -77,12 +100,23 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   }
 
   @Override
-  public void submitAnswer(Team team, Answer answer) {
-    //To change body of implemented methods use File | Settings | File Templates.
+  @Transactional
+  public boolean submitAnswer(Team team, Answer answer) {
+    // voting over sucker, you are hosed...
+    if (currentQuestionId != answer.getQuestion().getId()) return false;
+
+    // otherwise, wipe existing answer & save new one
+    List<Answer> existingAnswer = Answer.findAnswersByTeamAndQuestion(team, answer.getQuestion()).getResultList();
+    // remove current answer to overwrite with new one
+    if (existingAnswer.size() == 1) {
+      existingAnswer.get(0).remove();
+    }
+    answer.persist();
+    return true;
   }
 
   @Override
   public void endQuiz() {
-    //To change body of implemented methods use File | Settings | File Templates.
+
   }
 }

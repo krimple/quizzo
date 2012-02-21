@@ -3,12 +3,8 @@
 
 package com.chariot.games.quizzo.engine;
 
+import com.chariot.games.quizzo.engine.QuizRun;
 import com.chariot.games.quizzo.engine.QuizRunStateMachineInMemory;
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.Team;
-import java.util.Map;
-import java.util.Set;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
@@ -31,14 +27,6 @@ privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
     
     public void QuizRunStateMachineInMemory.setCurrentQuestionId(Long currentQuestionId) {
         this.currentQuestionId = currentQuestionId;
-    }
-    
-    public Map<Team, Set<Answer>> QuizRunStateMachineInMemory.getAnswersByTeam() {
-        return this.answersByTeam;
-    }
-    
-    public void QuizRunStateMachineInMemory.setAnswersByTeam(Map<Team, Set<Answer>> answersByTeam) {
-        this.answersByTeam = answersByTeam;
     }
     
 }

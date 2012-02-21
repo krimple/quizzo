@@ -20,7 +20,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Choice, String> ApplicationConversionServiceFactoryBean.getChoiceToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Choice, java.lang.String>() {
             public String convert(Choice choice) {
-                return new StringBuilder().append(choice.getText()).toString();
+                return new StringBuilder().append(choice.getText()).append(" ").append(choice.getPointValue()).append(" ").append(choice.getSortOrder()).toString();
             }
         };
     }
@@ -44,7 +44,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Question, String> ApplicationConversionServiceFactoryBean.getQuestionToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Question, java.lang.String>() {
             public String convert(Question question) {
-                return new StringBuilder().append(question.getText()).toString();
+                return new StringBuilder().append(question.getSortOrder()).append(" ").append(question.getText()).toString();
             }
         };
     }

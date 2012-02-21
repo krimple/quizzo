@@ -7,6 +7,7 @@ import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.QuestionDataOnDemand;
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,20 +31,29 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     
     public Choice ChoiceDataOnDemand.getNewTransientChoice(int index) {
         Choice obj = new Choice();
-        setCorrect(obj, index);
+        setPointValue(obj, index);
         setQuestion(obj, index);
+        setSortOrder(obj, index);
         setText(obj, index);
         return obj;
     }
     
-    public void ChoiceDataOnDemand.setCorrect(Choice obj, int index) {
-        Boolean correct = Boolean.TRUE;
-        obj.setCorrect(correct);
+    public void ChoiceDataOnDemand.setPointValue(Choice obj, int index) {
+        BigDecimal pointValue = BigDecimal.valueOf(index);
+        if (pointValue.compareTo(new BigDecimal("-1000")) == -1 || pointValue.compareTo(new BigDecimal("1000")) == 1) {
+            pointValue = new BigDecimal("1000");
+        }
+        obj.setPointValue(pointValue);
     }
     
     public void ChoiceDataOnDemand.setQuestion(Choice obj, int index) {
         Question question = questionDataOnDemand.getRandomQuestion();
         obj.setQuestion(question);
+    }
+    
+    public void ChoiceDataOnDemand.setSortOrder(Choice obj, int index) {
+        short sortOrder = new Integer(index).shortValue();
+        obj.setSortOrder(sortOrder);
     }
     
     public void ChoiceDataOnDemand.setText(Choice obj, int index) {

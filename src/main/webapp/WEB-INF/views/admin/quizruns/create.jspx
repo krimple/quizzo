@@ -5,6 +5,7 @@
     <form:create id="fc_com_chariot_games_quizzo_model_QuizRun" modelAttribute="quizRun" path="/admin/quizruns" render="${empty dependencies}" z="b3PE0juov4wIPg12DzfaWtQu5AQ=">
         <field:select field="quiz" id="c_com_chariot_games_quizzo_model_QuizRun_quiz" itemValue="id" items="${quizes}" path="/admin/quizzes" required="true" z="9LjDJmjnHEHyHACV+52S9+n9Hg8="/>
         <field:textarea field="text" id="c_com_chariot_games_quizzo_model_QuizRun_text" required="true" z="gSp+dzpHaQraGdMu5h1fCF3qcH0="/>
+        <field:select field="runState" id="c_com_chariot_games_quizzo_model_QuizRun_runState" items="${quizrunstates}" path="quizrunstates" required="true" z="hSQzGYb/m0aLW+6BqmizXJO12/Q="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_chariot_games_quizzo_model_QuizRun" render="${not empty dependencies}" z="vnn/aT+ndt0rlM49/saRmE9g8Lc="/>
 </div>

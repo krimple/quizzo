@@ -6,6 +6,7 @@
         <table:table data="${quizruns}" id="l_com_chariot_games_quizzo_model_QuizRun" path="/admin/quizruns" z="z7AhTp1d38Z1i3a8+Y4uflRNvrA=">
             <table:column id="c_com_chariot_games_quizzo_model_QuizRun_quiz" property="quiz" z="n0cK/VC0xxNEr+M9aj4+NYtDuTk="/>
             <table:column id="c_com_chariot_games_quizzo_model_QuizRun_text" property="text" z="gLwJBjmaTT2U5eFJQ+BDsRu+o9s="/>
+            <table:column id="c_com_chariot_games_quizzo_model_QuizRun_runState" property="runState" z="uiDO+JgxBLgak1T/q56Jy4GnynU="/>
         </table:table>
     </page:list>
 </div>

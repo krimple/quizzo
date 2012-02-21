@@ -6,6 +6,8 @@
         <table:table data="${questions}" id="l_com_chariot_games_quizzo_model_Question" path="/admin/questions" z="Fqa3hGAhYJhDbluMygW/gsyXLeA=">
             <table:column id="c_com_chariot_games_quizzo_model_Question_quiz" property="quiz" z="BY6cenxU1K6a80UptCPkGJSAAMI="/>
             <table:column id="c_com_chariot_games_quizzo_model_Question_text" property="text" z="maoEOQnv6p6JUF+VRvXqQkMp9u4="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Question_sortOrder" property="sortOrder" z="elI+bj7RYnRNtNoK+1dakGgfk1s="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Question_choices" property="choices" z="H4dOHc/cKf50rFIBZ1gt1DTaFb4="/>
         </table:table>
     </page:list>
 </div>

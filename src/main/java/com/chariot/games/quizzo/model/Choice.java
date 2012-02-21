@@ -6,8 +6,11 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @RooJavaBean
 @RooToString
@@ -19,7 +22,9 @@ public class Choice {
     private String text;
 
     @NotNull
-    private Boolean correct;
+    @DecimalMin("-1000")
+    @DecimalMax("1000")
+    private BigDecimal pointValue;
 
     @NotNull
     @ManyToOne
