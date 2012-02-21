@@ -18,6 +18,7 @@ public class QuizRunStateMachineMemoryTest {
   @Before
   public void setUp() {
     testQuizRun = new QuizRun();
+    testQuizRun.setRunState(QuizRunState.NOT_STARTED);
     Quiz quiz = setupQuizRunModels();
     testQuizRun.setQuiz(quiz);
     testQuizRun.persist();
@@ -41,7 +42,6 @@ public class QuizRunStateMachineMemoryTest {
 
     stateMachine.nextQuestion();
     long questionId = stateMachine.getCurrentQuestionId();
-
 
   }
 

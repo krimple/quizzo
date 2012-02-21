@@ -27,7 +27,7 @@ public class Choice {
     private BigDecimal pointValue;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Question question;
 
     @OrderColumn(name = "sort_order")

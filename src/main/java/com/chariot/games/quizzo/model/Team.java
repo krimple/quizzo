@@ -8,6 +8,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 import javax.persistence.ElementCollection;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -39,12 +40,11 @@ public class Team {
   @ManyToOne(optional = false)
   private QuizRun quizRun;
 
+  @Transient
   public BigDecimal calculateTotalScore() {
     BigDecimal score = new BigDecimal("0.0");
     for (Answer answer: answers) {
-     for (Choice choice: answer.getChoices()) {
-       score = score.add(choice.getPointValue());
-     }
+      score = score.add(answer.calculateScore());
     }
     return score;
   }

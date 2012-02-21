@@ -3,8 +3,8 @@
 
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.engine.QuizRun;
 import com.chariot.games.quizzo.engine.QuizRunStateMachineInMemory;
+import com.chariot.games.quizzo.model.QuizRun;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {

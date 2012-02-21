@@ -11,6 +11,8 @@ import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.*;
+import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunState;
 
 @RooJavaBean
 @Component(value = "quizStateMachine")
