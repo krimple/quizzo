@@ -3,8 +3,6 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.QuestionDataOnDemand;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
 import com.chariot.games.quizzo.model.QuizRun;
@@ -28,28 +26,13 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
     private List<QuizRun> QuizRunDataOnDemand.data;
     
     @Autowired
-    private QuestionDataOnDemand QuizRunDataOnDemand.questionDataOnDemand;
-    
-    @Autowired
     private QuizDataOnDemand QuizRunDataOnDemand.quizDataOnDemand;
     
     public QuizRun QuizRunDataOnDemand.getNewTransientQuizRun(int index) {
         QuizRun obj = new QuizRun();
-        setCorrect(obj, index);
-        setQuestion(obj, index);
         setQuiz(obj, index);
         setText(obj, index);
         return obj;
-    }
-    
-    public void QuizRunDataOnDemand.setCorrect(QuizRun obj, int index) {
-        Boolean correct = Boolean.TRUE;
-        obj.setCorrect(correct);
-    }
-    
-    public void QuizRunDataOnDemand.setQuestion(QuizRun obj, int index) {
-        Question question = questionDataOnDemand.getRandomQuestion();
-        obj.setQuestion(question);
     }
     
     public void QuizRunDataOnDemand.setQuiz(QuizRun obj, int index) {

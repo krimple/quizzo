@@ -21,10 +21,4 @@ public class QuizRun {
     @Size(max = 300)
     private String text;
 
-    @NotNull
-    private Boolean correct;
-
-    @NotNull
-    @ManyToOne
-    private Question question;
 }

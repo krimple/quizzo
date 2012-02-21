@@ -8,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.ws.RespectBinding;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -29,6 +28,20 @@ public class QuizRunStateMachineMemoryTest {
     QuizRunStateMachine runState = new QuizRunStateMachineInMemory();
     QuizDataOnDemand dod = new QuizDataOnDemand();
     Quiz quiz = dod.getRandomQuiz();
+    QuestionDataOnDemand qdod = new QuestionDataOnDemand();
+    for (int i = 0; i < 5; i++) {
+      ChoiceDataOnDemand cdod = new ChoiceDataOnDemand();
+      Question q = qdod.getNewTransientQuestion(i);
+      q.setQuiz(quiz);
+      quiz.getQuestions().add(q);
+      for (int j = 0; j < 5; j++) {
+        Choice c = cdod.getNewTransientChoice(i);
+        c.setQuestion(q);
+        q.getChoices().add(c);
+
+      }
+    }
+    quiz.merge();
     runState.startQuiz(quiz.getId());
     runState.nextQuestion();
 

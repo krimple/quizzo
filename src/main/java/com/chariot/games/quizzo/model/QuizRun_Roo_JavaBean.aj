@@ -3,10 +3,6 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizRun;
-
 privileged aspect QuizRun_Roo_JavaBean {
     
     public Quiz QuizRun.getQuiz() {
@@ -23,22 +19,6 @@ privileged aspect QuizRun_Roo_JavaBean {
     
     public void QuizRun.setText(String text) {
         this.text = text;
-    }
-    
-    public Boolean QuizRun.getCorrect() {
-        return this.correct;
-    }
-    
-    public void QuizRun.setCorrect(Boolean correct) {
-        this.correct = correct;
-    }
-    
-    public Question QuizRun.getQuestion() {
-        return this.question;
-    }
-    
-    public void QuizRun.setQuestion(Question question) {
-        this.question = question;
     }
     
 }
