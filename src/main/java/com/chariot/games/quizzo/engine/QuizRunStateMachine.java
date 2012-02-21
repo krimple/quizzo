@@ -7,7 +7,7 @@ public interface QuizRunStateMachine {
   void startQuiz(Long quizId);
   void nextQuestion();
   void getScores();
-  void getCurrentQuestionId();
+  Long getCurrentQuestionId();
   void submitAnswer(Team team, Answer answer);
   void endQuiz();
 }

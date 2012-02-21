@@ -8,24 +8,45 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-import java.util.TreeSet;
-
-@ContextConfiguration(locations = { "classpath*:META-INF/spring/applicationContext*.xml"})
+@ContextConfiguration(locations = {"classpath*:META-INF/spring/applicationContext*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class QuizRunStateMachineMemoryTest {
 
-  Set<Question> mockQuestions;
+  private QuizRun testQuizRun;
+  private QuizRunStateMachine stateMachine;
 
   @Before
-  public void setup() {
-    mockQuestions = new TreeSet<Question>();
+  public void setUp() {
+    testQuizRun = new QuizRun();
+    Quiz quiz = setupQuizRunModels();
+    testQuizRun.setQuiz(quiz);
+    testQuizRun.persist();
+    testQuizRun.flush();
+    testQuizRun.clear();
+    stateMachine = new QuizRunStateMachineInMemory();
+    stateMachine.startQuiz(testQuizRun.getId());
   }
 
   @Test
   @Transactional
-  public void testLoadQuestions() {
+  public void testLoadQuizRunFromDatabase() {
     QuizRunStateMachine runState = new QuizRunStateMachineInMemory();
+    Quiz quiz = setupQuizRunModels();
+    runState.startQuiz(quiz.getId());
+  }
+
+  @Test
+  @Transactional
+  public void testAskNextQuestion() {
+
+    stateMachine.nextQuestion();
+    long questionId = stateMachine.getCurrentQuestionId();
+
+
+  }
+
+
+  private Quiz setupQuizRunModels() {
     QuizDataOnDemand dod = new QuizDataOnDemand();
     Quiz quiz = dod.getRandomQuiz();
     QuestionDataOnDemand qdod = new QuestionDataOnDemand();
@@ -42,8 +63,8 @@ public class QuizRunStateMachineMemoryTest {
       }
     }
     quiz.merge();
-    runState.startQuiz(quiz.getId());
-    runState.nextQuestion();
-
+    quiz.flush();
+    quiz.clear();
+    return quiz;
   }
 }

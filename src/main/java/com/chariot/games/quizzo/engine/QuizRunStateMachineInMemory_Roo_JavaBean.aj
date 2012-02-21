@@ -3,12 +3,23 @@
 
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.engine.QuizRunStateMachineInMemory;
+import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.QuizRun;
-
+import com.chariot.games.quizzo.model.Team;
+import java.util.Map;
 import java.util.Set;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
+    
+    public JdbcTemplate QuizRunStateMachineInMemory.getJdbcTemplate() {
+        return this.jdbcTemplate;
+    }
+    
+    public void QuizRunStateMachineInMemory.setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
     
     public QuizRun QuizRunStateMachineInMemory.getQuizRun() {
         return this.quizRun;
@@ -18,20 +29,16 @@ privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
         this.quizRun = quizRun;
     }
     
-    public Set<Question> QuizRunStateMachineInMemory.getQuestions() {
-        return this.questions;
+    public void QuizRunStateMachineInMemory.setCurrentQuestionId(Long currentQuestionId) {
+        this.currentQuestionId = currentQuestionId;
     }
     
-    public void QuizRunStateMachineInMemory.setQuestions(Set<Question> questions) {
-        this.questions = questions;
+    public Map<Team, Set<Answer>> QuizRunStateMachineInMemory.getAnswersByTeam() {
+        return this.answersByTeam;
     }
     
-    public int QuizRunStateMachineInMemory.getCurrentQuestionIndex() {
-        return this.currentQuestionIndex;
-    }
-    
-    public void QuizRunStateMachineInMemory.setCurrentQuestionIndex(int currentQuestionIndex) {
-        this.currentQuestionIndex = currentQuestionIndex;
+    public void QuizRunStateMachineInMemory.setAnswersByTeam(Map<Team, Set<Answer>> answersByTeam) {
+        this.answersByTeam = answersByTeam;
     }
     
 }

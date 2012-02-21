@@ -1,34 +1,69 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.model.Answer;
+import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.Team;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.stereotype.Component;
-import com.chariot.games.quizzo.model.Question;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @RooJavaBean
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
+  private JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  private void setDataSource(DataSource datasource) {
+      jdbcTemplate = new JdbcTemplate(datasource);
+  }
+
   private QuizRun quizRun;
-  private Set<Question> questions;
-  private int currentQuestionIndex = -1;
+  private Long currentQuestionId;
+
+  @OneToMany
+  private Map<Team, Set<Answer>> answersByTeam = new HashMap<Team, Set<Answer>>();
 
   @Override
+  @Transactional
   public void startQuiz(Long quizId) {
     Quiz quiz = Quiz.findQuiz(quizId);
     quizRun = new QuizRun();
     quizRun.setQuiz(quiz);
     quizRun.setText("It's a new day");
     quizRun.persist();
-    questions = quiz.getQuestions();
+    quizRun.flush();
+
+    setupFirstQuestion(quizRun);
+  }
+
+  private void setupFirstQuestion() {
+    currentQuestionId = jdbcTemplate.queryForLong("select question_id from questions q" +
+        " where quiz_id = ? and " +
+        " sort_order = ( " +
+        "   select min(sort_order)" +
+        "   from questions q2 " +
+        "   where q2.quiz_id = q.quiz_id)", quizRun.getQuiz().getId());
   }
 
   @Override
   public void nextQuestion() {
-    currentQuestionIndex++;
-    assert currentQuestionIndex < (questions.size() - 1);
+    currentQuestionId = jdbcTemplate.queryForLong("select question_id from questions q" +
+            " where quiz_id = ? and " +
+            " sort_order = ( " +
+            "   select min(sort_order)" +
+            "   from questions q2 " +
+            "   where q2.quiz_id = q.quiz_id " +
+        "             and q2.sort_order > ?)", quizRun.getQuiz().getId(), currentQuestionId);
   }
 
   @Override
@@ -37,8 +72,8 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   }
 
   @Override
-  public void getCurrentQuestionId() {
-    //To change body of implemented methods use File | Settings | File Templates.
+  public Long getCurrentQuestionId() {
+    return currentQuestionId;
   }
 
   @Override
