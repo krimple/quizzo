@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public interface QuizRunStateMachine {
-  void startQuiz(Long quizId);
+  void startQuiz(Long quizId, String text);
   boolean nextQuestion();
   Map<String, BigDecimal> getScores();
   Long getCurrentQuestionId();

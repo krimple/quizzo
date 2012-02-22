@@ -3,9 +3,11 @@
 
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.engine.QuizRunStateMachineInMemory;
+import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.QuizRun;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
 
 privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
     
@@ -17,6 +19,14 @@ privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
         this.jdbcTemplate = jdbcTemplate;
     }
     
+    public Question QuizRunStateMachineInMemory.getCurrentQuestion() {
+        return this.currentQuestion;
+    }
+    
+    public void QuizRunStateMachineInMemory.setCurrentQuestion(Question currentQuestion) {
+        this.currentQuestion = currentQuestion;
+    }
+    
     public QuizRun QuizRunStateMachineInMemory.getQuizRun() {
         return this.quizRun;
     }
@@ -25,8 +35,20 @@ privileged aspect QuizRunStateMachineInMemory_Roo_JavaBean {
         this.quizRun = quizRun;
     }
     
-    public void QuizRunStateMachineInMemory.setCurrentQuestionId(Long currentQuestionId) {
-        this.currentQuestionId = currentQuestionId;
+    public int QuizRunStateMachineInMemory.getCurrentQuestionIndex() {
+        return this.currentQuestionIndex;
+    }
+    
+    public void QuizRunStateMachineInMemory.setCurrentQuestionIndex(int currentQuestionIndex) {
+        this.currentQuestionIndex = currentQuestionIndex;
+    }
+    
+    public List<Question> QuizRunStateMachineInMemory.getQuestions() {
+        return this.questions;
+    }
+    
+    public void QuizRunStateMachineInMemory.setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
     
 }

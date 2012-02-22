@@ -20,6 +20,7 @@ public class Question {
   private short sortOrder;
 
   @ManyToOne
+  @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
   @NotNull
