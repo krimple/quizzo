@@ -1,6 +1,7 @@
 package com.chariot.games.quizzo.engine;
 
 import com.chariot.games.quizzo.model.*;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,16 +20,20 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class QuizRunStateMachineMemoryTest {
 
-  private QuizRun testQuizRun;
+  private static Logger logger = Logger.getLogger(QuizRunStateMachineMemoryTest.class);
 
-  @Autowired
+  private QuizRun testQuizRun;
   private QuizRunStateMachine stateMachine;
 
   @Autowired
-  private DataSource dataSource;
+  public void setStateMachine(QuizRunStateMachine stateMachine) {
+    logger.debug("injecting state machine...");
+    this.stateMachine = stateMachine;
+  }
 
   @Before
   public void setUp() {
+	logger.debug("Running setup...");
     testQuizRun = new QuizRun();
     testQuizRun.setRunState(QuizRunState.NOT_STARTED);
     Quiz quiz = setupQuizRunModels();
@@ -40,20 +45,13 @@ public class QuizRunStateMachineMemoryTest {
 
     stateMachine.startQuiz(quiz.getId(), "Sample Run");
     stateMachine.nextQuestion();
-  }
+    logger.debug("Question assigned = " +stateMachine.getCurrentQuestionId());
+  }          
 
   @Test
   @Transactional
   public void testLoadQuizRunFromDatabase() {
-    Quiz quiz = setupQuizRunModels();
-    stateMachine.startQuiz(quiz.getId(), "Random run");
     assertNotNull(stateMachine.getCurrentQuestionId());
-  }
-
-  @Test
-  @Transactional
-  public void testCheckNextQuestionId() {
-    long questionId = stateMachine.getCurrentQuestionId();
   }
 
   @Test
@@ -91,7 +89,6 @@ public class QuizRunStateMachineMemoryTest {
         Choice c = cdod.getNewTransientChoice(i);
         c.setQuestion(q);
         q.getChoices().add(c);
-
       }
     }
     quiz.merge();

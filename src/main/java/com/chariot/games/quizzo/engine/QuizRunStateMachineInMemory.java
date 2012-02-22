@@ -1,29 +1,25 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.roo.addon.javabean.RooJavaBean;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
-import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.util.*;
+import com.chariot.games.quizzo.model.Answer;
+import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunState;
+import com.chariot.games.quizzo.model.Team;
 
-@RooJavaBean
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
-
-  private JdbcTemplate jdbcTemplate;
-  private Question currentQuestion;
-
-  @Autowired
-  private void setDataSource(DataSource datasource) {
-    jdbcTemplate = new JdbcTemplate(datasource);
-  }
 
   /**
    * The quiz under execution by this instance
@@ -50,7 +46,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
     questions = Quiz.entityManager().createQuery(
         "select q from Question q " +
-            "where q.quiz.id = :quizId order by q.sortOrder")
+            "where q.quiz.id = :quizId order by q.sortOrder", Question.class)
         .setParameter("quizId", quiz.getId()).getResultList();
 
   }
@@ -63,7 +59,6 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
     quizRun.setRunState(QuizRunState.IN_PROGRESS);
     currentQuestionIndex = 0;
-    currentQuestion = questions.get(currentQuestionIndex);
   }
 
   @Override
@@ -76,7 +71,6 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
       return false;
     } else {
       currentQuestionIndex++;
-      currentQuestion = questions.get(currentQuestionIndex);
       return true;
     }
   }
@@ -85,27 +79,27 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   public Map<String, BigDecimal> getScores() {
     Map<String, BigDecimal> scores = new HashMap<String, BigDecimal>();
     Query query = Team.entityManager().createQuery("select t from team " +
-        "t where t.quizRun.id = :id").setParameter("id", quizRun.getId());
-    List<Team> teams = query.getResultList();
+        "t where t.quizRun.id = :id", Team.class).setParameter("id", quizRun.getId());
+    @SuppressWarnings("unchecked")
+	List<Team> teams = query.getResultList(); 
     Iterator<Team> itTeams = teams.iterator();
     while (itTeams.hasNext()) {
       Team team = itTeams.next();
-
+      scores.put(team.getName(), team.calculateTotalScore());
     }
-
-    return null;
+    return scores;
   }
 
   @Override
   public Long getCurrentQuestionId() {
-    return currentQuestion.getId();
+    return questions.get(currentQuestionIndex).getId();
   }
 
   @Override
   @Transactional
   public boolean submitAnswer(Team team, Answer answer) {
     // voting over sucker, you are hosed...
-    if (currentQuestion.getId() != answer.getQuestion().getId()) return false;
+    if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
 
     // otherwise, wipe existing answer & save new one
     List<Answer> existingAnswer = Answer.findAnswersByTeamAndQuestion(team, answer.getQuestion()).getResultList();

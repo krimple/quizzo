@@ -4,9 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <publishDate position="right" />
   <version position="right" />
-  <bannerLeft>
-     <a href="http://github.com/krimple/quizzo">Quizzo!</a>
-  </bannerLeft>
+
   <body>
     <menu ref="reports" inherit="top" />
   </body>
