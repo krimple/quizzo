@@ -2,16 +2,23 @@
 <flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
+    <var class="com.chariot.games.quizzo.web.flow.TeamSetupForm" name="teamSetupForm"/>
 
-    <view-state id="register-team" view="playQuizzo/register-team" model="team">
-        <var name="team" class="com.chariot.games.quizzo.model.Team" />
-        <transition on="continue" to="register-team-members">
-            <evaluate expression="team.save()"/>
-            <evaluate expression="team.errors()"/>
+    <view-state id="register-team" view="playQuizzo/register-team"
+                model="flowScope.teamSetupForm">
+        <on-entry>
+            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
+        </on-entry>
+        <transition on="continue" to="register-team-members" bind="true" validate="true">
+            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
         </transition>
     </view-state>
 
-    <view-state id="register-team-members" view="playQuizzo/register-team-members">
+    <view-state id="register-team-members" view="playQuizzo/register-team-members"
+                model="flowScope.teamSetupForm">
+        <on-entry>
+            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
+        </on-entry>
         <transition on="continue" to="ready-to-play"/>
         <transition on="add-team-member"/>
         <transition on="remove-team-member"/>
@@ -19,12 +26,18 @@
     </view-state>
 
     <view-state id="ready-to-play" view="playQuizzo/ready-to-play">
+        <on-entry>
+            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
+        </on-entry>
         <transition on="go" to="play-round">
             <!-- TODO: configure check to see whether game is in progress -->
         </transition>
     </view-state>
 
     <view-state id="play-round" view="playQuizzo/play-round">
+        <on-entry>
+            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
+        </on-entry>
         <transition on="submit-answer" to="play-round"/>
         <transition on="finish" to="game-over"/>
     </view-state>

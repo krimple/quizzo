@@ -1,22 +1,15 @@
 package com.chariot.games.quizzo.engine;
 
+import com.chariot.games.quizzo.model.*;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.Query;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.QuizRunState;
-import com.chariot.games.quizzo.model.Team;
 
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
@@ -114,5 +107,9 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   @Override
   public void endQuiz() {
     quizRun.setRunState(QuizRunState.COMPLETE);
+  }
+  
+  public QuizRun getQuizRun() {
+	return quizRun;
   }
 }

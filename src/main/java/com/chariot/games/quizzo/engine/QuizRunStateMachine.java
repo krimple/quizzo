@@ -1,6 +1,7 @@
 package com.chariot.games.quizzo.engine;
 
 import com.chariot.games.quizzo.model.Answer;
+import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
 
 import java.math.BigDecimal;
@@ -13,4 +14,5 @@ public interface QuizRunStateMachine {
   Long getCurrentQuestionId();
   boolean submitAnswer(Team team, Answer answer);
   void endQuiz();
+  QuizRun getQuizRun();
 }

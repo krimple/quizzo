@@ -1,7 +1,6 @@
 package com.chariot.games.quizzo.web.flow;
 
 import org.springframework.webflow.core.FlowException;
-import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -14,4 +13,5 @@ import org.springframework.webflow.execution.RequestContext;
  */
 public interface QuizzoFlowManager {
   public Event saveTeam(RequestContext flowRequestContext) throws FlowException;
+  public Event debug(RequestContext flowRequestContext) throws FlowException;
 }

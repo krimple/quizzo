@@ -35,6 +35,8 @@
       </c:if>
       <spring:message code="label_${fn:toLowerCase(labelCode)}" var="label" htmlEscape="false" />
     </c:if>
+
+      ${label} :
     
     <c:if test="${empty validationMessage}">
       <c:choose>

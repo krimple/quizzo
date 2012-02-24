@@ -1,0 +1,60 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:output omit-xml-declaration="yes"/>
+
+    <jsp:directive.attribute name="id" type="java.lang.String" required="true"
+                             rtexprvalue="true"
+                             description="The identifier for this tag"/>
+    <jsp:directive.attribute name="modelAttribute" type="java.lang.String"
+                             required="true" rtexprvalue="true"
+                             description="The name of the model attribute for form binding"/>
+    <jsp:directive.attribute name="path" type="java.lang.String"
+                             required="false" rtexprvalue="true"
+                             description="Specify the form action path. Defaults to current URL."/>
+    <jsp:directive.attribute name="multipart" type="java.lang.Boolean"
+                             required="false" rtexprvalue="true"
+                             description="Indicate if this is a multipart form (default: false)"/>
+    <jsp:directive.attribute name="label" type="java.lang.String"
+                             required="false" rtexprvalue="true"
+                             description="The label used for this form pane"/>
+    <jsp:directive.attribute name="labelCode" type="java.lang.String"
+                             required="false"
+                             description="The localized label code for this form"/>
+
+    <jsp:directive.attribute name="openPane" type="java.lang.Boolean"
+                             required="false" rtexprvalue="true"
+                             description="Control if the title pane is opened or closed by default (default: true)"/>
+    <jsp:directive.attribute name="action" type="java.lang.String"
+                             required="false" rtexprvalue="true"
+                             description="The action for this form. Defaults to the path of the controller that requests this form."/>
+
+    <c:set var="enctype" value="application/x-www-form-urlencoded"/>
+
+    <c:if test="${multipart}">
+        <c:set var="enctype" value="multipart/form-data"/>
+    </c:if>
+
+    <c:if test="${empty action}">
+        <spring:url value="${path}" var="action"/>
+    </c:if>
+
+    <c:if test="${empty path}">
+        <spring:url value="/playQuizzo" var="${path}"/>
+    </c:if>
+
+    <c:if test="${empty label}">
+        <spring:message var="label" code="${labelCode}"/>
+    </c:if>
+
+    <!-- must be a better way to skip action in jspx -->
+    <util:panel id="${id}" title="${label}" openPane="${openPane}">
+        <form:form method="POST" action="${path}"
+                   modelAttribute="${modelAttribute}"
+                   enctype="${enctype}">
+            <form:errors cssClass="errors" delimiter="&lt;p/&gt;"/>
+            <jsp:doBody/>
+        </form:form>
+
+    </util:panel>
+</jsp:root>

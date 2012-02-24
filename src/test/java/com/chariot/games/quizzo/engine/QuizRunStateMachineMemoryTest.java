@@ -10,8 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
-
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +20,7 @@ public class QuizRunStateMachineMemoryTest {
 
   private static Logger logger = Logger.getLogger(QuizRunStateMachineMemoryTest.class);
 
-  private QuizRun testQuizRun;
+  private QuizRun quizRun;
   private QuizRunStateMachine stateMachine;
 
   @Autowired
@@ -33,20 +31,20 @@ public class QuizRunStateMachineMemoryTest {
 
   @Before
   public void setUp() {
-	logger.debug("Running setup...");
-    testQuizRun = new QuizRun();
-    testQuizRun.setRunState(QuizRunState.NOT_STARTED);
+    logger.debug("Running setup...");
+    quizRun = new QuizRun();
+    quizRun.setRunState(QuizRunState.NOT_STARTED);
     Quiz quiz = setupQuizRunModels();
-    testQuizRun.setText("Hiya mom");
-    testQuizRun.setQuiz(quiz);
-    testQuizRun.persist();
-    testQuizRun.flush();
-    testQuizRun.clear();
+    quizRun.setText("Hiya mom");
+    quizRun.setQuiz(quiz);
+    quizRun.persist();
+    quizRun.flush();
+    quizRun.clear();
 
     stateMachine.startQuiz(quiz.getId(), "Sample Run");
     stateMachine.nextQuestion();
-    logger.debug("Question assigned = " +stateMachine.getCurrentQuestionId());
-  }          
+    logger.debug("Question assigned = " + stateMachine.getCurrentQuestionId());
+  }
 
   @Test
   @Transactional
@@ -60,7 +58,7 @@ public class QuizRunStateMachineMemoryTest {
     long questionId = stateMachine.getCurrentQuestionId();
     stateMachine.nextQuestion();
     long questionId2 = stateMachine.getCurrentQuestionId();
-    assertTrue (questionId2 != questionId);
+    assertTrue(questionId2 != questionId);
     Question q1 = Question.findQuestion(questionId);
     Question q2 = Question.findQuestion(questionId2);
     assertTrue(q1.getSortOrder() <= q2.getSortOrder());
@@ -96,4 +94,5 @@ public class QuizRunStateMachineMemoryTest {
     quiz.clear();
     return quiz;
   }
+
 }
