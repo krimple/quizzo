@@ -56,9 +56,18 @@
 
     <!-- Enable this for integration of file upload functionality -->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
-        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+
+    <!-- krimple : to enable ajax view resolve methods, comment the stock view resolver out and install the one below -->
+    <!--<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">        -->
+        <!--<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>-->
+    <!--</bean>-->
+
+    <!-- krimple: this view resolver is able to handle rendering of tiles (fragments) in an ajax-style -->
+    <bean id="tilesViewResolver" class="org.springframework.js.ajax.AjaxUrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.webflow.mvc.view.FlowAjaxTilesView"/>
     </bean>
+
+
     <bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
         <property name="definitions">
             <list>

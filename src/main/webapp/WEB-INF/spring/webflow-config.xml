@@ -31,6 +31,8 @@
 	<bean class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator" id="mvcViewFactoryCreator">
 		<property name="viewResolvers" ref="tilesViewResolver"/>
 	</bean>
+
+
 <bean class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor" id="conversionServiceExposingInterceptor">
         <constructor-arg ref="applicationConversionService"/>
     </bean>

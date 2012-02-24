@@ -16,7 +16,7 @@
               modelAttribute="teamSetupForm">
 
           <c:forEach var="player" items="${teamSetupForm.teamMemberNames}" varStatus="status">
-              <fields:input id="name_${status.index}"
+              <fields:input id="_name_${status.index}"
                             field="teamMemberNames[${status.index}]"
                       label="Player ${status.index}"
                       required="true" min="1" max="80" />

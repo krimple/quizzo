@@ -1,13 +1,20 @@
-<div xmlns:spring="http://www.springframework.org/tags" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<div xmlns:spring="http://www.springframework.org/tags"
+     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+     xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+     xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:tiles="http://tiles.apache.org/tags-tiles"
+     version="2.0">
   <jsp:directive.page contentType="text/html;charset=UTF-8" />
   <jsp:output omit-xml-declaration="yes" />
   <spring:message var="title" code="webflow_state1_title" htmlEscape="false" />
   <util:panel id="title" title="${title}">
     <h1>${fn:escapeXml(title)}</h1>
     <p>
-      <spring:message code="webflow_state1_message" />
+
     </p>
     <form method="POST">
+
+      <tiles:insertAttribute name="answers" ignore="true"/>
       <div class="submit">
         <input type="submit" id="submit-answer" name="_eventId_submit-answer" value="Submit Answer" />
         <input type="submit" id="finish" name="_eventId_finish" value="Finish Game!" />
