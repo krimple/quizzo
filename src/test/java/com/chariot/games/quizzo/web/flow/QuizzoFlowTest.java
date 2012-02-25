@@ -8,13 +8,10 @@ import org.springframework.webflow.core.collection.LocalAttributeMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.test.MockExternalContext;
 import org.springframework.webflow.test.MockFlowBuilderContext;
-import org.springframework.webflow.test.MockRequestContext;
 import org.springframework.webflow.test.execution.AbstractXmlFlowExecutionTests;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 public class QuizzoFlowTest extends AbstractXmlFlowExecutionTests {
 
@@ -42,16 +39,10 @@ public class QuizzoFlowTest extends AbstractXmlFlowExecutionTests {
   @Test
   public void testSubmitTeamName() {
     setCurrentState("register-team");
-    QuizzoFlowManager quizzoFlowManager = mock(QuizzoFlowManager.class);
     MockExternalContext context = new MockExternalContext();
-    MutableAttributeMap map = new LocalAttributeMap();
-
-    MockFlowBuilderContext flowBuilderContext = new MockFlowBuilderContext("playQuizzo", map);
     getFlowScope().put("teamSetupForm",
         createTeamSetupForm("The Jets", "When you're a Jet you're a Jet"));
 
-    flowBuilderContext.registerBean("quizzoFlowManager", quizzoFlowManager);
-//    configureFlowBuilderContext(flowBuilderContext);
     context.setEventId("continue");
     resumeFlow(context);
     assertCurrentStateEquals("register-team-members");
@@ -60,21 +51,16 @@ public class QuizzoFlowTest extends AbstractXmlFlowExecutionTests {
   @Test
   public void testSubmitTeamMembers() {
     setCurrentState("register-team-members");
-    QuizzoFlowManager quizzoFlowManager = mock(QuizzoFlowManager.class);
-    MockExternalContext context = new MockExternalContext();
-    MutableAttributeMap map = new LocalAttributeMap();
 
-    MockFlowBuilderContext flowBuilderContext = new MockFlowBuilderContext("playQuizzo", map);
+    MockExternalContext context = new MockExternalContext();
     getFlowScope().put("teamSetupForm",
         createTeamSetupForm("The Jets",
                 "When you're a Jet you're a Jet",
         "Ice", "Action", "Baby John", "Tiger", "Joyboy"));
 
-    flowBuilderContext.registerBean("quizzoFlowManager", quizzoFlowManager);
-    MockRequestContext requestContext = new MockRequestContext();
     context.setEventId("continue");
     resumeFlow(context);
-
+    assertCurrentStateEquals("play-round");
   }
 
   @Test
