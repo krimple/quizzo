@@ -15,10 +15,14 @@
           labelCode="webflow_playQuizzo_register_team_title"
           modelAttribute="teamSetupForm">
       <fields:input id="_name" field="name"
-              labelCode="webflow_playquizzo_register_team_name_field_label"
+              labelCode="webflow_playquizzo_register_team_name_field"
               required="true" min="1" max="80" />
+      <fields:input id="_message" field="message"
+              labelCode="webflow_playquizzo_register_team_message_field"
+              required="true" min="1" max="200" />
       <fields:buttons>
-          <fields:button id="continue" text="Continue" value="_eventId_continue"/>
+          <spring:url value="webflow_button_labels_continue" var="buttonLabel" />
+          <fields:button id="continue" text="${buttonLabel}" value="_eventId_continue"/>
       </fields:buttons>
   </form:form>
 </div>

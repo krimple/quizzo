@@ -23,7 +23,8 @@
           </c:forEach>
 
           <fields:buttons>
-              <fields:button id="continue" text="Continue" value="_eventId_continue"/>
+              <spring:url value="webflow_button_labels_continue" var="buttonLabel" />
+              <fields:button id="continue" text="${buttonLabel}" value="_eventId_continue"/>
           </fields:buttons>
       </form:form>
 </div>

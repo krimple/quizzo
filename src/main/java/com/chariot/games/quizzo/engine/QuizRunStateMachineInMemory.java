@@ -1,6 +1,9 @@
 package com.chariot.games.quizzo.engine;
 
+import com.chariot.games.quizzo.db.TeamRepository;
 import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,20 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
    */
   private QuizRun quizRun;
 
+  @Autowired
+  private TeamService teamService;
+
+  @Autowired
+  private QuestionService questionService;
+
+  @Autowired
+  private AnswerService answerService;
+
+  @Autowired
+  private QuizService quizService;
+
+  @Autowired
+  private QuizRunService quizRunService;
   /**
    * Our key to the current question ID. All questions are sorted by a sort order.
    */
@@ -29,19 +46,13 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   @Override
   @Transactional
   public void startQuiz(Long quizId, String text) {
-    Quiz quiz = Quiz.findQuiz(quizId);
+    Quiz quiz = quizService.findQuiz(quizId);
     quizRun = new QuizRun();
     quizRun.setQuiz(quiz);
     quizRun.setRunState(QuizRunState.NOT_STARTED);
     quizRun.setText(text);
-    quizRun.persist();
-    quizRun.flush();
-
-    questions = Quiz.entityManager().createQuery(
-        "select q from Question q " +
-            "where q.quiz.id = :quizId order by q.sortOrder", Question.class)
-        .setParameter("quizId", quiz.getId()).getResultList();
-
+    quizRunService.saveQuizRun(quizRun);
+    questions = questionService.getQuestionsByQuizId(quiz.getId());
   }
 
   @Transactional
@@ -70,17 +81,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Override
   public Map<String, BigDecimal> getScores() {
-    Map<String, BigDecimal> scores = new HashMap<String, BigDecimal>();
-    Query query = Team.entityManager().createQuery("select t from team " +
-        "t where t.quizRun.id = :id", Team.class).setParameter("id", quizRun.getId());
-    @SuppressWarnings("unchecked")
-	List<Team> teams = query.getResultList(); 
-    Iterator<Team> itTeams = teams.iterator();
-    while (itTeams.hasNext()) {
-      Team team = itTeams.next();
-      scores.put(team.getName(), team.calculateTotalScore());
-    }
-    return scores;
+    return teamService.calcScoresByQuizRun(quizRun.getId());
   }
 
   @Override
@@ -95,12 +96,14 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
 
     // otherwise, wipe existing answer & save new one
-    List<Answer> existingAnswer = Answer.findAnswersByTeamAndQuestion(team, answer.getQuestion()).getResultList();
+    List<Answer> existingAnswers = answerService.getAnswersByTeamIdAndQuestionId(
+        team.getId(), answer.getQuestion().getId());
+
     // remove current answer to overwrite with new one
-    if (existingAnswer.size() == 1) {
-      existingAnswer.get(0).remove();
+    if (existingAnswers.size() == 1) {
+      answerService.deleteAnswer(existingAnswers.get(0));
     }
-    answer.persist();
+    answerService.saveAnswer(answer);
     return true;
   }
 
@@ -108,8 +111,8 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   public void endQuiz() {
     quizRun.setRunState(QuizRunState.COMPLETE);
   }
-  
+
   public QuizRun getQuizRun() {
-	return quizRun;
+    return quizRun;
   }
 }

@@ -17,12 +17,16 @@ public class QuizzoFlowManagerBeanTest {
   @Test
   @Ignore
   //TODO - convert to mocking and DAOs once repository layer is in place
-  private void testSetupTeam() {
+  public void testSetupTeam() {
     MockRequestContext requestContext = new MockRequestContext();
     TeamSetupForm teamSetupForm = new TeamSetupForm();
     teamSetupForm.setName("Wonder pigs");
     teamSetupForm.setMessage("We oink with quizzo.");
     List<String> memberNames = new ArrayList<String>();
+    memberNames.add("Stinky");
+    memberNames.add("Smelly");
+    memberNames.add("Oinky");
+
     MockFlowSession flowSession = new MockFlowSession();
 
     //requestContext.setActiveSession(n);

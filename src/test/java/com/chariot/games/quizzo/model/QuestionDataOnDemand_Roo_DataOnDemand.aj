@@ -3,9 +3,11 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.QuestionRepository;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.QuestionDataOnDemand;
 import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.service.QuestionService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
@@ -22,6 +25,12 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
     private Random QuestionDataOnDemand.rnd = new SecureRandom();
     
     private List<Question> QuestionDataOnDemand.data;
+    
+    @Autowired
+    QuestionService QuestionDataOnDemand.questionService;
+    
+    @Autowired
+    QuestionRepository QuestionDataOnDemand.questionRepository;
     
     public Question QuestionDataOnDemand.getNewTransientQuestion(int index) {
         Question obj = new Question();
@@ -59,14 +68,14 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
         }
         Question obj = data.get(index);
         Long id = obj.getId();
-        return Question.findQuestion(id);
+        return questionService.findQuestion(id);
     }
     
     public Question QuestionDataOnDemand.getRandomQuestion() {
         init();
         Question obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Question.findQuestion(id);
+        return questionService.findQuestion(id);
     }
     
     public boolean QuestionDataOnDemand.modifyQuestion(Question obj) {
@@ -76,7 +85,7 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
     public void QuestionDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Question.findQuestionEntries(from, to);
+        data = questionService.findQuestionEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Question' illegally returned null");
         }
@@ -88,7 +97,7 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Question obj = getNewTransientQuestion(i);
             try {
-                obj.persist();
+                questionService.saveQuestion(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -97,7 +106,7 @@ privileged aspect QuestionDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            questionRepository.flush();
             data.add(obj);
         }
     }

@@ -3,9 +3,10 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Choice;
+import com.chariot.games.quizzo.db.ChoiceRepository;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
 import com.chariot.games.quizzo.model.ChoiceIntegrationTest;
+import com.chariot.games.quizzo.service.ChoiceService;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,10 +27,16 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private ChoiceDataOnDemand ChoiceIntegrationTest.dod;
     
+    @Autowired
+    ChoiceService ChoiceIntegrationTest.choiceService;
+    
+    @Autowired
+    ChoiceRepository ChoiceIntegrationTest.choiceRepository;
+    
     @Test
-    public void ChoiceIntegrationTest.testCountChoices() {
+    public void ChoiceIntegrationTest.testCountAllChoices() {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", dod.getRandomChoice());
-        long count = Choice.countChoices();
+        long count = choiceService.countAllChoices();
         Assert.assertTrue("Counter for 'Choice' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +46,7 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
-        obj = Choice.findChoice(id);
+        obj = choiceService.findChoice(id);
         Assert.assertNotNull("Find method for 'Choice' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Choice' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +54,9 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ChoiceIntegrationTest.testFindAllChoices() {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", dod.getRandomChoice());
-        long count = Choice.countChoices();
+        long count = choiceService.countAllChoices();
         Assert.assertTrue("Too expensive to perform a find all test for 'Choice', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Choice> result = Choice.findAllChoices();
+        List<Choice> result = choiceService.findAllChoices();
         Assert.assertNotNull("Find all method for 'Choice' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Choice' failed to return any data", result.size() > 0);
     }
@@ -57,11 +64,11 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ChoiceIntegrationTest.testFindChoiceEntries() {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", dod.getRandomChoice());
-        long count = Choice.countChoices();
+        long count = choiceService.countAllChoices();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Choice> result = Choice.findChoiceEntries(firstResult, maxResults);
+        List<Choice> result = choiceService.findChoiceEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Choice' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Choice' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +79,50 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
-        obj = Choice.findChoice(id);
+        obj = choiceService.findChoice(id);
         Assert.assertNotNull("Find method for 'Choice' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyChoice(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        choiceRepository.flush();
         Assert.assertTrue("Version for 'Choice' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void ChoiceIntegrationTest.testMergeUpdate() {
+    public void ChoiceIntegrationTest.testUpdateChoiceUpdate() {
         Choice obj = dod.getRandomChoice();
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
-        obj = Choice.findChoice(id);
+        obj = choiceService.findChoice(id);
         boolean modified =  dod.modifyChoice(obj);
         Integer currentVersion = obj.getVersion();
-        Choice merged = obj.merge();
-        obj.flush();
+        Choice merged = choiceService.updateChoice(obj);
+        choiceRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Choice' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void ChoiceIntegrationTest.testPersist() {
+    public void ChoiceIntegrationTest.testSaveChoice() {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", dod.getRandomChoice());
         Choice obj = dod.getNewTransientChoice(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Choice' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        choiceService.saveChoice(obj);
+        choiceRepository.flush();
         Assert.assertNotNull("Expected 'Choice' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void ChoiceIntegrationTest.testRemove() {
+    public void ChoiceIntegrationTest.testDeleteChoice() {
         Choice obj = dod.getRandomChoice();
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
-        obj = Choice.findChoice(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'Choice' with identifier '" + id + "'", Choice.findChoice(id));
+        obj = choiceService.findChoice(id);
+        choiceService.deleteChoice(obj);
+        choiceRepository.flush();
+        Assert.assertNull("Failed to remove 'Choice' with identifier '" + id + "'", choiceService.findChoice(id));
     }
     
 }

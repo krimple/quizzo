@@ -3,13 +3,15 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.service.ChoiceService;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.web.QuestionController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,15 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect QuestionController_Roo_Controller {
     
+    @Autowired
+    QuestionService QuestionController.questionService;
+    
+    @Autowired
+    ChoiceService QuestionController.choiceService;
+    
+    @Autowired
+    QuizService QuestionController.quizService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QuestionController.create(@Valid Question question, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -28,7 +39,7 @@ privileged aspect QuestionController_Roo_Controller {
             return "admin/questions/create";
         }
         uiModel.asMap().clear();
-        question.persist();
+        questionService.saveQuestion(question);
         return "redirect:/admin/questions/" + encodeUrlPathSegment(question.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect QuestionController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String QuestionController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("question", Question.findQuestion(id));
+        uiModel.addAttribute("question", questionService.findQuestion(id));
         uiModel.addAttribute("itemId", id);
         return "admin/questions/show";
     }
@@ -50,11 +61,11 @@ privileged aspect QuestionController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("questions", Question.findQuestionEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Question.countQuestions() / sizeNo;
+            uiModel.addAttribute("questions", questionService.findQuestionEntries(firstResult, sizeNo));
+            float nrOfPages = (float) questionService.countAllQuestions() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("questions", Question.findAllQuestions());
+            uiModel.addAttribute("questions", questionService.findAllQuestions());
         }
         return "admin/questions/list";
     }
@@ -66,20 +77,20 @@ privileged aspect QuestionController_Roo_Controller {
             return "admin/questions/update";
         }
         uiModel.asMap().clear();
-        question.merge();
+        questionService.updateQuestion(question);
         return "redirect:/admin/questions/" + encodeUrlPathSegment(question.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String QuestionController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Question.findQuestion(id));
+        populateEditForm(uiModel, questionService.findQuestion(id));
         return "admin/questions/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String QuestionController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Question question = Question.findQuestion(id);
-        question.remove();
+        Question question = questionService.findQuestion(id);
+        questionService.deleteQuestion(question);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect QuestionController_Roo_Controller {
     
     void QuestionController.populateEditForm(Model uiModel, Question question) {
         uiModel.addAttribute("question", question);
-        uiModel.addAttribute("choices", Choice.findAllChoices());
-        uiModel.addAttribute("quizes", Quiz.findAllQuizes());
+        uiModel.addAttribute("choices", choiceService.findAllChoices());
+        uiModel.addAttribute("quizes", quizService.findAllQuizes());
     }
     
     String QuestionController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

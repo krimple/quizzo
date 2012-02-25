@@ -3,10 +3,12 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.ChoiceRepository;
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.QuestionDataOnDemand;
+import com.chariot.games.quizzo.service.ChoiceService;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -28,6 +30,12 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private QuestionDataOnDemand ChoiceDataOnDemand.questionDataOnDemand;
+    
+    @Autowired
+    ChoiceService ChoiceDataOnDemand.choiceService;
+    
+    @Autowired
+    ChoiceRepository ChoiceDataOnDemand.choiceRepository;
     
     public Choice ChoiceDataOnDemand.getNewTransientChoice(int index) {
         Choice obj = new Choice();
@@ -74,14 +82,14 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
         }
         Choice obj = data.get(index);
         Long id = obj.getId();
-        return Choice.findChoice(id);
+        return choiceService.findChoice(id);
     }
     
     public Choice ChoiceDataOnDemand.getRandomChoice() {
         init();
         Choice obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Choice.findChoice(id);
+        return choiceService.findChoice(id);
     }
     
     public boolean ChoiceDataOnDemand.modifyChoice(Choice obj) {
@@ -91,7 +99,7 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     public void ChoiceDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Choice.findChoiceEntries(from, to);
+        data = choiceService.findChoiceEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Choice' illegally returned null");
         }
@@ -103,7 +111,7 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Choice obj = getNewTransientChoice(i);
             try {
-                obj.persist();
+                choiceService.saveChoice(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -112,7 +120,7 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            choiceRepository.flush();
             data.add(obj);
         }
     }

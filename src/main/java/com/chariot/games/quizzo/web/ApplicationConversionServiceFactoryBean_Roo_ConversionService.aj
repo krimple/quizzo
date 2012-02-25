@@ -8,7 +8,13 @@ import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.ChoiceService;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
+import com.chariot.games.quizzo.service.TeamService;
 import com.chariot.games.quizzo.web.ApplicationConversionServiceFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
@@ -16,6 +22,21 @@ import org.springframework.format.FormatterRegistry;
 privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService {
     
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
+    
+    @Autowired
+    ChoiceService ApplicationConversionServiceFactoryBean.choiceService;
+    
+    @Autowired
+    QuestionService ApplicationConversionServiceFactoryBean.questionService;
+    
+    @Autowired
+    QuizService ApplicationConversionServiceFactoryBean.quizService;
+    
+    @Autowired
+    QuizRunService ApplicationConversionServiceFactoryBean.quizRunService;
+    
+    @Autowired
+    TeamService ApplicationConversionServiceFactoryBean.teamService;
     
     public Converter<Choice, String> ApplicationConversionServiceFactoryBean.getChoiceToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Choice, java.lang.String>() {
@@ -28,7 +49,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Choice> ApplicationConversionServiceFactoryBean.getIdToChoiceConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Choice>() {
             public com.chariot.games.quizzo.model.Choice convert(java.lang.Long id) {
-                return Choice.findChoice(id);
+                return choiceService.findChoice(id);
             }
         };
     }
@@ -52,7 +73,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Question> ApplicationConversionServiceFactoryBean.getIdToQuestionConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Question>() {
             public com.chariot.games.quizzo.model.Question convert(java.lang.Long id) {
-                return Question.findQuestion(id);
+                return questionService.findQuestion(id);
             }
         };
     }
@@ -76,7 +97,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Quiz> ApplicationConversionServiceFactoryBean.getIdToQuizConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Quiz>() {
             public com.chariot.games.quizzo.model.Quiz convert(java.lang.Long id) {
-                return Quiz.findQuiz(id);
+                return quizService.findQuiz(id);
             }
         };
     }
@@ -100,7 +121,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, QuizRun> ApplicationConversionServiceFactoryBean.getIdToQuizRunConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.QuizRun>() {
             public com.chariot.games.quizzo.model.QuizRun convert(java.lang.Long id) {
-                return QuizRun.findQuizRun(id);
+                return quizRunService.findQuizRun(id);
             }
         };
     }
@@ -124,7 +145,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Long, Team> ApplicationConversionServiceFactoryBean.getIdToTeamConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Team>() {
             public com.chariot.games.quizzo.model.Team convert(java.lang.Long id) {
-                return Team.findTeam(id);
+                return teamService.findTeam(id);
             }
         };
     }

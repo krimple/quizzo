@@ -3,9 +3,10 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.QuizRunState;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.web.QuizRunController;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,12 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect QuizRunController_Roo_Controller {
     
+    @Autowired
+    QuizRunService QuizRunController.quizRunService;
+    
+    @Autowired
+    QuizService QuizRunController.quizService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QuizRunController.create(@Valid QuizRun quizRun, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -31,7 +39,7 @@ privileged aspect QuizRunController_Roo_Controller {
             return "admin/quizruns/create";
         }
         uiModel.asMap().clear();
-        quizRun.persist();
+        quizRunService.saveQuizRun(quizRun);
         return "redirect:/admin/quizruns/" + encodeUrlPathSegment(quizRun.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect QuizRunController_Roo_Controller {
     public String QuizRunController.createForm(Model uiModel) {
         populateEditForm(uiModel, new QuizRun());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (Quiz.countQuizes() == 0) {
+        if (quizService.countAllQuizes() == 0) {
             dependencies.add(new String[] { "quiz", "quizes" });
         }
         uiModel.addAttribute("dependencies", dependencies);
@@ -48,7 +56,7 @@ privileged aspect QuizRunController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String QuizRunController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("quizrun", QuizRun.findQuizRun(id));
+        uiModel.addAttribute("quizrun", quizRunService.findQuizRun(id));
         uiModel.addAttribute("itemId", id);
         return "admin/quizruns/show";
     }
@@ -58,11 +66,11 @@ privileged aspect QuizRunController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("quizruns", QuizRun.findQuizRunEntries(firstResult, sizeNo));
-            float nrOfPages = (float) QuizRun.countQuizRuns() / sizeNo;
+            uiModel.addAttribute("quizruns", quizRunService.findQuizRunEntries(firstResult, sizeNo));
+            float nrOfPages = (float) quizRunService.countAllQuizRuns() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("quizruns", QuizRun.findAllQuizRuns());
+            uiModel.addAttribute("quizruns", quizRunService.findAllQuizRuns());
         }
         return "admin/quizruns/list";
     }
@@ -74,20 +82,20 @@ privileged aspect QuizRunController_Roo_Controller {
             return "admin/quizruns/update";
         }
         uiModel.asMap().clear();
-        quizRun.merge();
+        quizRunService.updateQuizRun(quizRun);
         return "redirect:/admin/quizruns/" + encodeUrlPathSegment(quizRun.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String QuizRunController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, QuizRun.findQuizRun(id));
+        populateEditForm(uiModel, quizRunService.findQuizRun(id));
         return "admin/quizruns/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String QuizRunController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        QuizRun quizRun = QuizRun.findQuizRun(id);
-        quizRun.remove();
+        QuizRun quizRun = quizRunService.findQuizRun(id);
+        quizRunService.deleteQuizRun(quizRun);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -96,7 +104,7 @@ privileged aspect QuizRunController_Roo_Controller {
     
     void QuizRunController.populateEditForm(Model uiModel, QuizRun quizRun) {
         uiModel.addAttribute("quizRun", quizRun);
-        uiModel.addAttribute("quizes", Quiz.findAllQuizes());
+        uiModel.addAttribute("quizes", quizService.findAllQuizes());
         uiModel.addAttribute("quizrunstates", Arrays.asList(QuizRunState.values()));
     }
     

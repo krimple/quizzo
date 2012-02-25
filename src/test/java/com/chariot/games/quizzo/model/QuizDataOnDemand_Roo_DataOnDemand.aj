@@ -3,8 +3,10 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.QuizRepository;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
+import com.chariot.games.quizzo.service.QuizService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
@@ -21,6 +24,12 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
     private Random QuizDataOnDemand.rnd = new SecureRandom();
     
     private List<Quiz> QuizDataOnDemand.data;
+    
+    @Autowired
+    QuizService QuizDataOnDemand.quizService;
+    
+    @Autowired
+    QuizRepository QuizDataOnDemand.quizRepository;
     
     public Quiz QuizDataOnDemand.getNewTransientQuiz(int index) {
         Quiz obj = new Quiz();
@@ -55,14 +64,14 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
         }
         Quiz obj = data.get(index);
         Long id = obj.getId();
-        return Quiz.findQuiz(id);
+        return quizService.findQuiz(id);
     }
     
     public Quiz QuizDataOnDemand.getRandomQuiz() {
         init();
         Quiz obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Quiz.findQuiz(id);
+        return quizService.findQuiz(id);
     }
     
     public boolean QuizDataOnDemand.modifyQuiz(Quiz obj) {
@@ -72,7 +81,7 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
     public void QuizDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Quiz.findQuizEntries(from, to);
+        data = quizService.findQuizEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Quiz' illegally returned null");
         }
@@ -84,7 +93,7 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Quiz obj = getNewTransientQuiz(i);
             try {
-                obj.persist();
+                quizService.saveQuiz(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -93,7 +102,7 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            quizRepository.flush();
             data.add(obj);
         }
     }

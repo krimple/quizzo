@@ -2,6 +2,10 @@ package com.chariot.games.quizzo.web.flow;
 
 import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.service.AnswerService;
+import com.chariot.games.quizzo.service.ChoiceService;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.TeamService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,20 +20,25 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- * Created by IntelliJ IDEA.
- * User: kenrimple
- * Date: 2/20/12
- * Time: 4:27 PM
- * To change this template use File | Settings | File Templates.
- */
 @Component("quizzoFlowManager")
 public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowManager {
 
   private final static Logger logger = Logger.getLogger(QuizzoFlowManagerBean.class);
 
   @Autowired
+  private TeamService teamService;
+
+  @Autowired
+  private QuestionService questionService;
+
+  @Autowired
+  private ChoiceService choiceService;
+
+  @Autowired
   private QuizRunStateMachine stateMachine;
+
+  @Autowired
+  private AnswerService answerService;
 	
   @Override
   public Event saveTeamData(RequestContext flowRequestContext) throws FlowException {
@@ -47,7 +56,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     }
 
     team.setQuizRun(stateMachine.getQuizRun());
-    team.persist();
+    teamService.saveTeam(team);
     flowRequestContext.getFlowScope().put("team", team);
     return success();
   }
@@ -68,7 +77,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
   public void setupQuestionAndChoices(RequestContext flowRequestContext) throws FlowException {
     MutableAttributeMap viewScope = flowRequestContext.getViewScope();
     Long questionId = stateMachine.getCurrentQuestionId();
-    Question question = Question.findQuestion(questionId);
+    Question question = questionService.findQuestion(questionId);
     viewScope.put("question", question);
     Map<Long, Boolean> answers = new HashMap<Long, Boolean>();
     viewScope.put("answers", answers);
@@ -97,9 +106,9 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     answer.setQuestion(question);
     Map<Long, Boolean> answers = (Map<Long, Boolean>)viewScope.get("answers");
     for (Long choiceId : answers.keySet()) {
-      Choice choice = Choice.findChoice(choiceId);
+      Choice choice = choiceService.findChoice(choiceId);
       answer.getChoices().add(choice);
     }
-    answer.persist();
+    answerService.saveAnswer(answer);
   }
 }

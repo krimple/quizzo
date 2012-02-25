@@ -1,6 +1,9 @@
 package com.chariot.games.quizzo.engine;
 
 import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
@@ -24,6 +30,18 @@ public class QuizRunStateMachineMemoryTest {
   private QuizRunStateMachine stateMachine;
 
   @Autowired
+  private QuizRunService quizRunService;
+
+  @Autowired
+  private QuizService quizService;
+
+  @Autowired
+  private QuestionService questionService;
+
+  @PersistenceContext
+  private EntityManager em;
+
+  @Autowired
   public void setStateMachine(QuizRunStateMachine stateMachine) {
     logger.debug("injecting state machine...");
     this.stateMachine = stateMachine;
@@ -37,9 +55,9 @@ public class QuizRunStateMachineMemoryTest {
     Quiz quiz = setupQuizRunModels();
     quizRun.setText("Hiya mom");
     quizRun.setQuiz(quiz);
-    quizRun.persist();
-    quizRun.flush();
-    quizRun.clear();
+    quizRunService.saveQuizRun(quizRun);
+    em.flush();
+    em.clear();
 
     stateMachine.startQuiz(quiz.getId(), "Sample Run");
     stateMachine.nextQuestion();
@@ -59,8 +77,8 @@ public class QuizRunStateMachineMemoryTest {
     stateMachine.nextQuestion();
     long questionId2 = stateMachine.getCurrentQuestionId();
     assertTrue(questionId2 != questionId);
-    Question q1 = Question.findQuestion(questionId);
-    Question q2 = Question.findQuestion(questionId2);
+    Question q1 = questionService.findQuestion(questionId);
+    Question q2 = questionService.findQuestion(questionId2);
     assertTrue(q1.getSortOrder() <= q2.getSortOrder());
   }
 
@@ -89,9 +107,10 @@ public class QuizRunStateMachineMemoryTest {
         q.getChoices().add(c);
       }
     }
-    quiz.merge();
-    quiz.flush();
-    quiz.clear();
+    quizService.saveQuiz(quiz);
+
+    em.flush();
+    em.clear();
     return quiz;
   }
 

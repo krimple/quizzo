@@ -3,15 +3,17 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.AnswerService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.TeamService;
 import com.chariot.games.quizzo.web.TeamController;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,15 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect TeamController_Roo_Controller {
     
+    @Autowired
+    TeamService TeamController.teamService;
+    
+    @Autowired
+    AnswerService TeamController.answerService;
+    
+    @Autowired
+    QuizRunService TeamController.quizRunService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TeamController.create(@Valid Team team, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -30,7 +41,7 @@ privileged aspect TeamController_Roo_Controller {
             return "admin/teams/create";
         }
         uiModel.asMap().clear();
-        team.persist();
+        teamService.saveTeam(team);
         return "redirect:/admin/teams/" + encodeUrlPathSegment(team.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +49,7 @@ privileged aspect TeamController_Roo_Controller {
     public String TeamController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Team());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (QuizRun.countQuizRuns() == 0) {
+        if (quizRunService.countAllQuizRuns() == 0) {
             dependencies.add(new String[] { "quizrun", "quizruns" });
         }
         uiModel.addAttribute("dependencies", dependencies);
@@ -47,7 +58,7 @@ privileged aspect TeamController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String TeamController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("team", Team.findTeam(id));
+        uiModel.addAttribute("team", teamService.findTeam(id));
         uiModel.addAttribute("itemId", id);
         return "admin/teams/show";
     }
@@ -57,11 +68,11 @@ privileged aspect TeamController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("teams", Team.findTeamEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Team.countTeams() / sizeNo;
+            uiModel.addAttribute("teams", teamService.findTeamEntries(firstResult, sizeNo));
+            float nrOfPages = (float) teamService.countAllTeams() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("teams", Team.findAllTeams());
+            uiModel.addAttribute("teams", teamService.findAllTeams());
         }
         return "admin/teams/list";
     }
@@ -73,20 +84,20 @@ privileged aspect TeamController_Roo_Controller {
             return "admin/teams/update";
         }
         uiModel.asMap().clear();
-        team.merge();
+        teamService.updateTeam(team);
         return "redirect:/admin/teams/" + encodeUrlPathSegment(team.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String TeamController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Team.findTeam(id));
+        populateEditForm(uiModel, teamService.findTeam(id));
         return "admin/teams/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String TeamController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Team team = Team.findTeam(id);
-        team.remove();
+        Team team = teamService.findTeam(id);
+        teamService.deleteTeam(team);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -95,8 +106,8 @@ privileged aspect TeamController_Roo_Controller {
     
     void TeamController.populateEditForm(Model uiModel, Team team) {
         uiModel.addAttribute("team", team);
-        uiModel.addAttribute("answers", Answer.findAllAnswers());
-        uiModel.addAttribute("quizruns", QuizRun.findAllQuizRuns());
+        uiModel.addAttribute("answers", answerService.findAllAnswers());
+        uiModel.addAttribute("quizruns", quizRunService.findAllQuizRuns());
     }
     
     String TeamController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

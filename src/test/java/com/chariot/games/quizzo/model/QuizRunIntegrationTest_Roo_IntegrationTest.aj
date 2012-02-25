@@ -3,9 +3,10 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.db.QuizRunRepository;
 import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
 import com.chariot.games.quizzo.model.QuizRunIntegrationTest;
+import com.chariot.games.quizzo.service.QuizRunService;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,10 +27,16 @@ privileged aspect QuizRunIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private QuizRunDataOnDemand QuizRunIntegrationTest.dod;
     
+    @Autowired
+    QuizRunService QuizRunIntegrationTest.quizRunService;
+    
+    @Autowired
+    QuizRunRepository QuizRunIntegrationTest.quizRunRepository;
+    
     @Test
-    public void QuizRunIntegrationTest.testCountQuizRuns() {
+    public void QuizRunIntegrationTest.testCountAllQuizRuns() {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", dod.getRandomQuizRun());
-        long count = QuizRun.countQuizRuns();
+        long count = quizRunService.countAllQuizRuns();
         Assert.assertTrue("Counter for 'QuizRun' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +46,7 @@ privileged aspect QuizRunIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to provide an identifier", id);
-        obj = QuizRun.findQuizRun(id);
+        obj = quizRunService.findQuizRun(id);
         Assert.assertNotNull("Find method for 'QuizRun' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'QuizRun' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +54,9 @@ privileged aspect QuizRunIntegrationTest_Roo_IntegrationTest {
     @Test
     public void QuizRunIntegrationTest.testFindAllQuizRuns() {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", dod.getRandomQuizRun());
-        long count = QuizRun.countQuizRuns();
+        long count = quizRunService.countAllQuizRuns();
         Assert.assertTrue("Too expensive to perform a find all test for 'QuizRun', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<QuizRun> result = QuizRun.findAllQuizRuns();
+        List<QuizRun> result = quizRunService.findAllQuizRuns();
         Assert.assertNotNull("Find all method for 'QuizRun' illegally returned null", result);
         Assert.assertTrue("Find all method for 'QuizRun' failed to return any data", result.size() > 0);
     }
@@ -57,11 +64,11 @@ privileged aspect QuizRunIntegrationTest_Roo_IntegrationTest {
     @Test
     public void QuizRunIntegrationTest.testFindQuizRunEntries() {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", dod.getRandomQuizRun());
-        long count = QuizRun.countQuizRuns();
+        long count = quizRunService.countAllQuizRuns();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<QuizRun> result = QuizRun.findQuizRunEntries(firstResult, maxResults);
+        List<QuizRun> result = quizRunService.findQuizRunEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'QuizRun' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'QuizRun' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +79,50 @@ privileged aspect QuizRunIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to provide an identifier", id);
-        obj = QuizRun.findQuizRun(id);
+        obj = quizRunService.findQuizRun(id);
         Assert.assertNotNull("Find method for 'QuizRun' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyQuizRun(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        quizRunRepository.flush();
         Assert.assertTrue("Version for 'QuizRun' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void QuizRunIntegrationTest.testMergeUpdate() {
+    public void QuizRunIntegrationTest.testUpdateQuizRunUpdate() {
         QuizRun obj = dod.getRandomQuizRun();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to provide an identifier", id);
-        obj = QuizRun.findQuizRun(id);
+        obj = quizRunService.findQuizRun(id);
         boolean modified =  dod.modifyQuizRun(obj);
         Integer currentVersion = obj.getVersion();
-        QuizRun merged = obj.merge();
-        obj.flush();
+        QuizRun merged = quizRunService.updateQuizRun(obj);
+        quizRunRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'QuizRun' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void QuizRunIntegrationTest.testPersist() {
+    public void QuizRunIntegrationTest.testSaveQuizRun() {
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", dod.getRandomQuizRun());
         QuizRun obj = dod.getNewTransientQuizRun(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'QuizRun' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        quizRunService.saveQuizRun(obj);
+        quizRunRepository.flush();
         Assert.assertNotNull("Expected 'QuizRun' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void QuizRunIntegrationTest.testRemove() {
+    public void QuizRunIntegrationTest.testDeleteQuizRun() {
         QuizRun obj = dod.getRandomQuizRun();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'QuizRun' failed to provide an identifier", id);
-        obj = QuizRun.findQuizRun(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'QuizRun' with identifier '" + id + "'", QuizRun.findQuizRun(id));
+        obj = quizRunService.findQuizRun(id);
+        quizRunService.deleteQuizRun(obj);
+        quizRunRepository.flush();
+        Assert.assertNull("Failed to remove 'QuizRun' with identifier '" + id + "'", quizRunService.findQuizRun(id));
     }
     
 }

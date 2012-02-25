@@ -3,9 +3,10 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.db.QuizRepository;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
 import com.chariot.games.quizzo.model.QuizIntegrationTest;
+import com.chariot.games.quizzo.service.QuizService;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,10 +27,16 @@ privileged aspect QuizIntegrationTest_Roo_IntegrationTest {
     @Autowired
     private QuizDataOnDemand QuizIntegrationTest.dod;
     
+    @Autowired
+    QuizService QuizIntegrationTest.quizService;
+    
+    @Autowired
+    QuizRepository QuizIntegrationTest.quizRepository;
+    
     @Test
-    public void QuizIntegrationTest.testCountQuizes() {
+    public void QuizIntegrationTest.testCountAllQuizes() {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", dod.getRandomQuiz());
-        long count = Quiz.countQuizes();
+        long count = quizService.countAllQuizes();
         Assert.assertTrue("Counter for 'Quiz' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +46,7 @@ privileged aspect QuizIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to provide an identifier", id);
-        obj = Quiz.findQuiz(id);
+        obj = quizService.findQuiz(id);
         Assert.assertNotNull("Find method for 'Quiz' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Quiz' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +54,9 @@ privileged aspect QuizIntegrationTest_Roo_IntegrationTest {
     @Test
     public void QuizIntegrationTest.testFindAllQuizes() {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", dod.getRandomQuiz());
-        long count = Quiz.countQuizes();
+        long count = quizService.countAllQuizes();
         Assert.assertTrue("Too expensive to perform a find all test for 'Quiz', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Quiz> result = Quiz.findAllQuizes();
+        List<Quiz> result = quizService.findAllQuizes();
         Assert.assertNotNull("Find all method for 'Quiz' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Quiz' failed to return any data", result.size() > 0);
     }
@@ -57,11 +64,11 @@ privileged aspect QuizIntegrationTest_Roo_IntegrationTest {
     @Test
     public void QuizIntegrationTest.testFindQuizEntries() {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", dod.getRandomQuiz());
-        long count = Quiz.countQuizes();
+        long count = quizService.countAllQuizes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Quiz> result = Quiz.findQuizEntries(firstResult, maxResults);
+        List<Quiz> result = quizService.findQuizEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Quiz' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Quiz' returned an incorrect number of entries", count, result.size());
     }
@@ -72,50 +79,50 @@ privileged aspect QuizIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to provide an identifier", id);
-        obj = Quiz.findQuiz(id);
+        obj = quizService.findQuiz(id);
         Assert.assertNotNull("Find method for 'Quiz' illegally returned null for id '" + id + "'", obj);
         boolean modified =  dod.modifyQuiz(obj);
         Integer currentVersion = obj.getVersion();
-        obj.flush();
+        quizRepository.flush();
         Assert.assertTrue("Version for 'Quiz' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void QuizIntegrationTest.testMergeUpdate() {
+    public void QuizIntegrationTest.testUpdateQuizUpdate() {
         Quiz obj = dod.getRandomQuiz();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to provide an identifier", id);
-        obj = Quiz.findQuiz(id);
+        obj = quizService.findQuiz(id);
         boolean modified =  dod.modifyQuiz(obj);
         Integer currentVersion = obj.getVersion();
-        Quiz merged = obj.merge();
-        obj.flush();
+        Quiz merged = quizService.updateQuiz(obj);
+        quizRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Quiz' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
     
     @Test
-    public void QuizIntegrationTest.testPersist() {
+    public void QuizIntegrationTest.testSaveQuiz() {
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", dod.getRandomQuiz());
         Quiz obj = dod.getNewTransientQuiz(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Quiz' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Quiz' identifier to be null", obj.getId());
-        obj.persist();
-        obj.flush();
+        quizService.saveQuiz(obj);
+        quizRepository.flush();
         Assert.assertNotNull("Expected 'Quiz' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void QuizIntegrationTest.testRemove() {
+    public void QuizIntegrationTest.testDeleteQuiz() {
         Quiz obj = dod.getRandomQuiz();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Quiz' failed to provide an identifier", id);
-        obj = Quiz.findQuiz(id);
-        obj.remove();
-        obj.flush();
-        Assert.assertNull("Failed to remove 'Quiz' with identifier '" + id + "'", Quiz.findQuiz(id));
+        obj = quizService.findQuiz(id);
+        quizService.deleteQuiz(obj);
+        quizRepository.flush();
+        Assert.assertNull("Failed to remove 'Quiz' with identifier '" + id + "'", quizService.findQuiz(id));
     }
     
 }

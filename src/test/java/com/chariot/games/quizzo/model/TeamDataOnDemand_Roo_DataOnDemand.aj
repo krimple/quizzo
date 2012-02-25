@@ -3,10 +3,12 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.TeamRepository;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
 import com.chariot.games.quizzo.model.Team;
 import com.chariot.games.quizzo.model.TeamDataOnDemand;
+import com.chariot.games.quizzo.service.TeamService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +29,12 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private QuizRunDataOnDemand TeamDataOnDemand.quizRunDataOnDemand;
+    
+    @Autowired
+    TeamService TeamDataOnDemand.teamService;
+    
+    @Autowired
+    TeamRepository TeamDataOnDemand.teamRepository;
     
     public Team TeamDataOnDemand.getNewTransientTeam(int index) {
         Team obj = new Team();
@@ -64,14 +72,14 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
         }
         Team obj = data.get(index);
         Long id = obj.getId();
-        return Team.findTeam(id);
+        return teamService.findTeam(id);
     }
     
     public Team TeamDataOnDemand.getRandomTeam() {
         init();
         Team obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Team.findTeam(id);
+        return teamService.findTeam(id);
     }
     
     public boolean TeamDataOnDemand.modifyTeam(Team obj) {
@@ -81,7 +89,7 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
     public void TeamDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Team.findTeamEntries(from, to);
+        data = teamService.findTeamEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Team' illegally returned null");
         }
@@ -93,7 +101,7 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Team obj = getNewTransientTeam(i);
             try {
-                obj.persist();
+                teamService.saveTeam(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -102,7 +110,7 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            teamRepository.flush();
             data.add(obj);
         }
     }

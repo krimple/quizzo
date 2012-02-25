@@ -3,12 +3,14 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.web.QuizController;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,12 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect QuizController_Roo_Controller {
     
+    @Autowired
+    QuizService QuizController.quizService;
+    
+    @Autowired
+    QuestionService QuizController.questionService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QuizController.create(@Valid Quiz quiz, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -27,7 +35,7 @@ privileged aspect QuizController_Roo_Controller {
             return "admin/quizzes/create";
         }
         uiModel.asMap().clear();
-        quiz.persist();
+        quizService.saveQuiz(quiz);
         return "redirect:/admin/quizzes/" + encodeUrlPathSegment(quiz.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect QuizController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String QuizController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("quiz", Quiz.findQuiz(id));
+        uiModel.addAttribute("quiz", quizService.findQuiz(id));
         uiModel.addAttribute("itemId", id);
         return "admin/quizzes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect QuizController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("quizes", Quiz.findQuizEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Quiz.countQuizes() / sizeNo;
+            uiModel.addAttribute("quizes", quizService.findQuizEntries(firstResult, sizeNo));
+            float nrOfPages = (float) quizService.countAllQuizes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("quizes", Quiz.findAllQuizes());
+            uiModel.addAttribute("quizes", quizService.findAllQuizes());
         }
         return "admin/quizzes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect QuizController_Roo_Controller {
             return "admin/quizzes/update";
         }
         uiModel.asMap().clear();
-        quiz.merge();
+        quizService.updateQuiz(quiz);
         return "redirect:/admin/quizzes/" + encodeUrlPathSegment(quiz.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String QuizController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Quiz.findQuiz(id));
+        populateEditForm(uiModel, quizService.findQuiz(id));
         return "admin/quizzes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String QuizController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Quiz quiz = Quiz.findQuiz(id);
-        quiz.remove();
+        Quiz quiz = quizService.findQuiz(id);
+        quizService.deleteQuiz(quiz);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect QuizController_Roo_Controller {
     
     void QuizController.populateEditForm(Model uiModel, Quiz quiz) {
         uiModel.addAttribute("quiz", quiz);
-        uiModel.addAttribute("questions", Question.findAllQuestions());
+        uiModel.addAttribute("questions", questionService.findAllQuestions());
     }
     
     String QuizController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

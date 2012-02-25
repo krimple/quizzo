@@ -4,13 +4,15 @@
 package com.chariot.games.quizzo.web;
 
 import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.service.ChoiceService;
+import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.web.ChoiceController;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,12 @@ import org.springframework.web.util.WebUtils;
 
 privileged aspect ChoiceController_Roo_Controller {
     
+    @Autowired
+    ChoiceService ChoiceController.choiceService;
+    
+    @Autowired
+    QuestionService ChoiceController.questionService;
+    
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ChoiceController.create(@Valid Choice choice, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -29,7 +37,7 @@ privileged aspect ChoiceController_Roo_Controller {
             return "admin/choices/create";
         }
         uiModel.asMap().clear();
-        choice.persist();
+        choiceService.saveChoice(choice);
         return "redirect:/admin/choices/" + encodeUrlPathSegment(choice.getId().toString(), httpServletRequest);
     }
     
@@ -37,7 +45,7 @@ privileged aspect ChoiceController_Roo_Controller {
     public String ChoiceController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Choice());
         List<String[]> dependencies = new ArrayList<String[]>();
-        if (Question.countQuestions() == 0) {
+        if (questionService.countAllQuestions() == 0) {
             dependencies.add(new String[] { "question", "questions" });
         }
         uiModel.addAttribute("dependencies", dependencies);
@@ -46,7 +54,7 @@ privileged aspect ChoiceController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String ChoiceController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("choice", Choice.findChoice(id));
+        uiModel.addAttribute("choice", choiceService.findChoice(id));
         uiModel.addAttribute("itemId", id);
         return "admin/choices/show";
     }
@@ -56,11 +64,11 @@ privileged aspect ChoiceController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("choices", Choice.findChoiceEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Choice.countChoices() / sizeNo;
+            uiModel.addAttribute("choices", choiceService.findChoiceEntries(firstResult, sizeNo));
+            float nrOfPages = (float) choiceService.countAllChoices() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("choices", Choice.findAllChoices());
+            uiModel.addAttribute("choices", choiceService.findAllChoices());
         }
         return "admin/choices/list";
     }
@@ -72,20 +80,20 @@ privileged aspect ChoiceController_Roo_Controller {
             return "admin/choices/update";
         }
         uiModel.asMap().clear();
-        choice.merge();
+        choiceService.updateChoice(choice);
         return "redirect:/admin/choices/" + encodeUrlPathSegment(choice.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ChoiceController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Choice.findChoice(id));
+        populateEditForm(uiModel, choiceService.findChoice(id));
         return "admin/choices/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String ChoiceController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Choice choice = Choice.findChoice(id);
-        choice.remove();
+        Choice choice = choiceService.findChoice(id);
+        choiceService.deleteChoice(choice);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -94,7 +102,7 @@ privileged aspect ChoiceController_Roo_Controller {
     
     void ChoiceController.populateEditForm(Model uiModel, Choice choice) {
         uiModel.addAttribute("choice", choice);
-        uiModel.addAttribute("questions", Question.findAllQuestions());
+        uiModel.addAttribute("questions", questionService.findAllQuestions());
     }
     
     String ChoiceController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

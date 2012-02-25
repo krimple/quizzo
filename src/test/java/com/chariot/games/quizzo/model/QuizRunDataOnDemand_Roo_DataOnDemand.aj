@@ -3,11 +3,13 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.QuizRunRepository;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
 import com.chariot.games.quizzo.model.QuizRunState;
+import com.chariot.games.quizzo.service.QuizRunService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,6 +30,12 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
     
     @Autowired
     private QuizDataOnDemand QuizRunDataOnDemand.quizDataOnDemand;
+    
+    @Autowired
+    QuizRunService QuizRunDataOnDemand.quizRunService;
+    
+    @Autowired
+    QuizRunRepository QuizRunDataOnDemand.quizRunRepository;
     
     public QuizRun QuizRunDataOnDemand.getNewTransientQuizRun(int index) {
         QuizRun obj = new QuizRun();
@@ -65,14 +73,14 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
         }
         QuizRun obj = data.get(index);
         Long id = obj.getId();
-        return QuizRun.findQuizRun(id);
+        return quizRunService.findQuizRun(id);
     }
     
     public QuizRun QuizRunDataOnDemand.getRandomQuizRun() {
         init();
         QuizRun obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return QuizRun.findQuizRun(id);
+        return quizRunService.findQuizRun(id);
     }
     
     public boolean QuizRunDataOnDemand.modifyQuizRun(QuizRun obj) {
@@ -82,7 +90,7 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
     public void QuizRunDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = QuizRun.findQuizRunEntries(from, to);
+        data = quizRunService.findQuizRunEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'QuizRun' illegally returned null");
         }
@@ -94,7 +102,7 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             QuizRun obj = getNewTransientQuizRun(i);
             try {
-                obj.persist();
+                quizRunService.saveQuizRun(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {
@@ -103,7 +111,7 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
-            obj.flush();
+            quizRunRepository.flush();
             data.add(obj);
         }
     }
