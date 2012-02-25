@@ -2,22 +2,17 @@
 <flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-
     <var class="com.chariot.games.quizzo.web.flow.TeamSetupForm" name="teamSetupForm"/>
+
     <view-state id="register-team" view="playQuizzo/register-team"
                 model="flowScope.teamSetupForm">
-        <on-entry>
-            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
-        </on-entry>
-        <transition on="continue" to="register-team-members" bind="true" validate="true">
-            <evaluate expression="quizzoFlowManager.debug(flowRequestContext)"/>
-        </transition>
+        <transition on="continue" to="register-team-members" bind="true" validate="true"/>
     </view-state>
 
     <view-state id="register-team-members" view="playQuizzo/register-team-members"
                 model="flowScope.teamSetupForm">
 
-        <transition on="continue" to="ready-to-play">
+        <transition on="continue" to="ready-to-play" bind="true" validate="true">
             <evaluate expression="quizzoFlowManager.saveTeamData(flowRequestContext)"/>
         </transition>
         <transition on="add-team-member"/>
@@ -27,7 +22,7 @@
 
     <action-state id="ready-to-play">
         <evaluate expression="quizzoFlowManager.pollReady(flowRequestContext)"/>
-        <transition on="continue" to="play-round"/>
+        <transition on="yes" to="play-round"/>
         <transition on="poll" to="poll"/>
     </action-state>
 

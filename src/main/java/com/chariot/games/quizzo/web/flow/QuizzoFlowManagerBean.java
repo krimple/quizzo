@@ -74,6 +74,12 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     flowRequestContext.getRequestScope().put("score", score);
   }
 
+  @Override
+  public Event pollReady(RequestContext flowRequestContext) throws FlowException {
+    return new Event(this, "yes");
+  }
+
+  @Override
   public void setupQuestionAndChoices(RequestContext flowRequestContext) throws FlowException {
     MutableAttributeMap viewScope = flowRequestContext.getViewScope();
     Long questionId = stateMachine.getCurrentQuestionId();
@@ -83,6 +89,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     viewScope.put("answers", answers);
   }
 
+  @Override
   public void acceptAnswer(RequestContext flowRequestContext)  throws FlowException {
     MutableAttributeMap viewScope = flowRequestContext.getViewScope();
     Long answerId = Long.valueOf(flowRequestContext.getExternalContext().getRequestParameterMap().get("answerId"));
@@ -98,6 +105,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     }
   }
 
+  @Override
   public void finalizeAnswers(RequestContext flowRequestContext)  throws FlowException {
     MutableAttributeMap viewScope = flowRequestContext.getViewScope();
     //TODO - perhaps delegate all finalization by answer type

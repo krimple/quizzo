@@ -6,10 +6,11 @@ import org.springframework.webflow.execution.RequestContext;
 
 public interface QuizzoFlowManager {
 
-  public Event saveTeamData(RequestContext flowRequestContext) throws FlowException;
-  public Event debug(RequestContext flowRequestContext) throws FlowException;
-  public void loadTeamStats(RequestContext flowRequestContext) throws FlowException;
-  public void acceptAnswer(RequestContext flowRequestContext) throws FlowException;
-  public void setupQuestionAndChoices(RequestContext flowRequestContext) throws FlowException;
-
+  Event saveTeamData(RequestContext flowRequestContext) throws FlowException;
+  Event debug(RequestContext flowRequestContext) throws FlowException;
+  void loadTeamStats(RequestContext flowRequestContext) throws FlowException;
+  void acceptAnswer(RequestContext flowRequestContext) throws FlowException;
+  void setupQuestionAndChoices(RequestContext flowRequestContext) throws FlowException;
+  Event pollReady(RequestContext flowRequestContext) throws FlowException;
+  void finalizeAnswers(RequestContext flowRequestContext)  throws FlowException;
 }
