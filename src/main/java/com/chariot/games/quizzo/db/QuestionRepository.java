@@ -9,5 +9,5 @@ import java.util.List;
 @RooJpaRepository(domainType = Question.class)
 public interface QuestionRepository {
   @Query("select q from Question q where q.quiz.id = ?1 order by q.sortOrder")
-  public List<Question> getQuestionsByQuizId(Long quizId);
+  public List<Question> getQuestionsByQuizIdOrderByQuestionOrder(Long quizId);
 }

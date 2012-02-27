@@ -24,7 +24,8 @@ public class Quiz {
     @Size(max = 500)
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "quiz",
+        cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Question> questions = new HashSet<Question>();
 
 }

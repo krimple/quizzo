@@ -7,5 +7,6 @@
         <field:select field="question" id="c_com_chariot_games_quizzo_model_Choice_question" itemValue="id" items="${questions}" path="/admin/questions" required="true" z="wFaYcicXPWARFkDeBRY01iB3S70="/>
         <field:input field="sortOrder" id="c_com_chariot_games_quizzo_model_Choice_sortOrder" z="KZYfnSjfuvGT5NzLN//z2ApfbRk="/>
         <field:input decimalMax="1000" decimalMin="-1000" field="pointValue" id="c_com_chariot_games_quizzo_model_Choice_pointValue" required="true" validationMessageCode="field_invalid_number" z="wku5OkCpZXucjpGl+ForB9uGuIk="/>
+        <field:select field="answer" id="c_com_chariot_games_quizzo_model_Choice_answer" itemValue="id" items="${answers}" path="/answers" z="s6Sqccjuv3ZvIyQ/H1n0f0yWc18="/>
     </form:update>
 </div>

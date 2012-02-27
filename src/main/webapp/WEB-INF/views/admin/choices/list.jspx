@@ -8,6 +8,7 @@
             <table:column id="c_com_chariot_games_quizzo_model_Choice_question" property="question" z="5ZVHToWfJmDcYhP0pd/jZidLFJM="/>
             <table:column id="c_com_chariot_games_quizzo_model_Choice_sortOrder" property="sortOrder" z="voM3wwhRX7a0T0LxjakdPLNPu6c="/>
             <table:column id="c_com_chariot_games_quizzo_model_Choice_pointValue" property="pointValue" z="lUSPEDlsMEibD4PuYZOWygEWlS4="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Choice_answer" property="answer" z="f3CqBVkJFxkM069ZUrLn+G3EC4g="/>
         </table:table>
     </page:list>
 </div>

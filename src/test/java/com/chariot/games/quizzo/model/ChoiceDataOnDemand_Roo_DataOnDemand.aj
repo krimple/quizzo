@@ -4,6 +4,7 @@
 package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.db.ChoiceRepository;
+import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
 import com.chariot.games.quizzo.model.Question;
@@ -39,11 +40,17 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     
     public Choice ChoiceDataOnDemand.getNewTransientChoice(int index) {
         Choice obj = new Choice();
+        setAnswer(obj, index);
         setPointValue(obj, index);
         setQuestion(obj, index);
         setSortOrder(obj, index);
         setText(obj, index);
         return obj;
+    }
+    
+    public void ChoiceDataOnDemand.setAnswer(Choice obj, int index) {
+        Answer answer = null;
+        obj.setAnswer(answer);
     }
     
     public void ChoiceDataOnDemand.setPointValue(Choice obj, int index) {

@@ -3,11 +3,20 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
 import java.math.BigDecimal;
 
 privileged aspect Choice_Roo_JavaBean {
+    
+    public Answer Choice.getAnswer() {
+        return this.answer;
+    }
+    
+    public void Choice.setAnswer(Answer answer) {
+        this.answer = answer;
+    }
     
     public String Choice.getText() {
         return this.text;

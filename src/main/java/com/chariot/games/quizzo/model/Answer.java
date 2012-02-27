@@ -4,7 +4,7 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.tostring.RooToString;
 
-import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -20,13 +20,15 @@ public class Answer {
 
   @NotNull
   @ManyToOne(optional = false)
+  @JoinColumn(name = "team_id")
   private Team team;
 
   @NotNull
   @ManyToOne(optional = false)
+  @JoinColumn(name = "question_id")
   private Question question;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "answer")
   private Set<Choice> choices = new HashSet<Choice>();
 
   @Transient

@@ -5,10 +5,7 @@ import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -31,9 +28,11 @@ public class Team {
   private String mission;
 
   @ElementCollection
+  @JoinTable(name = "team_members")
+  @JoinColumn(name="team_id")
   private List<TeamMember> teamMembers = new ArrayList<TeamMember>();
 
-  @OneToMany
+  @OneToMany(mappedBy = "team")
   private Set<Answer> answers = new HashSet<Answer>();
 
   @NotNull

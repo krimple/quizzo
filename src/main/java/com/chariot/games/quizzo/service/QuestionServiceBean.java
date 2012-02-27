@@ -7,6 +7,6 @@ import java.util.List;
 
 public class QuestionServiceBean implements QuestionService {
   public List<Question> getQuestionsByQuizId(Long quizId){
-    return questionRepository.getQuestionsByQuizId(quizId);
+    return questionRepository.getQuestionsByQuizIdOrderByQuestionOrder(quizId);
   }
 }

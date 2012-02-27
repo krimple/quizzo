@@ -4,39 +4,43 @@ import com.chariot.games.quizzo.model.*;
 import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.QuizService;
+import junit.framework.Assert;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/applicationContext*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
+@TransactionConfiguration(defaultRollback = false)
 public class QuizRunStateMachineMemoryTest {
 
   private static Logger logger = Logger.getLogger(QuizRunStateMachineMemoryTest.class);
 
-  private QuizRun quizRun;
-  private QuizRunStateMachine stateMachine;
-
-  @Autowired
-  private QuizRunService quizRunService;
+  private static QuizRunStateMachine stateMachine;
 
   @Autowired
   private QuizService quizService;
 
   @Autowired
   private QuestionService questionService;
+
+  @Autowired
+  private QuizRunService quizRunService;
 
   @PersistenceContext
   private EntityManager em;
@@ -50,29 +54,28 @@ public class QuizRunStateMachineMemoryTest {
   @Before
   public void setUp() {
     logger.debug("Running setup...");
-    quizRun = new QuizRun();
-    quizRun.setRunState(QuizRunState.NOT_STARTED);
-    Quiz quiz = setupQuizRunModels();
-    quizRun.setText("Hiya mom");
-    quizRun.setQuiz(quiz);
-    quizRunService.saveQuizRun(quizRun);
-    em.flush();
-    em.clear();
+    Quiz quiz = setupQuiz();
+    stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
+    stateMachine.startQuiz();
+    logger.debug("Setup finished...");
+  }
 
-    stateMachine.startQuiz(quiz.getId(), "Sample Run");
-    stateMachine.nextQuestion();
-    logger.debug("Question assigned = " + stateMachine.getCurrentQuestionId());
+  @After
+  public void tearDown() {
+    //quizRunService.deleteQuizRun(stateMachine.getQuizRun());
   }
 
   @Test
   @Transactional
   public void testLoadQuizRunFromDatabase() {
-    assertNotNull(stateMachine.getCurrentQuestionId());
+    assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
   }
 
   @Test
   @Transactional
   public void testSequentialQuestionIds() {
+    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
+    Assert.assertTrue(stateMachine.nextQuestion());
     long questionId = stateMachine.getCurrentQuestionId();
     stateMachine.nextQuestion();
     long questionId2 = stateMachine.getCurrentQuestionId();
@@ -85,14 +88,15 @@ public class QuizRunStateMachineMemoryTest {
   @Test
   @Transactional
   public void testFetchAllQuestionsAndDone() {
-    stateMachine.nextQuestion();
-    stateMachine.nextQuestion();
-    stateMachine.nextQuestion();
-    stateMachine.nextQuestion();
+    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
+    for (int i = 0; i < 4; i++) {
+      Assert.assertTrue(stateMachine.nextQuestion());
+    }
     assertFalse(stateMachine.nextQuestion());
+    assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState());
   }
 
-  private Quiz setupQuizRunModels() {
+  private Quiz setupQuiz() {
     QuizDataOnDemand dod = new QuizDataOnDemand();
     Quiz quiz = dod.getRandomQuiz();
     QuestionDataOnDemand qdod = new QuestionDataOnDemand();
@@ -113,5 +117,4 @@ public class QuizRunStateMachineMemoryTest {
     em.clear();
     return quiz;
   }
-
 }

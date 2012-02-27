@@ -1,16 +1,12 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.db.TeamRepository;
 import com.chariot.games.quizzo.model.*;
 import com.chariot.games.quizzo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +32,9 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Autowired
   private QuizRunService quizRunService;
+
+  private QuizRunState runState = QuizRunState.NOT_STARTED;
+
   /**
    * Our key to the current question ID. All questions are sorted by a sort order.
    */
@@ -45,33 +44,38 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Override
   @Transactional
-  public void startQuiz(Long quizId, String text) {
+  public void initializeQuiz(Long quizId, String text) {
     Quiz quiz = quizService.findQuiz(quizId);
     quizRun = new QuizRun();
     quizRun.setQuiz(quiz);
-    quizRun.setRunState(QuizRunState.NOT_STARTED);
+    runState = QuizRunState.NOT_STARTED;
     quizRun.setText(text);
     quizRunService.saveQuizRun(quizRun);
     questions = questionService.getQuestionsByQuizId(quiz.getId());
   }
 
   @Transactional
+  public void startQuiz() {
+    assert (runState == QuizRunState.NOT_STARTED);
+    runState = QuizRunState.IN_PROGRESS;
+  }
+
+  @Transactional
   private void setupFirstQuestion() {
     // now, load up our first question...
     assert (questions != null && questions.size() > 0);
-    assert quizRun.getRunState() == QuizRunState.NOT_STARTED;
+    assert runState == QuizRunState.NOT_STARTED;
 
-    quizRun.setRunState(QuizRunState.IN_PROGRESS);
-    currentQuestionIndex = 0;
+    runState = QuizRunState.IN_PROGRESS;
+    currentQuestionIndex = -1;
   }
 
   @Override
   @Transactional(readOnly = true)
   public boolean nextQuestion() {
-    assert quizRun.getRunState() == QuizRunState.IN_PROGRESS;
-
-    if (currentQuestionIndex + 1 == questions.size()) {
-      quizRun.setRunState(QuizRunState.COMPLETE);
+    assert runState == QuizRunState.IN_PROGRESS;
+    if (currentQuestionIndex + 1 > questions.size()) {
+      runState = QuizRunState.COMPLETE;
       return false;
     } else {
       currentQuestionIndex++;
@@ -109,10 +113,15 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Override
   public void endQuiz() {
-    quizRun.setRunState(QuizRunState.COMPLETE);
+    runState = QuizRunState.COMPLETE;
   }
 
   public QuizRun getQuizRun() {
     return quizRun;
+  }
+
+
+  public QuizRunState getQuizRunState() {
+    return runState;
   }
 }

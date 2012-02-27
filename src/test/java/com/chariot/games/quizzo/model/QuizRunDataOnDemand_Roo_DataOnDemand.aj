@@ -8,7 +8,6 @@ import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
-import com.chariot.games.quizzo.model.QuizRunState;
 import com.chariot.games.quizzo.service.QuizRunService;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -40,7 +39,6 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
     public QuizRun QuizRunDataOnDemand.getNewTransientQuizRun(int index) {
         QuizRun obj = new QuizRun();
         setQuiz(obj, index);
-        setRunState(obj, index);
         setText(obj, index);
         return obj;
     }
@@ -48,11 +46,6 @@ privileged aspect QuizRunDataOnDemand_Roo_DataOnDemand {
     public void QuizRunDataOnDemand.setQuiz(QuizRun obj, int index) {
         Quiz quiz = quizDataOnDemand.getRandomQuiz();
         obj.setQuiz(quiz);
-    }
-    
-    public void QuizRunDataOnDemand.setRunState(QuizRun obj, int index) {
-        QuizRunState runState = QuizRunState.class.getEnumConstants()[0];
-        obj.setRunState(runState);
     }
     
     public void QuizRunDataOnDemand.setText(QuizRun obj, int index) {

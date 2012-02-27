@@ -4,6 +4,7 @@
 package com.chariot.games.quizzo.web;
 
 import com.chariot.games.quizzo.model.Choice;
+import com.chariot.games.quizzo.service.AnswerService;
 import com.chariot.games.quizzo.service.ChoiceService;
 import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.web.ChoiceController;
@@ -26,6 +27,9 @@ privileged aspect ChoiceController_Roo_Controller {
     
     @Autowired
     ChoiceService ChoiceController.choiceService;
+    
+    @Autowired
+    AnswerService ChoiceController.answerService;
     
     @Autowired
     QuestionService ChoiceController.questionService;
@@ -102,6 +106,7 @@ privileged aspect ChoiceController_Roo_Controller {
     
     void ChoiceController.populateEditForm(Model uiModel, Choice choice) {
         uiModel.addAttribute("choice", choice);
+        uiModel.addAttribute("answers", answerService.findAllAnswers());
         uiModel.addAttribute("questions", questionService.findAllQuestions());
     }
     

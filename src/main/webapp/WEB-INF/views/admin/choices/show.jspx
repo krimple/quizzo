@@ -7,5 +7,6 @@
         <field:display field="question" id="s_com_chariot_games_quizzo_model_Choice_question" object="${choice}" z="mzEIHKpj9xf/LhF04IYCdbNQ1WY="/>
         <field:display field="sortOrder" id="s_com_chariot_games_quizzo_model_Choice_sortOrder" object="${choice}" z="69OeUcxhFX/jxWL2kjskX6mlLXE="/>
         <field:display field="pointValue" id="s_com_chariot_games_quizzo_model_Choice_pointValue" object="${choice}" z="seS5qNtcc6U8bt2ZroyZFAG+NLI="/>
+        <field:display field="answer" id="s_com_chariot_games_quizzo_model_Choice_answer" object="${choice}" z="dhDuUfmituGuJrKMjDubv1O3dEM="/>
     </page:show>
 </div>
