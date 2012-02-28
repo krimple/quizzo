@@ -7,12 +7,12 @@ import com.chariot.games.quizzo.web.admin.QuizSelectionForm;
 
 privileged aspect QuizSelectionForm_Roo_JavaBean {
     
-    public Long QuizSelectionForm.getId() {
-        return this.id;
+    public Long QuizSelectionForm.getQuizId() {
+        return this.quizId;
     }
     
-    public void QuizSelectionForm.setId(Long id) {
-        this.id = id;
+    public void QuizSelectionForm.setQuizId(Long quizId) {
+        this.quizId = quizId;
     }
     
 }

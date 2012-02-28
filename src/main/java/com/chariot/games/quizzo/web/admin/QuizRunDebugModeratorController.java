@@ -13,19 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@SessionAttributes("quizSelectionForm")
 @RequestMapping("/admin/moderator/**")
 @Controller
 public class QuizRunDebugModeratorController {
+
+  @ModelAttribute
+  public QuizSelectionForm getQuizSelectionForm() {
+    return new QuizSelectionForm();
+  }
 
   @Autowired
   private QuizService quizService;
@@ -47,7 +50,10 @@ public class QuizRunDebugModeratorController {
   QuizRunService quizRunService;
 
   @RequestMapping(value = "initialize", method = RequestMethod.GET)
-  public String createQuizRun(@RequestParam(value = "id", required = true) long quizId, Model model) {
+  public String createQuizRun(
+      @ModelAttribute("quizSelectionForm") QuizSelectionForm quizSelectionForm,
+      Model model) {
+    long quizId = quizSelectionForm.getQuizId();
     logger.debug("initializing quiz with id of " + quizId);
     stateMachine.initializeQuiz(quizId, "Debugger created...");
     model.asMap().put("statusMessage", "OK, quiz run initialized.");
@@ -100,7 +106,8 @@ public class QuizRunDebugModeratorController {
   }
 
   @RequestMapping
-  public String index() {
+  public String index(@ModelAttribute("quizSelectionForm") QuizSelectionForm form, Model model) {
+
     return "admin/moderator/index";
   }
 

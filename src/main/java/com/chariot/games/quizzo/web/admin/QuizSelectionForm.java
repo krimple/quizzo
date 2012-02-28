@@ -4,5 +4,5 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 
 @RooJavaBean
 public class QuizSelectionForm {
-  private Long id;
+  private Long quizId;
 }

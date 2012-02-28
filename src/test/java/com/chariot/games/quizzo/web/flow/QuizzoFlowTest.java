@@ -1,5 +1,6 @@
 package com.chariot.games.quizzo.web.flow;
 
+import com.chariot.games.quizzo.web.form.TeamSetupForm;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.webflow.config.FlowDefinitionResource;

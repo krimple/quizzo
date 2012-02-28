@@ -9,10 +9,9 @@
 
     <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
     <jsp:output omit-xml-declaration="true"/>
-    <jsp:output doctype-root-element="HTML"
+    <jsp:output doctype-root-element="html"
                 doctype-system="about:legacy-compat"/>
-
-    <html lang="en">
+<html lang="en">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -22,6 +21,7 @@
 
         <spring:message code="application_name" var="app_name" htmlEscape="false"/>
         <title><spring:message code="welcome_h3" arguments="${app_name}"/></title>
+        <tiles:insertAttribute name="headscript" ignore="true"/>
     </head>
 
     <body class="tundra spring">
