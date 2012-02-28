@@ -4,6 +4,7 @@
 
     <var class="com.chariot.games.quizzo.web.flow.TeamSetupForm" name="teamSetupForm"/>
 
+    <!-- TODO: guard state that polls until teams are able to be registered. -->
     <view-state id="register-team" view="playQuizzo/register-team"
                 model="flowScope.teamSetupForm">
         <transition on="continue" to="register-team-members" bind="true" validate="true"/>

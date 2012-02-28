@@ -42,7 +42,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
 	
   @Override
   public Event saveTeamData(RequestContext flowRequestContext) throws FlowException {
-    TeamSetupForm teamSetupForm = (TeamSetupForm)flowRequestContext.getViewScope().get("teamSetupForm");
+    TeamSetupForm teamSetupForm = (TeamSetupForm)flowRequestContext.getFlowScope().get("teamSetupForm");
 
     Team team = new Team();
     team.setName(teamSetupForm.getName());

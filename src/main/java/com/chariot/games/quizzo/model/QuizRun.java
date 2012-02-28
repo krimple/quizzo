@@ -5,10 +5,14 @@ import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @RooJavaBean
 @RooToString
@@ -20,6 +24,9 @@ public class QuizRun {
   @ManyToOne
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
+
+  @OneToMany(mappedBy = "quizRun", cascade = CascadeType.REMOVE)
+  private Set<Team> teams = new HashSet<Team>();
 
   @NotNull
   @Size(max = 300)

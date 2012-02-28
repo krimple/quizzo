@@ -1,14 +1,11 @@
 package com.chariot.games.quizzo.engine;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
+import com.chariot.games.quizzo.service.TeamService;
 import junit.framework.Assert;
-
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -21,16 +18,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.QuestionDataOnDemand;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizDataOnDemand;
-import com.chariot.games.quizzo.model.QuizRunState;
-import com.chariot.games.quizzo.service.QuestionService;
-import com.chariot.games.quizzo.service.QuizRunService;
-import com.chariot.games.quizzo.service.QuizService;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/applicationContext*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,6 +45,10 @@ public class QuizRunStateMachineMemoryTest {
   @Autowired
   private QuizRunService quizRunService;
 
+  @Autowired
+  private TeamService teamService;
+
+
   @PersistenceContext
   private EntityManager em;
 
@@ -64,8 +63,39 @@ public class QuizRunStateMachineMemoryTest {
     logger.debug("Running setup...");
     Quiz quiz = setupQuiz();
     stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
+    stateMachine.enrollTeams();
+    logger.debug("Teams enrolled.");
+    setupTeams(stateMachine.getQuizRun().getId());
+    logger.debug("Setup and Team Enroll finished...");
     stateMachine.startQuiz();
-    logger.debug("Setup finished...");
+  }
+
+  private void setupTeams(Long id) {
+    Team team1 = new Team();
+    team1.setName("The wingnuts");
+    team1.setMission("to be wingnuts.");
+    TeamMember tm1 = new TeamMember();
+    tm1.setName("Joey");
+    TeamMember tm2 = new TeamMember();
+    tm2.setName("Freddie");
+    List<TeamMember> teamMemberList1 = new ArrayList<TeamMember>();
+    teamMemberList1.add(tm1);
+    teamMemberList1.add(tm2);
+    team1.setTeamMembers(teamMemberList1);
+    teamService.saveTeam(team1);
+
+    Team team2 = new Team();
+    team2.setName("The bolts");
+    team2.setMission("to be bolted.");
+    tm1 = new TeamMember();
+    tm1.setName("Artie");
+    tm2 = new TeamMember();
+    tm2.setName("Ralph");
+    List<TeamMember> teamMemberList2 = new ArrayList<TeamMember>();
+    teamMemberList2.add(tm1);
+    teamMemberList2.add(tm2);
+    team2.setTeamMembers(teamMemberList2);
+    teamService.saveTeam(team2);
   }
 
   @After
@@ -76,7 +106,7 @@ public class QuizRunStateMachineMemoryTest {
   @Test
   @Transactional
   @DirtiesContext
-  public void testLoadQuizRunFromDatabase() {
+  public void testQuizIsStarted() {
     assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
   }
 

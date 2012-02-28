@@ -53,7 +53,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   private List<Question> questions;
 
   @Override
-  @Transactional  
+  @Transactional
   public void initializeQuiz(Long quizId, String text) {
     Quiz quiz = quizService.findQuiz(quizId);
     quizRun = new QuizRun();
@@ -64,17 +64,19 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     questions = questionService.getQuestionsByQuizId(quiz.getId());
   }
 
+  @Override
   @Transactional
-  public void startQuiz() {
+  public void enrollTeams() {
     assert (runState == QuizRunState.NOT_STARTED);
-    runState = QuizRunState.IN_PROGRESS;
+    runState = QuizRunState.ENROLL_TEAMS;
   }
 
+  @Override
   @Transactional
-  private void setupFirstQuestion() {
+  public void startQuiz() {
     // now, load up our first question...
     assert (questions != null && questions.size() > 0);
-    assert runState == QuizRunState.NOT_STARTED;
+    assert runState == QuizRunState.ENROLL_TEAMS;
 
     runState = QuizRunState.IN_PROGRESS;
     currentQuestionIndex = -1;
@@ -83,14 +85,14 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   @Override
   @Transactional
   public boolean nextQuestion() {
-	if (runState != QuizRunState.IN_PROGRESS) System.err.println("Next Question Failed!"); 
+    if (runState != QuizRunState.IN_PROGRESS) System.err.println("Next Question Failed!");
     assert runState == QuizRunState.IN_PROGRESS;
-    if (currentQuestionIndex + 1 > questions.size()) {
-      runState = QuizRunState.COMPLETE;
-      return false;
-    } else {
+    if (currentQuestionIndex + 1 < questions.size()) {
       currentQuestionIndex++;
       return true;
+    } else {
+      runState = QuizRunState.COMPLETE;
+      return false;
     }
   }
 

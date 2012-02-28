@@ -1,5 +1,5 @@
 package com.chariot.games.quizzo.model;
 
 public enum QuizRunState {
-  NOT_STARTED, IN_PROGRESS, COMPLETE;
+  NOT_STARTED, ENROLL_TEAMS, IN_PROGRESS, COMPLETE;
 }

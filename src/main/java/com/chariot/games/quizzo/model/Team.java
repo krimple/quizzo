@@ -36,6 +36,7 @@ public class Team {
   private Set<Answer> answers = new HashSet<Answer>();
 
   @ManyToOne
+  @JoinColumn(name = "quiz_run_id")
   private QuizRun quizRun;
 
   @Transient

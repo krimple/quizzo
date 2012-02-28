@@ -372,4 +372,9 @@ fieldset th {
 	width: 16px;
 }
 
+.panel {
+
+    border: 2px thin black;
+}
+
 /* Quizzo-specific elements */

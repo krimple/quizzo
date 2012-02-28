@@ -1,65 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu"
-     xmlns:security="http://www.springframework.org/security/tags" id="menu" version="2.0">
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" xmlns:security="http://www.springframework.org/security/tags" id="menu" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <nav>
         <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
             <security:authorize access="hasRole('ROLE_USER')">
                 <menu:category id="c_flows" z="5igpkb/e+HPIN8iUErvmM38Eqqk=">
-                    <menu:item id="i_flows_playquizzo" messageCode="webflow_menu_enter" url="/playQuizzo"
-                               z="0gvSCI5eG1xYEgapEzlkJhJjtu8="/>
+                    <menu:item id="i_flows_playquizzo" messageCode="webflow_menu_enter" url="/playQuizzo" z="0gvSCI5eG1xYEgapEzlkJhJjtu8="/>
                 </menu:category>
             </security:authorize>
             <security:authorize access="hasRole('ROLE_ADMIN')">
                 <menu:category id="c_question" z="SR0L0iZw9fVnYZY0B/dk7XBq6eQ=">
-                    <menu:item id="i_question_new" messageCode="global_menu_new" url="/admin/questions?form"
-                               z="user-managed"/>
-                    <menu:item id="i_question_list" messageCode="global_menu_list"
-                               url="/admin/questions?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_question_new" messageCode="global_menu_new" url="/admin/questions?form" z="user-managed"/>
+                    <menu:item id="i_question_list" messageCode="global_menu_list" url="/admin/questions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
                 <menu:category id="c_quiz" z="ncImBKh7ERj3X+i/kHeBP17/8S8=">
-                    <menu:item id="i_quiz_new" messageCode="global_menu_new" url="/admin/quizzes?form"
-                               z="user-managed"/>
-                    <menu:item id="i_quiz_list" messageCode="global_menu_list"
-                               url="/admin/quizzes?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_quiz_new" messageCode="global_menu_new" url="/admin/quizzes?form" z="user-managed"/>
+                    <menu:item id="i_quiz_list" messageCode="global_menu_list" url="/admin/quizzes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
                 <menu:category id="c_team" z="ohZmKV2mHAiozGa+l7W8lVsp36Q=">
                     <menu:item id="i_team_new" messageCode="global_menu_new" url="/admin/teams?form" z="user-managed"/>
-                    <menu:item id="i_team_list" messageCode="global_menu_list"
-                               url="/admin/teams?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_team_list" messageCode="global_menu_list" url="/admin/teams?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
                 <menu:category id="c_vote" z="+l+uTi5AIPpdgfc7whLR5luw7eU=">
                     <menu:item id="i_vote_new" messageCode="global_menu_new" url="/admin/votes?form" z="user-managed"/>
-                    <menu:item id="i_vote_list" messageCode="global_menu_list"
-                               url="/admin/votes?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_vote_list" messageCode="global_menu_list" url="/admin/votes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
                 <menu:category id="c_quizrun" z="fuemzQZgqxVMlzyB5vrdG1ztG0o=">
-                    <menu:item id="i_quizrun_new" messageCode="global_menu_new" url="/admin/quizruns?form"
-                               z="user-managed"/>
-                    <menu:item id="i_quizrun_list" messageCode="global_menu_list"
-                               url="/admin/quizruns?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_quizrun_new" messageCode="global_menu_new" url="/admin/quizruns?form" z="user-managed"/>
+                    <menu:item id="i_quizrun_list" messageCode="global_menu_list" url="/admin/quizruns?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
                 <menu:category id="c_choice" z="PLrBP+Ue9rzKSMjSbNJbbirwAuI=">
-                    <menu:item id="i_choice_new" messageCode="global_menu_new" url="/admin/choices?form"
-                               z="user-managed"/>
-                    <menu:item id="i_choice_list" messageCode="global_menu_list"
-                               url="/admin/choices?page=1&amp;size=${empty param.size ? 10 : param.size}"
-                               z="user-managed"/>
+                    <menu:item id="i_choice_new" messageCode="global_menu_new" url="/admin/choices?form" z="user-managed"/>
+                    <menu:item id="i_choice_list" messageCode="global_menu_list" url="/admin/choices?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
                 </menu:category>
             </security:authorize>
             <security:authorize access="isAnonymous()">
                 <menu:category id="c_controller" z="nj8Dm3hojIyIEyPkwE1UMDIs+K8=">
-                    <menu:item id="i_controller__quizzoindex_id" messageCode="global_generic" url="/quizzo/index"
-                               z="Vt2gdwqqc5L3Z1/xGy1kEkAt7K4="/>
+                    <menu:item id="i_controller__quizzoindex_id" messageCode="global_generic" url="/quizzo/index" z="Vt2gdwqqc5L3Z1/xGy1kEkAt7K4="/>
+                    <menu:item id="i_controller__admin_moderatorindex_id" messageCode="global_generic" url="/admin/moderator/index" z="QqNkVUBkDD4LygEEPeOdl76ld+4="/>
                 </menu:category>
             </security:authorize>
-
             <menu:category id="c_login_logout" label="Security">
                 <security:authorize access="!isFullyAuthenticated()">
                     <menu:item id="login" label="Login" url="/login"/>

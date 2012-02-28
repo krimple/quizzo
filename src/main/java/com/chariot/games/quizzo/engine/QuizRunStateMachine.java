@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface QuizRunStateMachine {
   void initializeQuiz(Long quizId, String text);
+  void enrollTeams();
   void startQuiz();
   boolean nextQuestion();
   Map<String, BigDecimal> getScores();
