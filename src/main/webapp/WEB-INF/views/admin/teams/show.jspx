@@ -7,5 +7,6 @@
         <field:display field="mission" id="s_com_chariot_games_quizzo_model_Team_mission" object="${team}" z="mtaYjsly8RaPP36Zoed6C0s2ZYs="/>
         <field:display field="teamMembers" id="s_com_chariot_games_quizzo_model_Team_teamMembers" object="${team}" z="b0VaCKY7Q/k0yeeXbU2idxgBMm4="/>
         <field:display field="quizRun" id="s_com_chariot_games_quizzo_model_Team_quizRun" object="${team}" z="IyEStMI+hRlAC7Jtdsa/jJ6vbOY="/>
+        <field:display field="answers" id="s_com_chariot_games_quizzo_model_Team_answers" object="${team}" z="gDoLb5zffMI0oX2SaP8AkOl9WXY="/>
     </page:show>
 </div>

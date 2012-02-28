@@ -5,6 +5,5 @@
     <form:update id="fu_com_chariot_games_quizzo_model_QuizRun" modelAttribute="quizRun" path="/admin/quizruns" versionField="Version" z="xRCXXNjsYZTONMRJOUdV4HPXZWg=">
         <field:select field="quiz" id="c_com_chariot_games_quizzo_model_QuizRun_quiz" itemValue="id" items="${quizes}" path="/admin/quizzes" required="true" z="9LjDJmjnHEHyHACV+52S9+n9Hg8="/>
         <field:textarea field="text" id="c_com_chariot_games_quizzo_model_QuizRun_text" required="true" z="gSp+dzpHaQraGdMu5h1fCF3qcH0="/>
-        <field:input field="runState" id="c_com_chariot_games_quizzo_model_QuizRun_runState" z="HeLLahDqA+3NiHZscrIVWDd186s="/>
     </form:update>
 </div>

@@ -1,14 +1,24 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.*;
-import com.chariot.games.quizzo.service.*;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import com.chariot.games.quizzo.model.Answer;
+import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunState;
+import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.AnswerService;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
+import com.chariot.games.quizzo.service.TeamService;
 
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
@@ -43,7 +53,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   private List<Question> questions;
 
   @Override
-  @Transactional
+  @Transactional  
   public void initializeQuiz(Long quizId, String text) {
     Quiz quiz = quizService.findQuiz(quizId);
     quizRun = new QuizRun();
@@ -71,8 +81,9 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   }
 
   @Override
-  @Transactional(readOnly = true)
+  @Transactional
   public boolean nextQuestion() {
+	if (runState != QuizRunState.IN_PROGRESS) System.err.println("Next Question Failed!"); 
     assert runState == QuizRunState.IN_PROGRESS;
     if (currentQuestionIndex + 1 > questions.size()) {
       runState = QuizRunState.COMPLETE;

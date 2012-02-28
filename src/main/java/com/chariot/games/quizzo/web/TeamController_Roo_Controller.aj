@@ -9,8 +9,6 @@ import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.TeamService;
 import com.chariot.games.quizzo.web.TeamController;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +46,6 @@ privileged aspect TeamController_Roo_Controller {
     @RequestMapping(params = "form", produces = "text/html")
     public String TeamController.createForm(Model uiModel) {
         populateEditForm(uiModel, new Team());
-        List<String[]> dependencies = new ArrayList<String[]>();
-        if (quizRunService.countAllQuizRuns() == 0) {
-            dependencies.add(new String[] { "quizrun", "quizruns" });
-        }
-        uiModel.addAttribute("dependencies", dependencies);
         return "admin/teams/create";
     }
     

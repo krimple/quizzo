@@ -32,8 +32,7 @@ public class Question {
    * the question and the potential choices together, so as to avoid a missing
    * JPA context when accessing the collection.
    */
-  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-      fetch = FetchType.EAGER)
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
   @JoinColumn(name = "question_id")
   private Set<Choice> choices = new HashSet<Choice>();
 }

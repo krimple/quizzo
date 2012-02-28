@@ -35,8 +35,7 @@ public class Team {
   @OneToMany(mappedBy = "team")
   private Set<Answer> answers = new HashSet<Answer>();
 
-  @NotNull
-  @ManyToOne(optional = false)
+  @ManyToOne
   private QuizRun quizRun;
 
   @Transient
@@ -47,5 +46,4 @@ public class Team {
     }
     return score;
   }
-
 }

@@ -5,7 +5,6 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.QuizRunState;
 
 privileged aspect QuizRun_Roo_JavaBean {
     
@@ -23,14 +22,6 @@ privileged aspect QuizRun_Roo_JavaBean {
     
     public void QuizRun.setText(String text) {
         this.text = text;
-    }
-    
-    public QuizRunState QuizRun.getRunState() {
-        return this.runState;
-    }
-    
-    public void QuizRun.setRunState(QuizRunState runState) {
-        this.runState = runState;
     }
     
 }

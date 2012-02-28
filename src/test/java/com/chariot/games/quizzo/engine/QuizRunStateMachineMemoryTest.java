@@ -1,28 +1,36 @@
 package com.chariot.games.quizzo.engine;
 
-import com.chariot.games.quizzo.model.*;
-import com.chariot.games.quizzo.service.QuestionService;
-import com.chariot.games.quizzo.service.QuizRunService;
-import com.chariot.games.quizzo.service.QuizService;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import junit.framework.Assert;
+
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.chariot.games.quizzo.model.Choice;
+import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
+import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.QuestionDataOnDemand;
+import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.model.QuizDataOnDemand;
+import com.chariot.games.quizzo.model.QuizRunState;
+import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
+import com.chariot.games.quizzo.service.QuizService;
 
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/applicationContext*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,12 +75,14 @@ public class QuizRunStateMachineMemoryTest {
 
   @Test
   @Transactional
+  @DirtiesContext
   public void testLoadQuizRunFromDatabase() {
     assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
   }
 
   @Test
   @Transactional
+  @DirtiesContext
   public void testSequentialQuestionIds() {
     Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
     Assert.assertTrue(stateMachine.nextQuestion());
@@ -87,9 +97,10 @@ public class QuizRunStateMachineMemoryTest {
 
   @Test
   @Transactional
+  @DirtiesContext
   public void testFetchAllQuestionsAndDone() {
     Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
       Assert.assertTrue(stateMachine.nextQuestion());
     }
     assertFalse(stateMachine.nextQuestion());
