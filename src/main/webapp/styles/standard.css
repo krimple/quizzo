@@ -382,3 +382,25 @@ fieldset th {
 }
 
 /* Quizzo-specific elements */
+#teamSetupPanel {
+    height: 190px;
+    padding-right: 20px;
+    width: 436px;
+    padding-left: 20px;
+    margin-left: 20px;
+}
+
+.formRow {
+    width: 350px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#teamSetupContentPane {
+    width: 400px;
+    height: 290px;
+}
+
+.formRow {
+}
+

@@ -6,21 +6,23 @@
      xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
      xmlns:c="http://java.sun.com/jsp/jstl/core"
      version="2.0">
-  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-  <jsp:output omit-xml-declaration="yes"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
-    <script>
-      require(["dijit/form/TextBox",
-               "dijit/form/Form",
-               "dijit/form/Select",
-               "dijit/form/Button",
-               "dijit/layout/TabContainer",
-               "dijit/layout/TabController",
-               "dijit/layout/ContentPane",
-               "dojo/domReady!"], function() {
-
-      });
+    <script type="text/javascript">
+        require(["dijit/dijit",
+            "dojo/dom",
+            "dojo/domReady!",
+            "dojo/parser",
+            "dijit/layout/ContentPane",
+            "dijit/form/Form",
+            "dijit/form/TextBox",
+            "dijit/form/Textarea",
+            "dijit/form/Button",
+            "dijit/Dialog",
+            "dijit/form/SimpleTextarea",
+            "dijit/Editor",
+            "dijit/Toolbar"]);
     </script>
-
 </div>

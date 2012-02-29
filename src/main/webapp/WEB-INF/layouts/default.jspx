@@ -11,7 +11,7 @@
     <jsp:output omit-xml-declaration="true"/>
     <jsp:output doctype-root-element="html"
                 doctype-system="about:legacy-compat"/>
-<html lang="en">
+<html>
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -24,7 +24,7 @@
         <tiles:insertAttribute name="headscript" ignore="true"/>
     </head>
 
-    <body class="tundra spring">
+    <body class="claro spring">
     <div id="wrapper">
         <tiles:insertAttribute name="header" ignore="true"/>
         <aside>

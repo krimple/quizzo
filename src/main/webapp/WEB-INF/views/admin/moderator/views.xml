@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="bare" name="admin/moderator/index">
+    <definition extends="default" name="admin/moderator/index">
         <put-attribute name="headscript" value="/WEB-INF/views/admin/moderator/index-js.jspx" />
         <put-attribute name="body" value="/WEB-INF/views/admin/moderator/index.jspx"/>
     </definition>
