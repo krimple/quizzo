@@ -58,10 +58,8 @@
                 dojo.connect(submitTeamButton, "onClick", function () {
                     console.log("submitting a team create request...");
                     var data = {
-                        "quizRun":{
-                            "id":dijit.byId("quizRun").attr("value")
-                        },
-                        "name":dijit.byId("teamName").attr("value"),
+                        "quizRunId": dijit.byId("quizRun").attr("value"),
+                        "teamName":dijit.byId("teamName").attr("value"),
                         "mission":dijit.byId("teamMissionText").attr("value")
                     }
                     var actualData = dojo.toJson(data);
