@@ -21,10 +21,11 @@
 
         <spring:message code="application_name" var="app_name" htmlEscape="false"/>
         <title><spring:message code="welcome_h3" arguments="${app_name}"/></title>
-        <tiles:insertAttribute name="headscript" ignore="true"/>
+        <tiles:insertAttribute name="htmlheaders" ignore="true"/>
     </head>
 
-    <body class="claro spring">
+    <body class="tundra spring">
+    <tiles:insertAttribute name="bodyprecontent" ignore="true" />
     <div id="wrapper">
         <tiles:insertAttribute name="header" ignore="true"/>
         <aside>

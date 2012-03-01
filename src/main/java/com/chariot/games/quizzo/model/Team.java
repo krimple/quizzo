@@ -2,6 +2,7 @@ package com.chariot.games.quizzo.model;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
+import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @RooToString
 @RooJpaEntity
 @RooSerializable
+@RooJson
 public class Team {
 
   @NotNull

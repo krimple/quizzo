@@ -107,7 +107,6 @@ public class QuizRunDebugModeratorController {
 
   @RequestMapping
   public String index(@ModelAttribute("quizSelectionForm") QuizSelectionForm form, Model model) {
-
     return "admin/moderator/index";
   }
 

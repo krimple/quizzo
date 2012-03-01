@@ -10,19 +10,19 @@
     <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
-    <script type="text/javascript">
-        require(["dijit/dijit",
-            "dojo/dom",
-            "dojo/domReady!",
-            "dojo/parser",
-            "dijit/layout/ContentPane",
-            "dijit/form/Form",
-            "dijit/form/TextBox",
-            "dijit/form/Textarea",
-            "dijit/form/Button",
-            "dijit/Dialog",
-            "dijit/form/SimpleTextarea",
-            "dijit/Editor",
-            "dijit/Toolbar"]);
+    <script tpe="text/javascript">
+        dojo.require("dojo.parser");
+        dojo.require("dijit.form.Form");
+        dojo.require("dijit.layout.ContentPane");
+        dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.Select");
+        dojo.require("dijit.Dialog");
+        dojo.require("dijit.form.SimpleTextarea");
+        dojo.require("dijit.Editor");
+        dojo.require("dijit.Toolbar");
+        dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.SimpleTextarea");
+        dojo.require("dijit.layout.StackContainer");
+        dojo.require("dijit.layout.StackController");
     </script>
 </div>

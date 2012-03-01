@@ -241,11 +241,11 @@
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.webflow</groupId>-->
-      <!--<artifactId>spring-js-resources</artifactId>-->
-      <!--<version>2.2.1.RELEASE</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.springframework.webflow</groupId>
+      <artifactId>spring-js-resources</artifactId>
+      <version>2.3.0.RELEASE</version>
+    </dependency>
     <dependency>
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
@@ -348,12 +348,12 @@
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-webflow</artifactId>
       <version>2.3.0.RELEASE</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.webflow</groupId>
-          <artifactId>spring-js-resources</artifactId>
-        </exclusion>
-      </exclusions>
+      <!--<exclusions>-->
+        <!--<exclusion>-->
+          <!--<groupId>org.springframework.webflow</groupId>-->
+          <!--<artifactId>spring-js-resources</artifactId>-->
+        <!--</exclusion>-->
+      <!--</exclusions>-->
     </dependency>
     <dependency>
       <groupId>mysql</groupId>

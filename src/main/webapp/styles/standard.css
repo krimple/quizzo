@@ -391,16 +391,53 @@ fieldset th {
 }
 
 .formRow {
-    width: 350px;
-    padding-left: 20px;
-    padding-right: 20px;
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.formRow label {
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.buttonRow {
+    width: 80%;
+    margin: 20px;
+    padding: 10px;
+    text-align: right;
 }
 
 #teamSetupContentPane {
-    width: 400px;
+    width: 550px;
     height: 290px;
 }
 
-.formRow {
+.formInputField {
+    width: 400px;
 }
+
+.formTextArea {
+    width: 400px;
+}
+
+#quizStackContainer {
+    height: 800px;
+    width: 500px;
+    border: 1px solid blue;
+}
+
+#quizSetupPanel {
+    height: 400px;
+    width: 450px;
+    border: 1px solid red;
+}
+
+
+
+
+
 
