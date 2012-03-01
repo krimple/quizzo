@@ -4,21 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.chariot.games.quizzo.model.*;
+import com.chariot.games.quizzo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.Quiz;
-import com.chariot.games.quizzo.model.QuizRun;
-import com.chariot.games.quizzo.model.QuizRunState;
-import com.chariot.games.quizzo.model.Team;
-import com.chariot.games.quizzo.service.AnswerService;
-import com.chariot.games.quizzo.service.QuestionService;
-import com.chariot.games.quizzo.service.QuizRunService;
-import com.chariot.games.quizzo.service.QuizService;
-import com.chariot.games.quizzo.service.TeamService;
+import com.chariot.games.quizzo.service.AnswerByChoiceService;
 
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
@@ -35,7 +27,10 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   private QuestionService questionService;
 
   @Autowired
-  private AnswerService answerService;
+  private AnswerByChoiceService answerByChoiceService;
+
+  @Autowired
+  private FillInTheBlankAnswerService fillInTheBlankAnswerService;
 
   @Autowired
   private QuizService quizService;
@@ -108,21 +103,30 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Override
   @Transactional
-  public boolean submitAnswer(Team team, Answer answer) {
+  public boolean submitAnswer(Team team, AnswerByChoice answer) {
     // voting over sucker, you are hosed...
     if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
 
     // otherwise, wipe existing answer & save new one
-    List<Answer> existingAnswers = answerService.getAnswersByTeamIdAndQuestionId(
+    List<AnswerByChoice> existingAnswers = answerByChoiceService.getAnswersByTeamIdAndQuestionId(
         team.getId(), answer.getQuestion().getId());
 
     // remove current answer to overwrite with new one
     if (existingAnswers.size() == 1) {
-      answerService.deleteAnswer(existingAnswers.get(0));
+      answerByChoiceService.deleteAnswerByChoice(existingAnswers.get(0));
     }
-    answerService.saveAnswer(answer);
+    answerByChoiceService.saveAnswerByChoice(answer);
     return true;
   }
+
+  @Override
+  @Transactional
+  boolean submitTextAnswer(Team team, FillInTheBlankAnswer answer) {
+    if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
+    if (fillInTheBlankAnswerService.fin)
+    fillInTheBlankAnswerService.deleteFillInTheBlankAnswer(answer);
+  }
+
 
   @Override
   public void endQuiz() {

@@ -21,7 +21,6 @@ import java.util.Set;
 @RooSerializable
 @RooJson
 public class QuizRun {
-
   @NotNull
   @ManyToOne
   @JoinColumn(name = "quiz_id")

@@ -5,6 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
+import java.math.BigDecimal;
 import java.util.Set;
 
 privileged aspect Quiz_Roo_JavaBean {
@@ -23,6 +24,14 @@ privileged aspect Quiz_Roo_JavaBean {
     
     public void Quiz.setDescription(String description) {
         this.description = description;
+    }
+    
+    public BigDecimal Quiz.getDefaultPointValue() {
+        return this.defaultPointValue;
+    }
+    
+    public void Quiz.setDefaultPointValue(BigDecimal defaultPointValue) {
+        this.defaultPointValue = defaultPointValue;
     }
     
     public Set<Question> Quiz.getQuestions() {

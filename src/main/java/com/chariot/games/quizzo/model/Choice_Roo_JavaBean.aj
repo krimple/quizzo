@@ -3,20 +3,11 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.QuestionWithChoices;
 import java.math.BigDecimal;
 
 privileged aspect Choice_Roo_JavaBean {
-    
-    public Answer Choice.getAnswer() {
-        return this.answer;
-    }
-    
-    public void Choice.setAnswer(Answer answer) {
-        this.answer = answer;
-    }
     
     public String Choice.getText() {
         return this.text;
@@ -34,11 +25,11 @@ privileged aspect Choice_Roo_JavaBean {
         this.pointValue = pointValue;
     }
     
-    public Question Choice.getQuestion() {
+    public QuestionWithChoices Choice.getQuestion() {
         return this.question;
     }
     
-    public void Choice.setQuestion(Question question) {
+    public void Choice.setQuestion(QuestionWithChoices question) {
         this.question = question;
     }
     
@@ -48,6 +39,14 @@ privileged aspect Choice_Roo_JavaBean {
     
     public void Choice.setSortOrder(short sortOrder) {
         this.sortOrder = sortOrder;
+    }
+    
+    public boolean Choice.isCorrect() {
+        return this.correct;
+    }
+    
+    public void Choice.setCorrect(boolean correct) {
+        this.correct = correct;
     }
     
 }

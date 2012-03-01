@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers" object="${questionwithfillintheblankanswers}" path="/questionwithfillintheblankanswers" z="iwY1jZpw4hFGtxDTcPSJRmjRGrY=">
+        <field:display field="sortOrder" id="s_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_sortOrder" object="${questionwithfillintheblankanswers}" z="2Hgk0HeZ3WdrQvCdzMvVQKsIxZs="/>
+        <field:display field="quiz" id="s_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_quiz" object="${questionwithfillintheblankanswers}" z="4SEYnxCJ7wsI6mMQpC/HucrNhqQ="/>
+        <field:display field="text" id="s_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_text" object="${questionwithfillintheblankanswers}" z="5Cm8wLl6gclzc2I/1H+3BWl++bg="/>
+        <field:display field="points" id="s_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_points" object="${questionwithfillintheblankanswers}" z="Gr2t0C8uqCwKSh22wgwhWevgpUs="/>
+    </page:show>
+</div>

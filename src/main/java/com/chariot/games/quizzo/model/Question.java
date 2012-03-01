@@ -1,21 +1,19 @@
 package com.chariot.games.quizzo.model;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 @RooJavaBean
 @RooToString
-@RooJpaEntity
+@Entity
 @RooJson
-public class Question {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "question_type", length = 1)
+public abstract class Question {
 
   @NotNull
   @OrderColumn(name = "sort_order")
@@ -25,16 +23,29 @@ public class Question {
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
-  @NotNull
-  @Size(max = 300)
-  private String text;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
+  private Long id;
 
-  /**
-   * Normally not something I'd do, but when taking a quiz question, we always load
-   * the question and the potential choices together, so as to avoid a missing
-   * JPA context when accessing the collection.
-   */
-  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-  @JoinColumn(name = "question_id")
-  private Set<Choice> choices = new HashSet<Choice>();
+  @Version
+  @Column(name = "version")
+  private Integer version;
+
+  public Long getId() {
+    return this.id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Integer getVersion() {
+    return this.version;
+  }
+
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
+
 }

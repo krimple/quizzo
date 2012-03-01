@@ -6,6 +6,7 @@
         <table:table data="${quizes}" id="l_com_chariot_games_quizzo_model_Quiz" path="/admin/quizzes" z="TQXVI0u1aM/5CFHSPJAjeR+XTjw=">
             <table:column id="c_com_chariot_games_quizzo_model_Quiz_title" property="title" z="jgv1oTVNbBvu9iYUynmlORN0SAo="/>
             <table:column id="c_com_chariot_games_quizzo_model_Quiz_description" property="description" z="q8VGsI+/QhJaRZJi67SIKAMAdrg="/>
+            <table:column id="c_com_chariot_games_quizzo_model_Quiz_defaultPointValue" property="defaultPointValue" z="rQhmClIrQ04StA83aLAOt/YleRQ="/>
         </table:table>
     </page:list>
 </div>

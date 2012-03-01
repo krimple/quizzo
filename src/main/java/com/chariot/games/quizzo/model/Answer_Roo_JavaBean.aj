@@ -4,10 +4,9 @@
 package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Answer;
-import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Team;
-import java.util.Set;
+import java.math.BigDecimal;
 
 privileged aspect Answer_Roo_JavaBean {
     
@@ -27,12 +26,12 @@ privileged aspect Answer_Roo_JavaBean {
         this.question = question;
     }
     
-    public Set<Choice> Answer.getChoices() {
-        return this.choices;
+    public BigDecimal Answer.getBonusPoints() {
+        return this.bonusPoints;
     }
     
-    public void Answer.setChoices(Set<Choice> choices) {
-        this.choices = choices;
+    public void Answer.setBonusPoints(BigDecimal bonusPoints) {
+        this.bonusPoints = bonusPoints;
     }
     
 }

@@ -3,10 +3,8 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
-import java.util.Set;
 
 privileged aspect Question_Roo_JavaBean {
     
@@ -24,22 +22,6 @@ privileged aspect Question_Roo_JavaBean {
     
     public void Question.setQuiz(Quiz quiz) {
         this.quiz = quiz;
-    }
-    
-    public String Question.getText() {
-        return this.text;
-    }
-    
-    public void Question.setText(String text) {
-        this.text = text;
-    }
-    
-    public Set<Choice> Question.getChoices() {
-        return this.choices;
-    }
-    
-    public void Question.setChoices(Set<Choice> choices) {
-        this.choices = choices;
     }
     
 }

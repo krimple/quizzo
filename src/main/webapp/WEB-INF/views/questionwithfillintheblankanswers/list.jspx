@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers" items="${questionwithfillintheblankanswerses}" z="MVPvmE/cOHdh0KAlvlNtyH6D+5c=">
+        <table:table data="${questionwithfillintheblankanswerses}" id="l_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers" path="/questionwithfillintheblankanswers" z="Nu85kjtLSY0bKQHCYLHEbjWmcW4=">
+            <table:column id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_sortOrder" property="sortOrder" z="hhffd4fvnqjJtxYPoimWh8ZSiAU="/>
+            <table:column id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_quiz" property="quiz" z="uNCw7JJ5fJCExuXHsz4J2rXqa6w="/>
+            <table:column id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_text" property="text" z="P7SruShTdzswC1JFK1YYyuEdrAU="/>
+            <table:column id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_points" property="points" z="VCcHfFy2657XMoBaJlMhrjZNR8g="/>
+        </table:table>
+    </page:list>
+</div>

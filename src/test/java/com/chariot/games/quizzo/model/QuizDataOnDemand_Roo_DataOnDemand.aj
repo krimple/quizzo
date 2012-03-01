@@ -7,6 +7,7 @@ import com.chariot.games.quizzo.db.QuizRepository;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizDataOnDemand;
 import com.chariot.games.quizzo.service.QuizService;
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,9 +34,15 @@ privileged aspect QuizDataOnDemand_Roo_DataOnDemand {
     
     public Quiz QuizDataOnDemand.getNewTransientQuiz(int index) {
         Quiz obj = new Quiz();
+        setDefaultPointValue(obj, index);
         setDescription(obj, index);
         setTitle(obj, index);
         return obj;
+    }
+    
+    public void QuizDataOnDemand.setDefaultPointValue(Quiz obj, int index) {
+        BigDecimal defaultPointValue = BigDecimal.valueOf(index);
+        obj.setDefaultPointValue(defaultPointValue);
     }
     
     public void QuizDataOnDemand.setDescription(Quiz obj, int index) {

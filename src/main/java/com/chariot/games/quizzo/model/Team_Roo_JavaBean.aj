@@ -6,8 +6,6 @@ package com.chariot.games.quizzo.model;
 import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
-import com.chariot.games.quizzo.model.TeamMember;
-import java.util.List;
 import java.util.Set;
 
 privileged aspect Team_Roo_JavaBean {
@@ -26,14 +24,6 @@ privileged aspect Team_Roo_JavaBean {
     
     public void Team.setMission(String mission) {
         this.mission = mission;
-    }
-    
-    public List<TeamMember> Team.getTeamMembers() {
-        return this.teamMembers;
-    }
-    
-    public void Team.setTeamMembers(List<TeamMember> teamMembers) {
-        this.teamMembers = teamMembers;
     }
     
     public Set<Answer> Team.getAnswers() {

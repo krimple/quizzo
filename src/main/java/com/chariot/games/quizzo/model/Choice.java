@@ -20,24 +20,37 @@ import java.math.BigDecimal;
 @RooJson
 public class Choice {
 
-    @ManyToOne
-    @JoinColumn(name = "answer_id")
-    private Answer answer;
+  @ManyToOne
+  @JoinColumn(name = "answer_id")
+  private AnswerByChoice answer;
 
-    @NotNull
-    @Size(max = 300)
-    private String text;
+  @NotNull
+  @Size(max = 300)
+  private String text;
 
-    @NotNull
-    @DecimalMin("-1000")
-    @DecimalMax("1000")
-    private BigDecimal pointValue;
+  @NotNull
+  @DecimalMin("-1000")
+  @DecimalMax("1000")
+  protected BigDecimal pointValue;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "question_id")
-    private Question question;
+  @NotNull
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "question_id")
+  private QuestionWithChoices question;
 
-    @OrderColumn(name = "sort_order")
-    private short sortOrder;
+  @OrderColumn(name = "sort_order")
+  private short sortOrder;
+
+  @NotNull
+  private boolean correct;
+
+  // TODO: JIRA for fix Roo's stubbornness around super/subs
+  public AnswerByChoice getAnswer() {
+    return this.answer;
+  }
+
+  public void setAnswer(AnswerByChoice answer) {
+    this.answer = answer;
+  }
+
 }

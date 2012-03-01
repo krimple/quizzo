@@ -3,13 +3,9 @@
 
 package com.chariot.games.quizzo.web;
 
-import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
-import com.chariot.games.quizzo.service.ChoiceService;
-import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.service.TeamService;
@@ -24,12 +20,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     declare @type: ApplicationConversionServiceFactoryBean: @Configurable;
     
     @Autowired
-    ChoiceService ApplicationConversionServiceFactoryBean.choiceService;
-    
-    @Autowired
-    QuestionService ApplicationConversionServiceFactoryBean.questionService;
-    
-    @Autowired
     QuizService ApplicationConversionServiceFactoryBean.quizService;
     
     @Autowired
@@ -38,58 +28,10 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     @Autowired
     TeamService ApplicationConversionServiceFactoryBean.teamService;
     
-    public Converter<Choice, String> ApplicationConversionServiceFactoryBean.getChoiceToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Choice, java.lang.String>() {
-            public String convert(Choice choice) {
-                return new StringBuilder().append(choice.getText()).append(" ").append(choice.getPointValue()).append(" ").append(choice.getSortOrder()).toString();
-            }
-        };
-    }
-    
-    public Converter<Long, Choice> ApplicationConversionServiceFactoryBean.getIdToChoiceConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Choice>() {
-            public com.chariot.games.quizzo.model.Choice convert(java.lang.Long id) {
-                return choiceService.findChoice(id);
-            }
-        };
-    }
-    
-    public Converter<String, Choice> ApplicationConversionServiceFactoryBean.getStringToChoiceConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, com.chariot.games.quizzo.model.Choice>() {
-            public com.chariot.games.quizzo.model.Choice convert(String id) {
-                return getObject().convert(getObject().convert(id, Long.class), Choice.class);
-            }
-        };
-    }
-    
-    public Converter<Question, String> ApplicationConversionServiceFactoryBean.getQuestionToStringConverter() {
-        return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Question, java.lang.String>() {
-            public String convert(Question question) {
-                return new StringBuilder().append(question.getSortOrder()).append(" ").append(question.getText()).toString();
-            }
-        };
-    }
-    
-    public Converter<Long, Question> ApplicationConversionServiceFactoryBean.getIdToQuestionConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.Long, com.chariot.games.quizzo.model.Question>() {
-            public com.chariot.games.quizzo.model.Question convert(java.lang.Long id) {
-                return questionService.findQuestion(id);
-            }
-        };
-    }
-    
-    public Converter<String, Question> ApplicationConversionServiceFactoryBean.getStringToQuestionConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, com.chariot.games.quizzo.model.Question>() {
-            public com.chariot.games.quizzo.model.Question convert(String id) {
-                return getObject().convert(getObject().convert(id, Long.class), Question.class);
-            }
-        };
-    }
-    
     public Converter<Quiz, String> ApplicationConversionServiceFactoryBean.getQuizToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<com.chariot.games.quizzo.model.Quiz, java.lang.String>() {
             public String convert(Quiz quiz) {
-                return new StringBuilder().append(quiz.getTitle()).append(" ").append(quiz.getDescription()).toString();
+                return new StringBuilder().append(quiz.getTitle()).append(" ").append(quiz.getDescription()).append(" ").append(quiz.getDefaultPointValue()).toString();
             }
         };
     }
@@ -159,12 +101,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     }
     
     public void ApplicationConversionServiceFactoryBean.installLabelConverters(FormatterRegistry registry) {
-        registry.addConverter(getChoiceToStringConverter());
-        registry.addConverter(getIdToChoiceConverter());
-        registry.addConverter(getStringToChoiceConverter());
-        registry.addConverter(getQuestionToStringConverter());
-        registry.addConverter(getIdToQuestionConverter());
-        registry.addConverter(getStringToQuestionConverter());
         registry.addConverter(getQuizToStringConverter());
         registry.addConverter(getIdToQuizConverter());
         registry.addConverter(getStringToQuizConverter());

@@ -4,7 +4,6 @@ import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
-import com.chariot.games.quizzo.model.TeamMember;
 import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.service.TeamService;
@@ -115,28 +114,13 @@ public class QuizRunDebugModeratorController {
     Team team1 = new Team();
     team1.setName("The wingnuts");
     team1.setMission("to be wingnuts.");
-    TeamMember tm1 = new TeamMember();
-    tm1.setName("Joey");
-    TeamMember tm2 = new TeamMember();
-    tm2.setName("Freddie");
-    List<TeamMember> teamMemberList1 = new ArrayList<TeamMember>();
-    teamMemberList1.add(tm1);
-    teamMemberList1.add(tm2);
-    team1.setTeamMembers(teamMemberList1);
     team1.setQuizRun(quizRun);
     teamService.saveTeam(team1);
 
     Team team2 = new Team();
     team2.setName("The bolts");
     team2.setMission("to be bolted.");
-    tm1 = new TeamMember();
-    tm1.setName("Artie");
-    tm2 = new TeamMember();
-    tm2.setName("Ralph");
-    List<TeamMember> teamMemberList2 = new ArrayList<TeamMember>();
-    teamMemberList2.add(tm1);
-    teamMemberList2.add(tm2);
-    team2.setTeamMembers(teamMemberList2);
+
     team2.setQuizRun(quizRun);
     teamService.saveTeam(team2);
   }

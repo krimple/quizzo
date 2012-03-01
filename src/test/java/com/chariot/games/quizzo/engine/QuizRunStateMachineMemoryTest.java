@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -59,9 +57,21 @@ public class QuizRunStateMachineMemoryTest {
   }
 
   @Before
-  public void setUp() {
+  public void setUpQuizWithChoices() {
     logger.debug("Running setup...");
-    Quiz quiz = setupQuiz();
+    Quiz quiz = setupQuizWithChoiceQuestions();
+    stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
+    stateMachine.enrollTeams();
+    logger.debug("Teams enrolled.");
+    setupTeams(stateMachine.getQuizRun().getId());
+    logger.debug("Setup and Team Enroll finished...");
+    stateMachine.startQuiz();
+  }
+
+  @Before
+  public void setUpQuizWithFillIns() {
+    logger.debug("Running setup...");
+    Quiz quiz = setupQuizWithNotSoChoiceQuestions();
     stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
     stateMachine.enrollTeams();
     logger.debug("Teams enrolled.");
@@ -74,27 +84,11 @@ public class QuizRunStateMachineMemoryTest {
     Team team1 = new Team();
     team1.setName("The wingnuts");
     team1.setMission("to be wingnuts.");
-    TeamMember tm1 = new TeamMember();
-    tm1.setName("Joey");
-    TeamMember tm2 = new TeamMember();
-    tm2.setName("Freddie");
-    List<TeamMember> teamMemberList1 = new ArrayList<TeamMember>();
-    teamMemberList1.add(tm1);
-    teamMemberList1.add(tm2);
-    team1.setTeamMembers(teamMemberList1);
     teamService.saveTeam(team1);
 
     Team team2 = new Team();
     team2.setName("The bolts");
     team2.setMission("to be bolted.");
-    tm1 = new TeamMember();
-    tm1.setName("Artie");
-    tm2 = new TeamMember();
-    tm2.setName("Ralph");
-    List<TeamMember> teamMemberList2 = new ArrayList<TeamMember>();
-    teamMemberList2.add(tm1);
-    teamMemberList2.add(tm2);
-    team2.setTeamMembers(teamMemberList2);
     teamService.saveTeam(team2);
   }
 
@@ -136,14 +130,15 @@ public class QuizRunStateMachineMemoryTest {
     assertFalse(stateMachine.nextQuestion());
     assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState());
   }
-
-  private Quiz setupQuiz() {
+    /* TODO - broken window here - need tests against each type of question and choice
+       however, Roo doesn't support super/subtypes in DoD - temp boo.
+  private Quiz setupQuizWithChoices() {
     QuizDataOnDemand dod = new QuizDataOnDemand();
     Quiz quiz = dod.getRandomQuiz();
-    QuestionDataOnDemand qdod = new QuestionDataOnDemand();
+    QuestionWithChoicesDataOnDemand qdod = new QuestionWithChoicesDataOnDemand();
     for (int i = 0; i < 5; i++) {
       ChoiceDataOnDemand cdod = new ChoiceDataOnDemand();
-      Question q = qdod.getNewTransientQuestion(i);
+      QuestionWithChoices q = qdod.
       q.setQuiz(quiz);
       quiz.getQuestions().add(q);
       for (int j = 0; j < 5; j++) {
@@ -158,4 +153,48 @@ public class QuizRunStateMachineMemoryTest {
     em.clear();
     return quiz;
   }
+  */
+    private Quiz setupQuizWithChoiceQuestions() {
+      QuizDataOnDemand dod = new QuizDataOnDemand();
+      Quiz quiz = dod.getRandomQuiz();
+
+      for (short i = 0; i < 5; i++) {
+
+        QuestionWithChoices q = new QuestionWithChoices();
+        q.setQuiz(quiz);
+        q.setSortOrder(i);
+
+        for (int j = 0; j < 5; j++) {
+          Choice c = new Choice();
+          c.setQuestion(q);
+          c.setCorrect(j % 2 == 0);
+          q.getChoices().add(c);
+        }
+      }
+      quizService.saveQuiz(quiz);
+
+      em.flush();
+      em.clear();
+      return quiz;
+    }
+
+  private Quiz setupQuizWithNotSoChoiceQuestions() {
+    QuizDataOnDemand dod = new QuizDataOnDemand();
+    Quiz quiz = dod.getRandomQuiz();
+
+    for (short i = 0; i < 5; i++) {
+
+      QuestionWithFillInTheBlankAnswers q = new QuestionWithFillInTheBlankAnswers();
+      q.setQuiz(quiz);
+      q.setSortOrder(i);
+    }
+    quizService.saveQuiz(quiz);
+
+    em.flush();
+    em.clear();
+    return quiz;
+  }
+
+
+
 }

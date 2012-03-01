@@ -2,7 +2,7 @@ package com.chariot.games.quizzo.web.flow;
 
 import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.*;
-import com.chariot.games.quizzo.service.AnswerService;
+import com.chariot.games.quizzo.service.AnswerByChoiceService;
 import com.chariot.games.quizzo.service.ChoiceService;
 import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.service.TeamService;
@@ -18,7 +18,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @Component("quizzoFlowManager")
@@ -39,7 +38,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
   private QuizRunStateMachine stateMachine;
 
   @Autowired
-  private AnswerService answerService;
+  private AnswerByChoiceService answerByChoiceService;
 
   @Override
   public Event saveTeamData(RequestContext flowRequestContext) throws FlowException {
@@ -48,14 +47,6 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
     Team team = new Team();
     team.setName(teamSetupForm.getName());
     team.setMission(teamSetupForm.getMessage());
-    Iterator<String> memberNamesIterator = teamSetupForm.getTeamMemberNames().iterator();
-    while (memberNamesIterator.hasNext()) {
-      String teamMemberName = memberNamesIterator.next();
-      TeamMember member = new TeamMember();
-      member.setName(teamMemberName);
-      team.getTeamMembers().add(member);
-    }
-
     team.setQuizRun(stateMachine.getQuizRun());
     teamService.saveTeam(team);
     flowRequestContext.getFlowScope().put("team", team);
@@ -110,14 +101,14 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
   public void finalizeAnswers(RequestContext flowRequestContext)  throws FlowException {
     MutableAttributeMap viewScope = flowRequestContext.getViewScope();
     //TODO - perhaps delegate all finalization by answer type
-    Answer answer = new Answer();
-    Question question = (Question) viewScope.get("question");
-    answer.setQuestion(question);
-    Map<Long, Boolean> answers = (Map<Long, Boolean>)viewScope.get("answers");
-    for (Long choiceId : answers.keySet()) {
-      Choice choice = choiceService.findChoice(choiceId);
-      answer.getChoices().add(choice);
-    }
-    answerService.saveAnswer(answer);
+//    Answer answer = new Answer();
+//    Question question = (Question) viewScope.get("question");
+//    answer.setQuestion(question);
+//    Map<Long, Boolean> answers = (Map<Long, Boolean>)viewScope.get("answers");
+//    for (Long choiceId : answers.keySet()) {
+//      Choice choice = choiceService.findChoice(choiceId);
+//      answer.getChoices().add(choice);
+//    }
+//    answerByChoiceService.saveAnswer(answer);
   }
 }

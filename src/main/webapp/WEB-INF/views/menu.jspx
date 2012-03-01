@@ -49,6 +49,14 @@
                     <menu:item id="logout" label="Logout" url="/resources/j_spring_security_logout"/>
                 </security:authorize>
             </menu:category>
+            <menu:category id="c_questionwithfillintheblankanswers" z="onssvJMEAUJ2lOLDsScw2vjhwXY=">
+                <menu:item id="i_questionwithfillintheblankanswers_new" messageCode="global_menu_new" url="/questionwithfillintheblankanswers?form" z="9v7FeDuTCv7sZXbKO3RS0PPFbPI="/>
+                <menu:item id="i_questionwithfillintheblankanswers_list" messageCode="global_menu_list" url="/questionwithfillintheblankanswers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="G96WQ3IH0ixjaqcU9EwlVtD3VrE="/>
+            </menu:category>
+            <menu:category id="c_questionwithchoices" z="iQjUMIV7fLT4r8sDDTwSDP4BERE=">
+                <menu:item id="i_questionwithchoices_new" messageCode="global_menu_new" url="/questionwithchoices?form" z="6bZ4h4A8UuI06vUUZ45oV0j3hI8="/>
+                <menu:item id="i_questionwithchoices_list" messageCode="global_menu_list" url="/questionwithchoices?page=1&amp;size=${empty param.size ? 10 : param.size}" z="AJlwiWiDEsyCCVrzWCOCH8IYAtw="/>
+            </menu:category>
         </menu:menu>
     </nav>
 </div>

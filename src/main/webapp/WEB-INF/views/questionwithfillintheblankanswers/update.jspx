@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers" modelAttribute="questionWithFillInTheBlankAnswers" path="/questionwithfillintheblankanswers" versionField="Version" z="SfBQ9zz3AkwgLFvytE85GYy6qak=">
+        <field:input field="sortOrder" id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_sortOrder" required="true" z="yGoasLIydnPSPXrZmAoHDXaWgOM="/>
+        <field:input field="quiz" id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_quiz" z="I5Gv9Y5oYna95vhaPUYvab17Sos="/>
+        <field:textarea field="text" id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_text" required="true" z="y9kAMNcpw3rUPuv4VJhnbwR6ezw="/>
+        <field:input field="points" id="c_com_chariot_games_quizzo_model_QuestionWithFillInTheBlankAnswers_points" required="true" validationMessageCode="field_invalid_number" z="JJQ2iq2T9P2NS1Db4uqyn9ayPFg="/>
+    </form:update>
+</div>

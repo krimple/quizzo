@@ -8,6 +8,7 @@ import java.util.List;
 
 @RooJpaRepository(domainType = Answer.class)
 public interface AnswerRepository {
-  @Query("SELECT a FROM Answer AS a WHERE a.team.id = ?1 AND a.question.id = ?2")
-  public List<Answer> getAnswersByTeamIdAndQuestionId(Long teamId, Long questionId);
+    @Query("SELECT a FROM Answer AS a WHERE a.team.id = ?1 AND a.question.id = ?2")
+    public List<Answer> getAnswersByTeamIdAndQuestionId(Long teamId, Long questionId);
 }
+

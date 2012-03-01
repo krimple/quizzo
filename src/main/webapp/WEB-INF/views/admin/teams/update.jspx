@@ -5,8 +5,6 @@
     <form:update id="fu_com_chariot_games_quizzo_model_Team" modelAttribute="team" path="/admin/teams" versionField="Version" z="nZ6FTKAUST2zhKMFZJ6CriPEB5A=">
         <field:textarea field="name" id="c_com_chariot_games_quizzo_model_Team_name" required="true" z="lA67gp6mr49AVIt1CMtQK3WezaU="/>
         <field:input field="mission" id="c_com_chariot_games_quizzo_model_Team_mission" required="true" z="o5HpBXK200Sb0QhTq3iLjy+afH8="/>
-        <field:input field="teamMembers" id="c_com_chariot_games_quizzo_model_Team_teamMembers" z="q4Vrmxa0PF6yCc/msfWI9pV6V6U="/>
-        <field:input field="answers" id="c_com_chariot_games_quizzo_model_Team_answers" z="vhkALLPykOfWxX+UICjrYMbD+Go="/>
-        <field:input field="quizRun" id="c_com_chariot_games_quizzo_model_Team_quizRun" z="edPnGjcqwgA4aIVwYpzH2rQibbo="/>
+        <field:select field="quizRun" id="c_com_chariot_games_quizzo_model_Team_quizRun" itemValue="id" items="${quizruns}" path="/admin/quizruns" z="jUTeab7AixnRlVkOtGhq3VEpueY="/>
     </form:update>
 </div>

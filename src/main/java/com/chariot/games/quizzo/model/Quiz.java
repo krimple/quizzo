@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class Quiz {
     @NotNull
     @Size(max = 500)
     private String description;
+
+    @NotNull
+    private BigDecimal defaultPointValue = new BigDecimal("100.0");
 
     @OneToMany(mappedBy = "quiz",
         cascade = {CascadeType.PERSIST, CascadeType.MERGE})

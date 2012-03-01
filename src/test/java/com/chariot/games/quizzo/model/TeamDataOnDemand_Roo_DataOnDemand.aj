@@ -5,6 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.db.TeamRepository;
 import com.chariot.games.quizzo.model.QuizRun;
+import com.chariot.games.quizzo.model.QuizRunDataOnDemand;
 import com.chariot.games.quizzo.model.Team;
 import com.chariot.games.quizzo.model.TeamDataOnDemand;
 import com.chariot.games.quizzo.service.TeamService;
@@ -25,6 +26,9 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
     private Random TeamDataOnDemand.rnd = new SecureRandom();
     
     private List<Team> TeamDataOnDemand.data;
+    
+    @Autowired
+    private QuizRunDataOnDemand TeamDataOnDemand.quizRunDataOnDemand;
     
     @Autowired
     TeamService TeamDataOnDemand.teamService;
@@ -54,7 +58,7 @@ privileged aspect TeamDataOnDemand_Roo_DataOnDemand {
     }
     
     public void TeamDataOnDemand.setQuizRun(Team obj, int index) {
-        QuizRun quizRun = null;
+        QuizRun quizRun = quizRunDataOnDemand.getRandomQuizRun();
         obj.setQuizRun(quizRun);
     }
     

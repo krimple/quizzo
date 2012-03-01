@@ -6,13 +6,14 @@ import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.serializable.RooSerializable;
 import org.springframework.roo.addon.tostring.RooToString;
 
-import javax.persistence.*;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @RooJavaBean
@@ -28,11 +29,6 @@ public class Team {
 
   @NotNull
   private String mission;
-
-  @ElementCollection
-  @JoinTable(name = "team_members")
-  @JoinColumn(name="team_id")
-  private List<TeamMember> teamMembers = new ArrayList<TeamMember>();
 
   @OneToMany(mappedBy = "team")
   private Set<Answer> answers = new HashSet<Answer>();
