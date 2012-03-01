@@ -13,8 +13,7 @@
 
 
     <div dojoType="dijit.form.Form" id="quizSetupForm">
-        <h2 style="text-align: center;">Create Quiz</h2>
-
+        <fieldset>
         <div class="formRow">
             <label for="quizTitle">Quiz Title:</label>
             <input id="quizTitle"
@@ -32,36 +31,39 @@
         <div class="formRow">
             <div id="quizAjaxResult"></div>
         </div>
-
         <div class="submitQuizInformation">
             <button id="submitQuizButton" type="button"
-                    dojoType="dijit.form.Button">Create quiz!</button>
+                    dojoType="dijit.form.Button">Create quiz!
+            </button>
         </div>
+        </fieldset>
 
         <script type="text/javascript">
             dojo.addOnLoad(function () {
                 console.log("wiring submitQuizButton");
                 var submitQuizButton = dojo.byId("submitQuizButton");
-                dojo.connect(submitQuizButton, "onclick", function() {
+                dojo.connect(submitQuizButton, "onclick", function () {
                     console.log("submitting a quiz form...");
                     var data = {
-                        "title": dijit.byId('quizTitle').attr("value"),
-                        "description": dijit.byId('quizDescription').attr("value") };
+                        "title":dijit.byId('quizTitle').attr("value"),
+                        "description":dijit.byId('quizDescription').attr("value") };
                     var actualData = dojo.toJson(data);
                     console.log("Json data is", actualData);
                     dojo.xhrPost({
-                        url: "${quiz_url}",
-                        postData: actualData,
-                        headers: {"Content-Type": "application/json"}, 
-                        load: function (response, ioArgs) {
+                        url:"${quiz_url}",
+                        postData:actualData,
+                        headers:{"Content-Type":"application/json"},
+                        load:function (response, ioArgs) {
                             console.log("Success!", response);
                             console.log("io Arguments", ioArgs);
+                            alert("Quiz created.");
                             // move forward to next panel
-                            dijit.byId("quizStackContainer").forward();
+                            // dijit.byId("quizStackContainer").forward();
                         },
                         error:function (errorCode) {
                             console.log("Error triggered from xhrPost", errorCode);
-                            dojo.byId('quizAjaxResult').innerHTML = "error: " + errorCode;
+                            alert("Quiz create failed. Reason: " + errorCode);
+
                         },
                         handleAs:"json"});
                     console.log("finished submitting the quiz.");

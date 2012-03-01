@@ -12,7 +12,7 @@
     <spring:url value="/admin/moderator_ajax/team" var="team_url" scope="page"/>
 
 
-    <div dojoType="dijit.form.Form" id="teamSetupForm" style="width: 100%">
+    <div dojoType="dijit.form.Form" id="teamSetupForm">
         <h2 style="text-align: center;">Create Team</h2>
 
         <div class="formRow">
@@ -70,12 +70,15 @@
                         load:function (response, ioArgs) {
                             console.log("Success!", response);
                             console.log("io Arguments", ioArgs);
+                            alert("Team Created.");
                             // move forward to next panel
-                            dijit.byId("quizStackContainer").forward();
+
+                            // dijit.byId("quizStackContainer").forward();
                         },
                         error:function (errorCode) {
                             console.log("Error triggered from xhrPost", errorCode);
                             dojo.byId('quizAjaxResult').innerHTML = "error: " + errorCode;
+                            alert("Team create failed. Reason: " + errorCode);
                         },
                         handleAs:"json"});
                     console.log("finished submitting the team.");

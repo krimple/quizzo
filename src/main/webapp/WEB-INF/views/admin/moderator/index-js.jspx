@@ -20,6 +20,7 @@
         dojo.require("dijit.form.SimpleTextarea");
         dojo.require("dijit.Editor");
         dojo.require("dijit.Toolbar");
+        dojo.require("dijit.layout.TabContainer");
         dojo.require("dijit.form.Button");
         dojo.require("dijit.form.SimpleTextarea");
         dojo.require("dijit.layout.StackContainer");

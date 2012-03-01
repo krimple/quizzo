@@ -14,9 +14,6 @@
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
 
-    <h3>
-        Admin tool
-    </h3>
 
     <c:if test="${not empty statusMessage}">
         <div id="statusPanel">
@@ -26,11 +23,12 @@
 
     </c:if>
 
-    <div dojoType="dijit.layout.StackContainer" id="quizStackContainer">
+    <div dojoType="dijit.layout.TabContainer" id="moderatorTabContainer">
 
         <tiles:insertAttribute name="quizSetupPanel"/>
         <tiles:insertAttribute name="teamSetupPanel"/>
        <!-- <tiles:insertAttribute name="teamMembersSetupPanel"/> -->
 
     </div>
+
 </div>
