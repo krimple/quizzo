@@ -63,7 +63,6 @@ public class QuizzoFlowPollingTest extends AbstractXmlFlowExecutionTests {
     for (String teamMember : names) {
       teamMembers.add(teamMember);
     }
-    form.setTeamMemberNames(teamMembers);
     return form;
   }
 

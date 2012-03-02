@@ -3,11 +3,11 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.AnswerByChoiceIntegrationTest;
+import com.chariot.games.quizzo.model.QuestionIntegrationTest;
 import org.springframework.beans.factory.annotation.Configurable;
 
-privileged aspect AnswerByChoiceIntegrationTest_Roo_Configurable {
+privileged aspect QuestionIntegrationTest_Roo_Configurable {
     
-    declare @type: AnswerByChoiceIntegrationTest: @Configurable;
+    declare @type: QuestionIntegrationTest: @Configurable;
     
 }

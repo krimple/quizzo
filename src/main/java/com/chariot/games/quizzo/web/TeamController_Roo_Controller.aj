@@ -4,6 +4,7 @@
 package com.chariot.games.quizzo.web;
 
 import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.AnswerService;
 import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.TeamService;
 import com.chariot.games.quizzo.web.TeamController;
@@ -24,6 +25,9 @@ privileged aspect TeamController_Roo_Controller {
     
     @Autowired
     TeamService TeamController.teamService;
+    
+    @Autowired
+    AnswerService TeamController.answerService;
     
     @Autowired
     QuizRunService TeamController.quizRunService;
@@ -95,6 +99,7 @@ privileged aspect TeamController_Roo_Controller {
     
     void TeamController.populateEditForm(Model uiModel, Team team) {
         uiModel.addAttribute("team", team);
+        uiModel.addAttribute("answers", answerService.findAllAnswers());
         uiModel.addAttribute("quizruns", quizRunService.findAllQuizRuns());
     }
     

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(locations = {"classpath*:META-INF/spring/applicationContext*.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(defaultRollback = false)
 public class QuizRunStateMachineMemoryTest {
 
   private static Logger logger = Logger.getLogger(QuizRunStateMachineMemoryTest.class);
@@ -59,7 +59,7 @@ public class QuizRunStateMachineMemoryTest {
   @Before
   public void setUpQuizWithChoices() {
     logger.debug("Running setup...");
-    Quiz quiz = setupQuizWithChoiceQuestions();
+    Quiz quiz = setupQuizWithQuestions();
     stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
     stateMachine.enrollTeams();
     logger.debug("Teams enrolled.");
@@ -68,17 +68,6 @@ public class QuizRunStateMachineMemoryTest {
     stateMachine.startQuiz();
   }
 
-  @Before
-  public void setUpQuizWithFillIns() {
-    logger.debug("Running setup...");
-    Quiz quiz = setupQuizWithNotSoChoiceQuestions();
-    stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
-    stateMachine.enrollTeams();
-    logger.debug("Teams enrolled.");
-    setupTeams(stateMachine.getQuizRun().getId());
-    logger.debug("Setup and Team Enroll finished...");
-    stateMachine.startQuiz();
-  }
 
   private void setupTeams(Long id) {
     Team team1 = new Team();
@@ -130,20 +119,25 @@ public class QuizRunStateMachineMemoryTest {
     assertFalse(stateMachine.nextQuestion());
     assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState());
   }
-    /* TODO - broken window here - need tests against each type of question and choice
-       however, Roo doesn't support super/subtypes in DoD - temp boo.
-  private Quiz setupQuizWithChoices() {
+
+  private Quiz setupQuizWithQuestions() {
     QuizDataOnDemand dod = new QuizDataOnDemand();
+    QuestionDataOnDemand qdod = new QuestionDataOnDemand();
     Quiz quiz = dod.getRandomQuiz();
-    QuestionWithChoicesDataOnDemand qdod = new QuestionWithChoicesDataOnDemand();
-    for (int i = 0; i < 5; i++) {
-      ChoiceDataOnDemand cdod = new ChoiceDataOnDemand();
-      QuestionWithChoices q = qdod.
-      q.setQuiz(quiz);
+
+    for (short i = 0; i < 5; i++) {
+
+      Question q = qdod.getNewTransientQuestion(i);
       quiz.getQuestions().add(q);
+      q.setQuiz(quiz);
+      q.setSortOrder(i);
+
       for (int j = 0; j < 5; j++) {
-        Choice c = cdod.getNewTransientChoice(i);
+        ChoiceDataOnDemand cdod = new ChoiceDataOnDemand();
+        Choice c = cdod.getNewTransientChoice(j);
         c.setQuestion(q);
+        c.setPointValue(new BigDecimal("3.0"));
+        c.setCorrect(j % 2 == 0);
         q.getChoices().add(c);
       }
     }
@@ -153,48 +147,4 @@ public class QuizRunStateMachineMemoryTest {
     em.clear();
     return quiz;
   }
-  */
-    private Quiz setupQuizWithChoiceQuestions() {
-      QuizDataOnDemand dod = new QuizDataOnDemand();
-      Quiz quiz = dod.getRandomQuiz();
-
-      for (short i = 0; i < 5; i++) {
-
-        QuestionWithChoices q = new QuestionWithChoices();
-        q.setQuiz(quiz);
-        q.setSortOrder(i);
-
-        for (int j = 0; j < 5; j++) {
-          Choice c = new Choice();
-          c.setQuestion(q);
-          c.setCorrect(j % 2 == 0);
-          q.getChoices().add(c);
-        }
-      }
-      quizService.saveQuiz(quiz);
-
-      em.flush();
-      em.clear();
-      return quiz;
-    }
-
-  private Quiz setupQuizWithNotSoChoiceQuestions() {
-    QuizDataOnDemand dod = new QuizDataOnDemand();
-    Quiz quiz = dod.getRandomQuiz();
-
-    for (short i = 0; i < 5; i++) {
-
-      QuestionWithFillInTheBlankAnswers q = new QuestionWithFillInTheBlankAnswers();
-      q.setQuiz(quiz);
-      q.setSortOrder(i);
-    }
-    quizService.saveQuiz(quiz);
-
-    em.flush();
-    em.clear();
-    return quiz;
-  }
-
-
-
 }

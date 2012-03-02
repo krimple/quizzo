@@ -1,8 +1,9 @@
 package com.chariot.games.quizzo.web.flow;
 
 import com.chariot.games.quizzo.engine.QuizRunStateMachine;
-import com.chariot.games.quizzo.model.*;
-import com.chariot.games.quizzo.service.AnswerByChoiceService;
+import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.Team;
+import com.chariot.games.quizzo.service.AnswerService;
 import com.chariot.games.quizzo.service.ChoiceService;
 import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.service.TeamService;
@@ -38,7 +39,7 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
   private QuizRunStateMachine stateMachine;
 
   @Autowired
-  private AnswerByChoiceService answerByChoiceService;
+  private AnswerService answerService;
 
   @Override
   public Event saveTeamData(RequestContext flowRequestContext) throws FlowException {

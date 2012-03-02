@@ -1,16 +1,14 @@
 package com.chariot.games.quizzo.engine;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-
 import com.chariot.games.quizzo.model.*;
 import com.chariot.games.quizzo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chariot.games.quizzo.service.AnswerByChoiceService;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @Component(value = "quizStateMachine")
 public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
@@ -27,10 +25,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   private QuestionService questionService;
 
   @Autowired
-  private AnswerByChoiceService answerByChoiceService;
-
-  @Autowired
-  private FillInTheBlankAnswerService fillInTheBlankAnswerService;
+  private AnswerService answerService;
 
   @Autowired
   private QuizService quizService;
@@ -103,28 +98,20 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   @Override
   @Transactional
-  public boolean submitAnswer(Team team, AnswerByChoice answer) {
+  public boolean submitAnswer(Team team, Answer answer) {
     // voting over sucker, you are hosed...
     if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
 
     // otherwise, wipe existing answer & save new one
-    List<AnswerByChoice> existingAnswers = answerByChoiceService.getAnswersByTeamIdAndQuestionId(
+    List<Answer> existingAnswers = answerService.getAnswersByTeamIdAndQuestionId(
         team.getId(), answer.getQuestion().getId());
 
     // remove current answer to overwrite with new one
-    if (existingAnswers.size() == 1) {
-      answerByChoiceService.deleteAnswerByChoice(existingAnswers.get(0));
-    }
-    answerByChoiceService.saveAnswerByChoice(answer);
+//    if (existingAnswers.size() == 1) {
+//      answerService.deleteAnswer(existingAnswers.get(0));
+//    }
+//    answerService.saveAnswerByChoice(answer);
     return true;
-  }
-
-  @Override
-  @Transactional
-  boolean submitTextAnswer(Team team, FillInTheBlankAnswer answer) {
-    if (!getCurrentQuestionId().equals(answer.getQuestion().getId())) return false;
-    if (fillInTheBlankAnswerService.fin)
-    fillInTheBlankAnswerService.deleteFillInTheBlankAnswer(answer);
   }
 
 

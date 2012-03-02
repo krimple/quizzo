@@ -4,7 +4,7 @@
 package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.QuestionWithChoices;
+import com.chariot.games.quizzo.model.Question;
 import java.math.BigDecimal;
 
 privileged aspect Choice_Roo_JavaBean {
@@ -25,11 +25,11 @@ privileged aspect Choice_Roo_JavaBean {
         this.pointValue = pointValue;
     }
     
-    public QuestionWithChoices Choice.getQuestion() {
+    public Question Choice.getQuestion() {
         return this.question;
     }
     
-    public void Choice.setQuestion(QuestionWithChoices question) {
+    public void Choice.setQuestion(Question question) {
         this.question = question;
     }
     

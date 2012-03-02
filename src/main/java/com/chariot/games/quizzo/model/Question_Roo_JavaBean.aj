@@ -3,10 +3,20 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
+import java.util.Set;
 
 privileged aspect Question_Roo_JavaBean {
+    
+    public String Question.getQuestionText() {
+        return this.questionText;
+    }
+    
+    public void Question.setQuestionText(String questionText) {
+        this.questionText = questionText;
+    }
     
     public short Question.getSortOrder() {
         return this.sortOrder;
@@ -22,6 +32,14 @@ privileged aspect Question_Roo_JavaBean {
     
     public void Question.setQuiz(Quiz quiz) {
         this.quiz = quiz;
+    }
+    
+    public Set<Choice> Question.getChoices() {
+        return this.choices;
+    }
+    
+    public void Question.setChoices(Set<Choice> choices) {
+        this.choices = choices;
     }
     
 }

@@ -20,10 +20,6 @@ import java.math.BigDecimal;
 @RooJson
 public class Choice {
 
-  @ManyToOne
-  @JoinColumn(name = "answer_id")
-  private AnswerByChoice answer;
-
   @NotNull
   @Size(max = 300)
   private String text;
@@ -36,21 +32,12 @@ public class Choice {
   @NotNull
   @ManyToOne(optional = false)
   @JoinColumn(name = "question_id")
-  private QuestionWithChoices question;
+  private Question question;
 
   @OrderColumn(name = "sort_order")
   private short sortOrder;
 
   @NotNull
   private boolean correct;
-
-  // TODO: JIRA for fix Roo's stubbornness around super/subs
-  public AnswerByChoice getAnswer() {
-    return this.answer;
-  }
-
-  public void setAnswer(AnswerByChoice answer) {
-    this.answer = answer;
-  }
 
 }

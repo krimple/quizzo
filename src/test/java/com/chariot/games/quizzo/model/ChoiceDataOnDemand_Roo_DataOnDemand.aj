@@ -3,9 +3,11 @@
 
 package com.chariot.games.quizzo.model;
 
-import com.chariot.games.quizzo.model.AnswerByChoiceDataOnDemand;
+import com.chariot.games.quizzo.db.ChoiceRepository;
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
+import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.model.QuestionDataOnDemand;
 import com.chariot.games.quizzo.service.ChoiceService;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
@@ -27,14 +29,16 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     private List<Choice> ChoiceDataOnDemand.data;
     
     @Autowired
-    private AnswerByChoiceDataOnDemand ChoiceDataOnDemand.answerByChoiceDataOnDemand;
+    private QuestionDataOnDemand ChoiceDataOnDemand.questionDataOnDemand;
     
     @Autowired
     ChoiceService ChoiceDataOnDemand.choiceService;
     
+    @Autowired
+    ChoiceRepository ChoiceDataOnDemand.choiceRepository;
+    
     public Choice ChoiceDataOnDemand.getNewTransientChoice(int index) {
         Choice obj = new Choice();
-        setAnswer(obj, index);
         setCorrect(obj, index);
         setPointValue(obj, index);
         setQuestion(obj, index);
@@ -54,6 +58,11 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
             pointValue = new BigDecimal("1000");
         }
         obj.setPointValue(pointValue);
+    }
+    
+    public void ChoiceDataOnDemand.setQuestion(Choice obj, int index) {
+        Question question = questionDataOnDemand.getRandomQuestion();
+        obj.setQuestion(question);
     }
     
     public void ChoiceDataOnDemand.setSortOrder(Choice obj, int index) {
@@ -117,6 +126,7 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
                 }
                 throw new RuntimeException(msg.toString(), e);
             }
+            choiceRepository.flush();
             data.add(obj);
         }
     }

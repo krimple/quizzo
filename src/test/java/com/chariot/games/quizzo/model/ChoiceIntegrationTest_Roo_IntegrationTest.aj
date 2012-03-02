@@ -3,6 +3,7 @@
 
 package com.chariot.games.quizzo.model;
 
+import com.chariot.games.quizzo.db.ChoiceRepository;
 import com.chariot.games.quizzo.model.ChoiceDataOnDemand;
 import com.chariot.games.quizzo.model.ChoiceIntegrationTest;
 import com.chariot.games.quizzo.service.ChoiceService;
@@ -28,6 +29,9 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     
     @Autowired
     ChoiceService ChoiceIntegrationTest.choiceService;
+    
+    @Autowired
+    ChoiceRepository ChoiceIntegrationTest.choiceRepository;
     
     @Test
     public void ChoiceIntegrationTest.testCountAllChoices() {
@@ -70,6 +74,20 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     }
     
     @Test
+    public void ChoiceIntegrationTest.testFlush() {
+        Choice obj = dod.getRandomChoice();
+        Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
+        Long id = obj.getId();
+        Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
+        obj = choiceService.findChoice(id);
+        Assert.assertNotNull("Find method for 'Choice' illegally returned null for id '" + id + "'", obj);
+        boolean modified =  dod.modifyChoice(obj);
+        Integer currentVersion = obj.getVersion();
+        choiceRepository.flush();
+        Assert.assertTrue("Version for 'Choice' failed to increment on flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
+    }
+    
+    @Test
     public void ChoiceIntegrationTest.testUpdateChoiceUpdate() {
         Choice obj = dod.getRandomChoice();
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", obj);
@@ -79,6 +97,7 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
         boolean modified =  dod.modifyChoice(obj);
         Integer currentVersion = obj.getVersion();
         Choice merged = choiceService.updateChoice(obj);
+        choiceRepository.flush();
         Assert.assertEquals("Identifier of merged object not the same as identifier of original object", merged.getId(), id);
         Assert.assertTrue("Version for 'Choice' failed to increment on merge and flush directive", (currentVersion != null && obj.getVersion() > currentVersion) || !modified);
     }
@@ -90,6 +109,7 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Choice' identifier to be null", obj.getId());
         choiceService.saveChoice(obj);
+        choiceRepository.flush();
         Assert.assertNotNull("Expected 'Choice' identifier to no longer be null", obj.getId());
     }
     
@@ -101,6 +121,7 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Choice' failed to provide an identifier", id);
         obj = choiceService.findChoice(id);
         choiceService.deleteChoice(obj);
+        choiceRepository.flush();
         Assert.assertNull("Failed to remove 'Choice' with identifier '" + id + "'", choiceService.findChoice(id));
     }
     

@@ -4,7 +4,6 @@
 package com.chariot.games.quizzo.web.form;
 
 import com.chariot.games.quizzo.web.form.TeamSetupForm;
-import java.util.List;
 
 privileged aspect TeamSetupForm_Roo_JavaBean {
     
@@ -22,14 +21,6 @@ privileged aspect TeamSetupForm_Roo_JavaBean {
     
     public void TeamSetupForm.setMessage(String message) {
         this.message = message;
-    }
-    
-    public List<String> TeamSetupForm.getTeamMemberNames() {
-        return this.teamMemberNames;
-    }
-    
-    public void TeamSetupForm.setTeamMemberNames(List<String> teamMemberNames) {
-        this.teamMemberNames = teamMemberNames;
     }
     
 }

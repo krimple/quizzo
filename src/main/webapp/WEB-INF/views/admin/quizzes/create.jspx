@@ -6,6 +6,7 @@
         <field:textarea field="title" id="c_com_chariot_games_quizzo_model_Quiz_title" required="true" z="JBbijg5C31S4LxqQCF1ss1MuQpM="/>
         <field:textarea field="description" id="c_com_chariot_games_quizzo_model_Quiz_description" required="true" z="iuLe1DpVveQczQ++WktBYsh8RoA="/>
         <field:input field="defaultPointValue" id="c_com_chariot_games_quizzo_model_Quiz_defaultPointValue" required="true" validationMessageCode="field_invalid_number" z="Y6IqlDTydWvmZkl5UzxIsiiLtJg="/>
+        <field:simple field="questions" id="c_com_chariot_games_quizzo_model_Quiz_questions" messageCode="entity_reference_not_managed" messageCodeAttribute="Question" z="y4pebvy0WlaKQ6ib4efWkj6TT0U="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_chariot_games_quizzo_model_Quiz" render="${not empty dependencies}" z="4OLH6ERgMhAw/cg/AzwgpHgJwNU="/>
 </div>

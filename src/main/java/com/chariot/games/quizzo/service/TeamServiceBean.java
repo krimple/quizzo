@@ -24,6 +24,4 @@ public class TeamServiceBean implements TeamService {
           }
           return scores;
   }
-
-
 }

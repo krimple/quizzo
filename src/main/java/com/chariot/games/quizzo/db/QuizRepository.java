@@ -5,7 +5,4 @@ import org.springframework.roo.addon.layers.repository.jpa.RooJpaRepository;
 
 @RooJpaRepository(domainType = Quiz.class)
 public interface QuizRepository {
-
-  void flush();
-
 }
