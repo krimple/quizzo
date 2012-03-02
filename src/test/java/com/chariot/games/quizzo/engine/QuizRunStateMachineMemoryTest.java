@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,6 +34,11 @@ public class QuizRunStateMachineMemoryTest {
   private static Logger logger = Logger.getLogger(QuizRunStateMachineMemoryTest.class);
 
   private static QuizRunStateMachine stateMachine;
+
+  private List<Long> teamIds
+      = new ArrayList<Long>();
+
+  private Long quizRunId = null;
 
   @Autowired
   private QuizService quizService;
@@ -57,28 +63,18 @@ public class QuizRunStateMachineMemoryTest {
   }
 
   @Before
-  public void setUpQuizWithChoices() {
-    logger.debug("Running setup...");
+  public void loadQuizDataAndStartQuizRun() {
+    logger.debug("Loading and configuring Quiz...");
     Quiz quiz = setupQuizWithQuestions();
-    stateMachine.initializeQuiz(quiz.getId(), "Sample Run");
-    stateMachine.enrollTeams();
-    logger.debug("Teams enrolled.");
-    setupTeams(stateMachine.getQuizRun().getId());
-    logger.debug("Setup and Team Enroll finished...");
-    stateMachine.startQuiz();
-  }
-
-
-  private void setupTeams(Long id) {
-    Team team1 = new Team();
-    team1.setName("The wingnuts");
-    team1.setMission("to be wingnuts.");
-    teamService.saveTeam(team1);
-
-    Team team2 = new Team();
-    team2.setName("The bolts");
-    team2.setMission("to be bolted.");
-    teamService.saveTeam(team2);
+    logger.debug("Generating a new quiz run and storing");
+    quizRunId = stateMachine.createQuizRun(quiz.getId(), "Sample Run");
+    logger.debug("new quiz run id is " + quizRunId);
+    stateMachine.enrollTeams(quizRunId);
+    logger.debug("quiz run state is now ENROLL_TEAMS");
+    setupTeams(quizRunId);
+    logger.debug("teams set up");
+    stateMachine.startQuizRun(quizRunId);
+    logger.debug("quiz run started. Here we go...");
   }
 
   @After
@@ -90,18 +86,18 @@ public class QuizRunStateMachineMemoryTest {
   @Transactional
   @DirtiesContext
   public void testQuizIsStarted() {
-    assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
+    assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
   }
 
   @Test
   @Transactional
   @DirtiesContext
   public void testSequentialQuestionIds() {
-    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
-    Assert.assertTrue(stateMachine.nextQuestion());
-    long questionId = stateMachine.getCurrentQuestionId();
-    stateMachine.nextQuestion();
-    long questionId2 = stateMachine.getCurrentQuestionId();
+    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
+    Assert.assertTrue(stateMachine.nextQuestion(quizRunId));
+    long questionId = stateMachine.getCurrentQuestion(quizRunId).getId();
+    stateMachine.nextQuestion(quizRunId);
+    long questionId2 = stateMachine.getCurrentQuestion(quizRunId).getId();
     assertTrue(questionId2 != questionId);
     Question q1 = questionService.findQuestion(questionId);
     Question q2 = questionService.findQuestion(questionId2);
@@ -112,12 +108,12 @@ public class QuizRunStateMachineMemoryTest {
   @Transactional
   @DirtiesContext
   public void testFetchAllQuestionsAndDone() {
-    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState());
+    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
     for (int i = 0; i < 5; i++) {
-      Assert.assertTrue(stateMachine.nextQuestion());
+      Assert.assertTrue(stateMachine.nextQuestion(quizRunId));
     }
-    assertFalse(stateMachine.nextQuestion());
-    assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState());
+    assertFalse(stateMachine.nextQuestion(quizRunId));
+    assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState(quizRunId));
   }
 
   private Quiz setupQuizWithQuestions() {
@@ -146,5 +142,16 @@ public class QuizRunStateMachineMemoryTest {
     em.flush();
     em.clear();
     return quiz;
+  }
+
+  private void setupTeams(Long quizRunId) {
+
+    List<Long> teamIds = new ArrayList<Long>();
+    Team team1 = new Team();
+    team1.setName("The wingnuts");
+    team1.setMission("to be wingnuts.");
+
+    teamIds.add(stateMachine.registerTeam(quizRunId, "The Wingnuts", "to be wingnuts"));
+    teamIds.add(stateMachine.registerTeam(quizRunId, "The Bolts", "to be bolted."));
   }
 }

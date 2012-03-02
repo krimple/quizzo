@@ -5,13 +5,11 @@ import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 
 @RooJavaBean
 @RooToString
@@ -24,33 +22,13 @@ public class Answer {
   @JoinColumn(name = "team_id")
   private Team team;
 
-  @NotNull
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "question_id")
-  private Question question;
+  @ManyToOne
+  @JoinColumn(name = "answer_id")
+  private Choice choice;
 
-  @ManyToMany
-  @JoinTable(name = "selected_choice",
-      inverseJoinColumns = { @JoinColumn(name = "choice_id")},
-      joinColumns = { @JoinColumn(name = "answer_id")}
-  )
-  private Set<Choice> selectedChoices = new HashSet<Choice>();
-
-  private String fillInAnswer;
-
-  @DecimalMin("-100.0")
-  @DecimalMax("100.0")
-  protected BigDecimal bonusPoints = new BigDecimal("0.0");
 
   @Transient
   public BigDecimal calculateScore() {
-    BigDecimal score = new BigDecimal("0.0");
-    for (Choice choice : selectedChoices) {
-      if (choice.isCorrect()) {
-        score = score.add(choice.getPointValue());
-      }
-    }
-    score = score.add(bonusPoints);
-    return score;
+    return (choice.isCorrect() ? new BigDecimal("1.0") : BigDecimal.ZERO);
   }
 }

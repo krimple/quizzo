@@ -25,10 +25,9 @@
 
     <div dojoType="dijit.layout.TabContainer" id="moderatorTabContainer">
 
-        <tiles:insertAttribute name="quizRunSetupPanel"/>
-        <tiles:insertAttribute name="quizRunManagerPanel" />
-        <!--<tiles:insertAttribute name="quizSetupPanel"/>
-        <tiles:insertAttribute name="teamSetupPanel"/>-->
+        <tiles:insertAttribute name="quizSetupPanel"/>
+        <tiles:insertAttribute name="teamSetupPanel"/>
+       <!-- <tiles:insertAttribute name="teamMembersSetupPanel"/> -->
 
     </div>
 

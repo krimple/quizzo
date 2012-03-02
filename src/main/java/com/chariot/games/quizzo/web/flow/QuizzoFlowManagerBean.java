@@ -1,29 +1,10 @@
 package com.chariot.games.quizzo.web.flow;
 
-import com.chariot.games.quizzo.engine.QuizRunStateMachine;
-import com.chariot.games.quizzo.model.Question;
-import com.chariot.games.quizzo.model.Team;
-import com.chariot.games.quizzo.service.AnswerService;
-import com.chariot.games.quizzo.service.ChoiceService;
-import com.chariot.games.quizzo.service.QuestionService;
-import com.chariot.games.quizzo.service.TeamService;
-import com.chariot.games.quizzo.web.form.TeamSetupForm;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.webflow.action.MultiAction;
-import org.springframework.webflow.core.FlowException;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
-import org.springframework.webflow.execution.Event;
-import org.springframework.webflow.execution.RequestContext;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component("quizzoFlowManager")
-public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowManager {
-
+public class QuizzoFlowManagerBean /* extends MultiAction implements QuizzoFlowManager */{
+/*
   private final static Logger logger = Logger.getLogger(QuizzoFlowManagerBean.class);
 
   @Autowired
@@ -112,4 +93,5 @@ public class QuizzoFlowManagerBean extends MultiAction implements QuizzoFlowMana
 //    }
 //    answerByChoiceService.saveAnswer(answer);
   }
+  */
 }

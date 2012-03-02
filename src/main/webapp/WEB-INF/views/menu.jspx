@@ -6,7 +6,7 @@
         <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
             <security:authorize access="hasRole('ROLE_USER')">
                 <menu:category id="c_flows" z="5igpkb/e+HPIN8iUErvmM38Eqqk=">
-                    <menu:item id="i_flows_playquizzo" messageCode="webflow_menu_enter" url="/playQuizzo" z="0gvSCI5eG1xYEgapEzlkJhJjtu8="/>
+                    <menu:item id="i_flows_playquizzo" messageCode="webflow_menu_enter" url="/game/play" z="user-managed"/>
                 </menu:category>
             </security:authorize>
             <security:authorize access="hasRole('ROLE_ADMIN')">
@@ -39,6 +39,7 @@
                 <menu:category id="c_controller" z="nj8Dm3hojIyIEyPkwE1UMDIs+K8=">
                     <menu:item id="i_controller__quizzoindex_id" messageCode="global_generic" url="/quizzo/index" z="Vt2gdwqqc5L3Z1/xGy1kEkAt7K4="/>
                     <menu:item id="i_controller__admin_moderatorindex_id" messageCode="global_generic" url="/admin/moderator/index" z="QqNkVUBkDD4LygEEPeOdl76ld+4="/>
+                    <menu:item id="i_controller__gameindex_id" messageCode="global_generic" url="/game/index" z="N0gW0FWu8tGQqTkowQzcz3DkY00="/>
                 </menu:category>
             </security:authorize>
             <menu:category id="c_login_logout" label="Security">
@@ -48,14 +49,6 @@
                 <security:authorize access="isFullyAuthenticated()">
                     <menu:item id="logout" label="Logout" url="/resources/j_spring_security_logout"/>
                 </security:authorize>
-            </menu:category>
-            <menu:category id="c_questionwithfillintheblankanswers" z="onssvJMEAUJ2lOLDsScw2vjhwXY=">
-                <menu:item id="i_questionwithfillintheblankanswers_new" messageCode="global_menu_new" url="/questionwithfillintheblankanswers?form" z="9v7FeDuTCv7sZXbKO3RS0PPFbPI="/>
-                <menu:item id="i_questionwithfillintheblankanswers_list" messageCode="global_menu_list" url="/questionwithfillintheblankanswers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="G96WQ3IH0ixjaqcU9EwlVtD3VrE="/>
-            </menu:category>
-            <menu:category id="c_questionwithchoices" z="iQjUMIV7fLT4r8sDDTwSDP4BERE=">
-                <menu:item id="i_questionwithchoices_new" messageCode="global_menu_new" url="/questionwithchoices?form" z="6bZ4h4A8UuI06vUUZ45oV0j3hI8="/>
-                <menu:item id="i_questionwithchoices_list" messageCode="global_menu_list" url="/questionwithchoices?page=1&amp;size=${empty param.size ? 10 : param.size}" z="AJlwiWiDEsyCCVrzWCOCH8IYAtw="/>
             </menu:category>
         </menu:menu>
     </nav>

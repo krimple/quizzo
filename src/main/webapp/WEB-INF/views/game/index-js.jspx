@@ -22,14 +22,8 @@
         dojo.require("dijit.Toolbar");
         dojo.require("dijit.layout.TabContainer");
         dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.SimpleTextarea");
         dojo.require("dijit.layout.StackContainer");
         dojo.require("dijit.layout.StackController");
-        dojo.require("dojo.data.ItemFileReadStore");
-
     </script>
-
-    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/quizRun" var="quiz_run_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/team" var="team_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_list_store_url" scope="page" />
 </div>

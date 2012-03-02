@@ -5,10 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Answer;
 import com.chariot.games.quizzo.model.Choice;
-import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Team;
-import java.math.BigDecimal;
-import java.util.Set;
 
 privileged aspect Answer_Roo_JavaBean {
     
@@ -20,36 +17,12 @@ privileged aspect Answer_Roo_JavaBean {
         this.team = team;
     }
     
-    public Question Answer.getQuestion() {
-        return this.question;
+    public Choice Answer.getChoice() {
+        return this.choice;
     }
     
-    public void Answer.setQuestion(Question question) {
-        this.question = question;
-    }
-    
-    public Set<Choice> Answer.getSelectedChoices() {
-        return this.selectedChoices;
-    }
-    
-    public void Answer.setSelectedChoices(Set<Choice> selectedChoices) {
-        this.selectedChoices = selectedChoices;
-    }
-    
-    public String Answer.getFillInAnswer() {
-        return this.fillInAnswer;
-    }
-    
-    public void Answer.setFillInAnswer(String fillInAnswer) {
-        this.fillInAnswer = fillInAnswer;
-    }
-    
-    public BigDecimal Answer.getBonusPoints() {
-        return this.bonusPoints;
-    }
-    
-    public void Answer.setBonusPoints(BigDecimal bonusPoints) {
-        this.bonusPoints = bonusPoints;
+    public void Answer.setChoice(Choice choice) {
+        this.choice = choice;
     }
     
 }

@@ -1,48 +1,45 @@
 package com.chariot.games.quizzo.web.ajax;
 
+import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.model.QuizRun;
 import com.chariot.games.quizzo.model.Team;
 import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.service.TeamService;
+import com.chariot.games.quizzo.web.ajax.dojo.DataStoreUtils;
 import com.chariot.games.quizzo.web.ajax.request.NewTeamRequest;
+import com.chariot.games.quizzo.web.form.CreateQuizRunForm;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: kenrimple
- * Date: 2/28/12
- * Time: 6:40 PM
- * To change this template use File | Settings | File Templates.
- */
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/admin/moderator_ajax/**")
 public class AjaxModeratorController {
 
   private static final Logger logger = Logger.getLogger(AjaxModeratorController.class);
   @Autowired
-  QuizService quizService;
+  private QuizService quizService;
 
   @Autowired
-  QuizRunService quizRunService;
+  private QuizRunService quizRunService;
 
   @Autowired
-  TeamService teamService;
-
+  private QuizRunStateMachine stateMachine;
 
   @RequestMapping(value = "quiz", method = RequestMethod.GET)
-  public @ResponseBody String listQuizzes() {
-    return Quiz.toJsonArray(quizService.findAllQuizes());
-  }
-
-  @RequestMapping(value = "quizRun", method=RequestMethod.GET)
-  public @ResponseBody String listQuizRuns() {
-    return QuizRun.toJsonArray(quizRunService.findAllQuizRuns());
+  public
+  @ResponseBody
+  String listQuizzes() {
+    String jsonArray =
+        Quiz.toJsonArray(quizService.findAllQuizes());
+    return DataStoreUtils.asReadStoreForSelect("id", "title", jsonArray);
   }
 
   @RequestMapping(value = "quiz", method = RequestMethod.POST)
@@ -54,19 +51,60 @@ public class AjaxModeratorController {
     quizService.saveQuiz(quiz);
   }
 
-  @RequestMapping(value = "team", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void createTeam(
-      @RequestBody /* TODO auto-deserialize */ String teamJson) {
-      logger.trace("incoming Json request for team POST");
-      logger.trace(teamJson);
-      NewTeamRequest newTeamRequest = NewTeamRequest.fromJsonToNewTeamRequest(teamJson);
-      //TODO: pull out into service
-      QuizRun quizRun = quizRunService.findQuizRun(newTeamRequest.getQuizRunId());
-      Team team = new Team();
-      team.setName(newTeamRequest.getTeamName());
-      team.setMission(newTeamRequest.getMission());
-      team.setQuizRun(quizRun);
-      teamService.saveTeam(team);
+  @RequestMapping(value = "quizRun", method = RequestMethod.GET)
+  public
+  @ResponseBody
+  String listQuizRuns() {
+    String jsonArray = QuizRun.toJsonArray(quizRunService.findAllQuizRuns());
+    return DataStoreUtils.asReadStoreForSelect("id", "text", jsonArray);
+  }
+
+  @RequestMapping(value = "quizRun", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.OK)
+  public void createQuizRun(@RequestBody String quizRunFormJson, HttpSession session) {
+    logger.trace("incoming Json request for quizRun FORM POST");
+    logger.trace(quizRunFormJson);
+    CreateQuizRunForm quizRunForm = CreateQuizRunForm.fromJsonToCreateQuizRunForm(quizRunFormJson);
+    long quizRunId = stateMachine.createQuizRun(quizRunForm.getQuizId(), quizRunForm.getText());
+    session.setAttribute("currentQuizRunId", quizRunId);
+    logger.trace("quiz run created : " + quizRunId + ".");
+  }
+
+
+  @RequestMapping(value = "quizRun", method = RequestMethod.PUT)
+  @ResponseStatus(HttpStatus.OK)
+  public @ResponseBody void startQuizRun(HttpSession session) {
+    Long quizRunId = getQuizRunIdFromSession(session, true);
+    // otherwise, start it!
+    stateMachine.startQuizRun(quizRunId);
+  }
+
+  private Long getQuizRunIdFromSession(HttpSession session, boolean required) {
+    Long quizRunId = (Long)session.getAttribute("currentQuizRunId");
+    if (required && quizRunId == null) {
+      throw new IllegalStateException("Quiz Run not created. Run /admin/moderator_ajax/quizRun as a POST to create one.");
     }
+    return quizRunId;
+  }
+
+  @RequestMapping(value = "question", method = RequestMethod.PUT)
+  public @ResponseBody String nextQuestion(HttpSession session) {
+    long currentQuizRunId = getQuizRunIdFromSession(session, true);
+    //TODO - send Json form with details that include question or no, etc...answers
+    if (!stateMachine.hasMoreQuestions(currentQuizRunId)) {
+      return "NO QUESTION";
+    } else {
+      return "TODO";
+    }
+
+  }
+
+  @RequestMapping(value = "quizRun/{id}", method = RequestMethod.DELETE)
+  @ResponseStatus(HttpStatus.OK)
+  public void endQuizRun(@PathVariable("id") long quizRunId,
+                           HttpSession session) {
+    long currentQuizRunId = getQuizRunIdFromSession(session, true);
+    stateMachine.endQuizRun(quizRunId);
+  }
+
 }

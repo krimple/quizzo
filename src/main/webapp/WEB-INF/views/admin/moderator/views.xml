@@ -6,11 +6,10 @@
         <put-attribute name="body" value="/WEB-INF/views/admin/moderator/index.jspx"/>
         <put-attribute name="htmlheaders" value="/WEB-INF/views/admin/moderator/index-js.jspx" />
         <put-attribute name="quizSetupPanel" value="/WEB-INF/views/admin/moderator/_quizSetupPanel.jspx" cascade="true" />
-
+        <put-attribute name="quizRunSetupPanel" value="/WEB-INF/views/admin/moderator/_quizRunSetupPanel.jspx" cascade="true" />
+        <put-attribute name="quizRunManagerPanel" value="/WEB-INF/views/admin/moderator/_quizRunSetupPanel.jspx" cascade="true" />
         <put-attribute name="teamSetupPanel" value="/WEB-INF/views/admin/moderator/_teamSetupPanel.jspx"
                 cascade="true"/>
-        <put-attribute name="teamMembersSetupPanel" value="/WEB-INF/views/admin/moderator/_teamMembersSetupPanel.jspx"
-                        cascade="true"/>
 
     </definition>
 </tiles-definitions>
