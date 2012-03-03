@@ -3,10 +3,14 @@ package com.chariot.games.quizzo.web.user;
 import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.Choice;
 import com.chariot.games.quizzo.model.Question;
+import com.chariot.games.quizzo.web.QuizWebSessionUtils;
 import com.chariot.games.quizzo.web.ajax.request.NewTeamRequest;
 import com.chariot.games.quizzo.web.ajax.request.VotingForm;
+import com.chariot.games.quizzo.web.ajax.response.QuizRunSelectData;
 import com.chariot.games.quizzo.web.form.ChoiceForm;
 import com.chariot.games.quizzo.web.form.QuestionAndChoicesForm;
+import com.chariot.games.quizzo.web.ajax.dojo.DataStoreUtils;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,12 +40,20 @@ public class GamePlayController {
     return "game/index";
   }
 
+  /**
+   * The actual game play goes on here...
+   * @return
+   */
+  @RequestMapping(value = "game/quizzo")
+  public String setupTeam() {
+    return "quizzo/index";
+  }
 
   @RequestMapping(value = "question", method = RequestMethod.GET)
   public
   @ResponseBody
   String getCurrentQuestion(HttpSession session) {
-    Long quizRunId = getCurrentQuizRunForSession(session);
+    Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, true);
     Question currentQuestion = stateMachine.getCurrentQuestion(quizRunId);
     Long currentQuestionId = currentQuestion.getId();
     logger.trace("current question id fetched: " + currentQuestionId);
@@ -69,10 +81,13 @@ public class GamePlayController {
       @RequestBody String teamJson) {
     logger.trace("incoming Json request for team POST");
     logger.trace(teamJson);
+
     NewTeamRequest newTeamRequest = NewTeamRequest.fromJsonToNewTeamRequest(teamJson);
-    session.getAttribute("currentQuizRunId");
-    Long quizRunId = getCurrentQuizRunForSession(session);
-    Long teamId = stateMachine.registerTeam(quizRunId, newTeamRequest.getTeamName(), newTeamRequest.getMission());
+    // associate the user session with the quiz run
+    QuizWebSessionUtils.setQuizRunIdForSession(session, newTeamRequest.getQuizRunId());
+    // now, create and register the team
+    Long teamId = stateMachine.registerTeam(newTeamRequest.getQuizRunId(),
+        newTeamRequest.getTeamName(), newTeamRequest.getMission());
 
     // now, store team in session as well
     // so long, spoofers (ok, at least it's tougher for them)
@@ -83,8 +98,8 @@ public class GamePlayController {
   @ResponseStatus(HttpStatus.OK)
   public boolean submitAnswer(HttpSession session, @RequestBody String votingFormJson) {
     VotingForm votingForm = VotingForm.fromJsonToVotingForm(votingFormJson);
-    Long quizRunId = getCurrentQuizRunForSession(session);
-    Long teamId = (Long) session.getAttribute("currentTeamId");
+    Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, true);
+    Long teamId = QuizWebSessionUtils.getCurrentTeamIdFromSession(session, true);
     Long choiceId = votingForm.getChoiceId();
     stateMachine.submitAnswer(quizRunId, teamId, choiceId);
     return true;
@@ -98,10 +113,12 @@ public class GamePlayController {
     return scores.toString();
   }
 
-  private Long getCurrentQuizRunForSession(HttpSession session) {
-    Long currentQuizRun = (Long) session.getAttribute("currentQuizRunId");
-    if (currentQuizRun == null)
-      throw new IllegalStateException("No current quiz run exists. Please attach to a quiz run.");
-    return currentQuizRun;
+  @RequestMapping(value = "quizrun", method = RequestMethod.GET)
+  public
+  @ResponseBody
+  String listQuizRuns() {
+    String jsonArray =
+        QuizRunSelectData.toJsonArray(QuizRunSelectData.convert(stateMachine.getAllReadyQuizRuns()));
+    return DataStoreUtils.asReadStoreForSelect("id", "label", jsonArray);
   }
 }

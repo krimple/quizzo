@@ -25,6 +25,8 @@
     </script>
 
     <spring:url value="/game/quizrun" var="quizrun_select_store_url" scope="request" />
-    <spring:url value="/game/team" var="team_url" scope="request"/>
+    <spring:url value="/game/question" var="get_question_url" scope="request" />
+    <spring:url value="/game/answer" var="submit_answer_url" scope="request" />
+    <spring:url value="/game/poll" var="team_url" scope="request"/>
 
 </div>

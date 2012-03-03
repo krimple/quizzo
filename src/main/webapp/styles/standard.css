@@ -402,7 +402,7 @@ fieldset th {
 }
 
 .formRow {
-    width: 100%;
+    width: 70%;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
@@ -410,9 +410,11 @@ fieldset th {
 }
 
 .formRow label {
-    width: 100px;
-    text-align: right;
-    margin-right: 10px;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+    float: left;
+    margin-left: 10px;
 }
 
 
@@ -421,25 +423,21 @@ fieldset th {
 }
 
 .formTextArea {
-    width: 250px;
+    width: 600px;
 }
 
 #moderatorTabContainer {
     height: 480px;
-    width: 560px;
+    width: 800px;
 }
 
 #quizSetupPanel {
     height: 400px;
-    width: 400px;
-    background-color: #d3d3d3;
+    width: 780px;
+
 }
 
-#teamSetupPanel {
-    height: 400px;
-    width: 450px;
-    background-color: #aaaaaa;
-}
+
 
 
 

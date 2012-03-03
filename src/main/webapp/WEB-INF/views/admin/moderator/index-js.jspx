@@ -10,7 +10,7 @@
     <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
-    <script tpe="text/javascript">
+    <script type="text/javascript">
         dojo.require("dojo.parser");
         dojo.require("dijit.form.Form");
         dojo.require("dijit.layout.ContentPane");
@@ -25,11 +25,15 @@
         dojo.require("dijit.layout.StackContainer");
         dojo.require("dijit.layout.StackController");
         dojo.require("dojo.data.ItemFileReadStore");
-
     </script>
 
-    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/quizRun" var="quiz_run_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/team" var="team_url" scope="page"/>
-    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_list_store_url" scope="page" />
+    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_url" scope="request"/>
+
+    <spring:url value="/admin/moderator_ajax/team" var="team_url" scope="request"/>
+    <spring:url value="/admin/moderator_ajax/quiz" var="quiz_list_store_url" scope="request" />
+
+    <spring:url value="/admin/moderator_ajax/enroll" var="enroll_teams_url" scope="request" />
+    <spring:url value="/admin/moderator_ajax/quizRun" var="quiz_run_url" scope="request"/>
+    <spring:url value="/admin/moderator_ajax/question" var="question_url" scope="request"/>
+
 </div>

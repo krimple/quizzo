@@ -48,7 +48,7 @@ privileged aspect ChoiceDataOnDemand_Roo_DataOnDemand {
     }
     
     public void ChoiceDataOnDemand.setCorrect(Choice obj, int index) {
-        Boolean correct = true;
+        Boolean correct = Boolean.TRUE;
         obj.setCorrect(correct);
     }
     

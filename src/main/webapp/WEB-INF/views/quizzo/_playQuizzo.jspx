@@ -69,11 +69,10 @@
           url : "${team_url}",
           postData : actualData,
           headers : {"Content-Type":"application/json"},
-          load :function(response, ioArgs) {
-            alert("Successfully set up team.");
-            // move forward to next panel
+          load : function(response, ioArgs) {
+            window.location.href = "${get_question_url}";
           },
-          error:function (errorCode) {
+          error : function(errorCode) {
             alert("Team create failed. Reason: " + errorCode);
           },
           handleAs:"json"});

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manages a map of quiz runs by their quiz run ID. The controllers are
@@ -171,6 +169,11 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     return true;
   }
 
+  @Override
+  public boolean isValidQuizRun(long quizRunId) {
+    return quizRunService.findQuizRun(quizRunId) != null;
+  }
+
   @Secured(value = "hasRole('ROLE_USER')")
   @Transactional
   public long registerTeam(Long quizRunId, String teamName, String mission) {
@@ -224,5 +227,19 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
 
   private QuizRunData getQuizRunData(long quizRunId) {
     return quizRuns.get(quizRunId);
+  }
+
+  public List<QuizRun> getAllReadyQuizRuns() {
+
+    List<QuizRun> validQuizRuns = new ArrayList<QuizRun>();
+    Iterator<QuizRunData> iterator = quizRuns.values().iterator();
+
+    while(iterator.hasNext()) {
+      QuizRunData quizRunData = iterator.next();
+      if (quizRunData.quizRunState == QuizRunState.ENROLL_TEAMS) {
+        validQuizRuns.add(quizRunData.quizRun);
+      }
+    }
+    return validQuizRuns;
   }
 }

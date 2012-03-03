@@ -41,11 +41,11 @@ privileged aspect Choice_Roo_JavaBean {
         this.sortOrder = sortOrder;
     }
     
-    public boolean Choice.isCorrect() {
+    public Boolean Choice.getCorrect() {
         return this.correct;
     }
     
-    public void Choice.setCorrect(boolean correct) {
+    public void Choice.setCorrect(Boolean correct) {
         this.correct = correct;
     }
     

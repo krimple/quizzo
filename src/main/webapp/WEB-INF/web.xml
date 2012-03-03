@@ -87,10 +87,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <session-config>
-        <session-timeout>10</session-timeout>
-    </session-config>
-
     <error-page>
         <exception-type>java.lang.Exception</exception-type>
         <location>/uncaughtException</location>
@@ -107,4 +103,8 @@
             <trim-directive-whitespaces>false</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
+
+  <session-config>
+    <session-timeout>600</session-timeout>
+  </session-config>
 </web-app>

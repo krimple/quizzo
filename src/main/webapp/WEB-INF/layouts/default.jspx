@@ -28,13 +28,13 @@
     <tiles:insertAttribute name="bodyprecontent" ignore="true" />
     <div id="wrapper">
         <tiles:insertAttribute name="header" ignore="true"/>
-        <aside>
+
             <tiles:insertAttribute name="menu" ignore="true"/>
-        </aside>
+
         <div id="main">
-            <section id="main">
+
                 <tiles:insertAttribute name="body"/>
-            </section>
+
             <tiles:insertAttribute name="footer" ignore="true"/>
         </div>
     </div>

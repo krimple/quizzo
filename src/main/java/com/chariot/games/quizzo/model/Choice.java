@@ -1,5 +1,6 @@
 package com.chariot.games.quizzo.model;
 
+import org.springframework.roo.addon.equals.RooEquals;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.entity.RooJpaEntity;
 import org.springframework.roo.addon.json.RooJson;
@@ -18,7 +19,8 @@ import java.math.BigDecimal;
 @RooToString
 @RooJpaEntity
 @RooJson
-public class Choice {
+@RooEquals
+public class Choice implements Comparable<Choice>{
 
   @NotNull
   @Size(max = 300)
@@ -38,6 +40,17 @@ public class Choice {
   private short sortOrder;
 
   @NotNull
-  private boolean correct;
+  private Boolean correct;
 
+  @Override
+  public int compareTo(Choice choice) {
+    if (choice == null) return 1; // nulls sort low
+    if (this.sortOrder < choice.sortOrder)
+      return -1;
+    else if (this.sortOrder > choice.sortOrder)
+      return 1;
+    else {
+      return 0;
+    }
+  }
 }

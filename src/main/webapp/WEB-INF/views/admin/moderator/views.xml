@@ -2,14 +2,11 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 
-    <definition extends="extended" name="admin/moderator/index">
+    <definition extends="bare" name="admin/moderator/index">
         <put-attribute name="body" value="/WEB-INF/views/admin/moderator/index.jspx"/>
         <put-attribute name="htmlheaders" value="/WEB-INF/views/admin/moderator/index-js.jspx" />
         <put-attribute name="quizSetupPanel" value="/WEB-INF/views/admin/moderator/_quizSetupPanel.jspx" cascade="true" />
         <put-attribute name="quizRunSetupPanel" value="/WEB-INF/views/admin/moderator/_quizRunSetupPanel.jspx" cascade="true" />
-        <put-attribute name="quizRunManagerPanel" value="/WEB-INF/views/admin/moderator/_quizRunSetupPanel.jspx" cascade="true" />
-        <put-attribute name="teamSetupPanel" value="/WEB-INF/views/admin/moderator/_teamSetupPanel.jspx"
-                cascade="true"/>
-
+        <put-attribute name="quizRunManagerPanel" value="/WEB-INF/views/admin/moderator/_quizRunManagerPanel.jspx" cascade="true" />
     </definition>
 </tiles-definitions>

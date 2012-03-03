@@ -29,6 +29,6 @@ public class Answer {
 
   @Transient
   public BigDecimal calculateScore() {
-    return (choice.isCorrect() ? new BigDecimal("1.0") : BigDecimal.ZERO);
+    return (choice.getCorrect() ? new BigDecimal("1.0") : BigDecimal.ZERO);
   }
 }

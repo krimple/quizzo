@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-@SessionAttributes("quizSelectionForm")
 @RequestMapping("/admin/moderator/**")
 @Controller
 public class QuizRunDebugModeratorController {
 
   // todo - get this the hell out of here!
   @RequestMapping
-  public String index(@ModelAttribute("quizSelectionForm") QuizSelectionForm form, Model model) {
+  public String index() {
     return "admin/moderator/index";
   }
 

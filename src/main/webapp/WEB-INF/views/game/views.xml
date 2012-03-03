@@ -2,19 +2,10 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
         "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="default" name="game/index">
-        <put-attribute name="body" value="/WEB-INF/views/game/index.jspx"/>
-    </definition>
-    <definition extends="extended" name="admin/moderator/index">
+    <definition extends="bare" name="game/index">
         <put-attribute name="body" value="/WEB-INF/views/game/index.jspx"/>
         <put-attribute name="htmlheaders" value="/WEB-INF/views/game/index-js.jspx"/>
-        <put-attribute name="quizSetupPanel" value="/WEB-INF/views/game/_quizSetupPanel.jspx"
-                       cascade="true"/>
-
         <put-attribute name="teamSetupPanel" value="/WEB-INF/views/game/_teamSetupPanel.jspx"
                        cascade="true"/>
-        <put-attribute name="teamMembersSetupPanel" value="/WEB-INF/views/game/_teamMembersSetupPanel.jspx"
-                       cascade="true"/>
-
     </definition>
 </tiles-definitions>

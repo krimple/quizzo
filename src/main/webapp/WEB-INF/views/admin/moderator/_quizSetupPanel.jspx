@@ -38,7 +38,7 @@
         </fieldset>
 
         <script type="text/javascript">
-            dojo.addOnLoad(function () {
+            dojo.ready(function () {
                 console.log("wiring submitQuizButton");
                 var submitQuizButton = dojo.byId("submitQuizButton");
                 dojo.connect(submitQuizButton, "onclick", function () {
