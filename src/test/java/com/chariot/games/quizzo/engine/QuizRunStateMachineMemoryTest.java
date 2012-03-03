@@ -86,17 +86,18 @@ public class QuizRunStateMachineMemoryTest {
   @Transactional
   @DirtiesContext
   public void testQuizIsStarted() {
-    assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
+    assertEquals(QuizRunState.READY_TO_PLAY, stateMachine.getQuizRunState(quizRunId));
   }
 
   @Test
   @Transactional
   @DirtiesContext
   public void testSequentialQuestionIds() {
-    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
-    Assert.assertTrue(stateMachine.nextQuestion(quizRunId));
+    Assert.assertEquals(QuizRunState.READY_TO_PLAY, stateMachine.getQuizRunState(quizRunId));
+    Assert.assertTrue(stateMachine.askNextQuestion(quizRunId));
+    stateMachine.reviewAnswer(quizRunId);
     long questionId = stateMachine.getCurrentQuestion(quizRunId).getId();
-    stateMachine.nextQuestion(quizRunId);
+    stateMachine.askNextQuestion(quizRunId);
     long questionId2 = stateMachine.getCurrentQuestion(quizRunId).getId();
     assertTrue(questionId2 != questionId);
     Question q1 = questionService.findQuestion(questionId);
@@ -108,11 +109,12 @@ public class QuizRunStateMachineMemoryTest {
   @Transactional
   @DirtiesContext
   public void testFetchAllQuestionsAndDone() {
-    Assert.assertEquals(QuizRunState.IN_PROGRESS, stateMachine.getQuizRunState(quizRunId));
+    Assert.assertEquals(QuizRunState.ASK_QUESTION, stateMachine.getQuizRunState(quizRunId));
     for (int i = 0; i < 5; i++) {
-      Assert.assertTrue(stateMachine.nextQuestion(quizRunId));
+      Assert.assertTrue(stateMachine.askNextQuestion(quizRunId));
+      stateMachine.reviewAnswer(quizRunId);
     }
-    assertFalse(stateMachine.nextQuestion(quizRunId));
+    assertFalse(stateMachine.hasMoreQuestions(quizRunId));
     assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState(quizRunId));
   }
 

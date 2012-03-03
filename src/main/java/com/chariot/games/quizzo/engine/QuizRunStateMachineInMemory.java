@@ -29,6 +29,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     QuizRunData(QuizRun quizRun, QuizRunState quizRunState) {
       this.quizRun = quizRun;
       this.quizRunState = quizRunState;
+      currentQuestionIndex = -1;
 
     }
 
@@ -37,12 +38,21 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     private QuizRunState quizRunState;
     private int currentQuestionIndex;
 
-    public boolean hasMoreQuestions() {
+    public boolean nextQuestion() {
       if (currentQuestionIndex + 1 < questions.size()) {
         currentQuestionIndex++;
+        quizRunState = QuizRunState.ASK_QUESTION;
         return true;
       } else {
         quizRunState = QuizRunState.COMPLETE;
+        return false;
+      }
+    }
+
+    private boolean hasMoreQuestions() {
+      if (currentQuestionIndex + 1 < questions.size()) {
+        return true;
+      } else {
         return false;
       }
     }
@@ -104,18 +114,40 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     assert (data.questions != null && data.questions.size() > 0);
     assert (data.quizRunState == QuizRunState.ENROLL_TEAMS);
 
-    data.quizRunState = QuizRunState.IN_PROGRESS;
+    // move to the startup transition state
+    data.quizRunState = QuizRunState.READY_TO_PLAY;
+
     data.currentQuestionIndex = -1;
+
+    if (!hasMoreQuestions(quizRunId)) {
+      throw new IllegalStateException("Quiz should have questions in order to play.");
+    }
+  }
+
+
+  @Override
+  @Transactional
+  public boolean askNextQuestion(long quizRunId) {
+    QuizRunData data = getQuizRunData(quizRunId);
+
+    // during startup transition we will be in "ready to play" mode for a few milliseconds... but it is a true state
+    if (data.quizRunState != QuizRunState.REVIEW_ANSWER || data.quizRunState != QuizRunState.READY_TO_PLAY) {
+      throw new IllegalStateException("Cannot ask next question - finish existing one or start the quiz!");
+    }
+    // will switch to complete state or asking questions automatically depending on if
+    // questions still exist... "magic" or crap? vaguely odoriforous...
+    return data.nextQuestion();
   }
 
   @Override
   @Transactional
-  public boolean nextQuestion(long quizRunId) {
+  public void reviewAnswer(long quizRunId) {
     QuizRunData data = getQuizRunData(quizRunId);
 
-    if (data.quizRunState != QuizRunState.IN_PROGRESS) System.err.println("Next Question Failed!");
-    assert data.quizRunState == QuizRunState.IN_PROGRESS;
-    return data.hasMoreQuestions();
+    if (data.quizRunState != QuizRunState.ASK_QUESTION) {
+      throw new IllegalStateException("Please ask the next question in order to review an answer.");
+    }
+    data.quizRunState = QuizRunState.REVIEW_ANSWER;
   }
 
   @Override
@@ -186,7 +218,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     if (quizRun != null) {
       QuizRunState state = getQuizRunState(quizRunId);
       if (state != QuizRunState.ENROLL_TEAMS) {
-        throw new IllegalArgumentException("Team cannot be registered, as we are not enrolling teams.");
+        throw new IllegalStateException("Team cannot be registered, as we are not enrolling teams.");
       }
     } else {
       throw new IllegalArgumentException("No Quiz Run started with id of " + quizRunId);
@@ -234,7 +266,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     List<QuizRun> validQuizRuns = new ArrayList<QuizRun>();
     Iterator<QuizRunData> iterator = quizRuns.values().iterator();
 
-    while(iterator.hasNext()) {
+    while (iterator.hasNext()) {
       QuizRunData quizRunData = iterator.next();
       if (quizRunData.quizRunState == QuizRunState.ENROLL_TEAMS) {
         validQuizRuns.add(quizRunData.quizRun);

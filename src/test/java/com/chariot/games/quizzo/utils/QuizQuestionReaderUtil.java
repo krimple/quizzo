@@ -6,7 +6,6 @@ import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.service.ChoiceService;
 import com.chariot.games.quizzo.service.QuestionService;
 import com.chariot.games.quizzo.service.QuizService;
-import org.apache.poi.POIDocument;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -16,20 +15,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: kenrimple
- * Date: 3/2/12
- * Time: 6:11 PM
- * To change this template use File | Settings | File Templates.
- */
 public class QuizQuestionReaderUtil {
 
 

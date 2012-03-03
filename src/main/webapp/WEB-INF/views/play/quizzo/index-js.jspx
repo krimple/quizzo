@@ -17,16 +17,15 @@
         dojo.require("dijit.Editor");
         dojo.require("dijit.Toolbar");
         dojo.require("dijit.layout.TabContainer");
-        dojo.require("dijit.form.Button");
-        dojo.require("dijit.form.SimpleTextarea");
-        dojo.require("dijit.layout.StackContainer");
-        dojo.require("dijit.layout.StackController");
         dojo.require("dojo.data.ItemFileReadStore");
     </script>
 
     <spring:url value="/game/quizrun" var="quizrun_select_store_url" scope="request" />
+    <spring:url value="/game/team" var="team_url" scope="request"/>
+    <spring:url value="/play/quizzo/teamSetup" var="team_setup_url" scope="request" />
     <spring:url value="/game/question" var="get_question_url" scope="request" />
-    <spring:url value="/game/answer" var="submit_answer_url" scope="request" />
-    <spring:url value="/game/poll" var="team_url" scope="request"/>
+    <spring:url value="/game/answer" var="answer_url" scope="request" />
+    <spring:url value="/game/final_score" var="final_score_url" scope="request" />
+    <spring:url value="/game/poll" var="poll_url" scope="request"/>
 
 </div>

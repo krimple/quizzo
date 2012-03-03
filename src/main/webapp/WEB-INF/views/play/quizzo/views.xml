@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="bare" name="play/quizzo/index">
+        <put-attribute name="body" value="/WEB-INF/views/play/quizzo/index.jspx"/>
+        <put-attribute name="htmlheaders" value="/WEB-INF/views/play/quizzo/index-js.jspx"/>
+    </definition>
+
+    <!-- this is an MVC View Controller -->
+    <definition name="/play/quizzo/teamSetup">
+        <put-attribute name="htmlheaders" value="/WEB-INF/views/play/quizzo/index-js.jspx" />
+        <put-attribute name="body" value="/WEB-INF/views/play/quizzo/_teamSetup.jspx" />
+    </definition>
+
+    <definition name="quizzo/poller" extends="bare">
+        <put-attribute name="content" value="/WEB-INF/views/play/quizzo/_poller.jspx"/>
+    </definition>
+
+    <definition name="quizzo/question" extends="bare">
+        <put-attribute name="content" value="/WEB-INF/views/play/quizzo/_question.jspx"/>
+    </definition>
+
+    <definition name="quizzo/review" extends="bare">
+        <put-attribute name="content" value="/WEB-INF/views/play/quizzo/_review.jspx"/>
+    </definition>
+
+    <definition name="quizzo/gameover" extends="bare">
+        <put-attribute name="content" value="/WEB-INF/views/play/quizzo/_gameover.jspx"/>
+    </definition>
+
+
+</tiles-definitions>

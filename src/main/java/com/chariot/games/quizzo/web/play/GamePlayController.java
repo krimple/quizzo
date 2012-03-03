@@ -1,4 +1,4 @@
-package com.chariot.games.quizzo.web.user;
+package com.chariot.games.quizzo.web.play;
 
 import com.chariot.games.quizzo.engine.QuizRunStateMachine;
 import com.chariot.games.quizzo.model.Choice;
@@ -31,28 +31,30 @@ public class GamePlayController {
   @Autowired
   private QuizRunStateMachine stateMachine;
 
-
   /**
-   * Render the player panels
+   * Render the player panels - first register, then use dojo app to play game
    */
   @RequestMapping(method = RequestMethod.GET)
-  public String index() {
-    return "game/index";
+  public String index(HttpSession session) {
+//    if (QuizWebSessionUtils.getQuizRunIdFromSession(session, false) == null) {
+//      return "play/register/index";
+//    } else {
+      return "play/quizzo/index";
+//    }
   }
 
-  /**
-   * The actual game play goes on here...
-   * @return
-   */
-  @RequestMapping(value = "game/quizzo")
-  public String setupTeam() {
-    return "quizzo/index";
+  @RequestMapping(value = "status")
+  public @ResponseBody String getGameStatus(HttpSession session) {
+    Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, false);
+    if (quizRunId == null) {
+      return "NOT_STARTED";
+    } else {
+      return stateMachine.getQuizRunState(quizRunId).toString();
+    }
   }
 
   @RequestMapping(value = "question", method = RequestMethod.GET)
-  public
-  @ResponseBody
-  String getCurrentQuestion(HttpSession session) {
+  public @ResponseBody String getCurrentQuestion(HttpSession session) {
     Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, true);
     Question currentQuestion = stateMachine.getCurrentQuestion(quizRunId);
     Long currentQuestionId = currentQuestion.getId();

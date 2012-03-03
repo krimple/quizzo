@@ -16,7 +16,7 @@
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
     <mvc:resources location="/, classpath:/dojo-release-1.6.1/, classpath:/META-INF/web-resources/" mapping="/resources/**"
-      cache-period="30"    />
+      cache-period="30" />
     <!--mvc:resources location="/, /WEB-INF/classes/dojo_toolkit, classpath:/META-INF/web-resources/" mapping="/resources/**" -->
     <!-- was classpath:/META-INF/web-resources/ -->
 
@@ -58,16 +58,10 @@
     <!-- Enable this for integration of file upload functionality -->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
 
-    <!-- krimple : to enable ajax view resolve methods, comment the stock view resolver out and install the one below -->
-    <!--<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">        -->
-        <!--<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>-->
-    <!--</bean>-->
 
-    <!-- krimple: this view resolver is able to handle rendering of tiles (fragments) in an ajax-style -->
-    <bean id="tilesViewResolver" class="org.springframework.js.ajax.AjaxUrlBasedViewResolver">
-        <property name="viewClass" value="org.springframework.webflow.mvc.view.FlowAjaxTilesView"/>
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
     </bean>
-
 
     <bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
         <property name="definitions">
@@ -84,7 +78,7 @@
       http://www.rimple.com/tech/2011/3/15/build-a-better-roo-exception-page.html -->
     <bean class="com.chariot.games.quizzo.web.ApplicationConversionServiceFactoryBean"
           id="applicationConversionService"/>
-    <import resource="webflow-config.xml"/>
+    <!--<import resource="webflow-config.xml"/>-->
     <bean class="com.chariot.games.quizzo.util.FullTraceMappingExceptionResolver">
         <property name="defaultErrorView" value="uncaughtException"/>
         <property name="exceptionMappings">
@@ -96,4 +90,6 @@
             </props>
         </property>
     </bean>
+
+    <import resource="quizzo-view-config.xml" />
 </beans>

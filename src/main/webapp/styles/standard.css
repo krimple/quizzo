@@ -437,6 +437,11 @@ fieldset th {
 
 }
 
+#gamePanel {
+    height: 800px;
+    width: 780px;
+}
+
 
 
 

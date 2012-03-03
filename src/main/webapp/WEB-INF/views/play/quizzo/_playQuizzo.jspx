@@ -1,0 +1,38 @@
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+     xmlns:spring="http://www.springframework.org/tags"
+     xmlns:form="http://www.springframework.org/tags/form"
+     xmlns:fields="urn:jsptagdir:/WEB-INF/tags/form/fields"
+     xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
+     version="2.0"
+     dojoType="dijit.layout.ContentPane"
+     title="Play the Quizzo"
+     style="width: 100%; height: 500px;"
+     id="playQuizzoPanel">
+
+    <button id="forwardButton" dojoType="dijit.form.Button" type="button">Next</button>
+    <button id="reverseButton" dojoType="dijit.form.Button" type="button">Prev</button>
+    <script type="text/javascript">
+        dojo.ready(function() {
+            var stacks = dijit.byId("stacks");
+            var forwardButton = dijit.byId("forwardButton");
+            var reverseButton = dijit.byId("reverseButton");
+            dojo.connect()
+        });
+    </script>
+    <div id="stacks" dojoType="dijit.layout.StackController">
+
+        <div dojoType="dijit.layout.ContentPane">
+
+            One
+        </div>
+
+        <div dojoType="dijit.layout.ContentPane">
+
+            Two
+        </div>
+
+    </div>
+
+</div>
+

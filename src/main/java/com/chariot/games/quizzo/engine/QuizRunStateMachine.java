@@ -13,14 +13,16 @@ public interface QuizRunStateMachine {
 
   long createQuizRun(long quizId, String text);
   void enrollTeams(long quizRunId);
+  long registerTeam(Long quizRunId, String teamName, String mission);
   void startQuizRun(long quizRunId);
-  boolean nextQuestion(long quizRunId);
+  boolean askNextQuestion(long quizRunId);
+  void reviewAnswer(long quizRunId);
+  boolean submitAnswer(long quizRunId, long teamId, long choice);
+  void endQuizRun(long quizRunId);
+
   Map<String, BigDecimal> getScores(long quizRunId);
   Question getCurrentQuestion(long quizRunId);
   boolean hasMoreQuestions(long quizRunId);
-  boolean submitAnswer(long quizRunId, long teamId, long choice);
-  void endQuizRun(long quizRunId);
-  long registerTeam(Long quizRunId, String teamName, String mission);
   boolean isValidQuizRun(long quizRunId);
  // YAGNI QuizRun getQuizRun(long quizRunId);
   QuizRunState getQuizRunState(long quizRunId);
