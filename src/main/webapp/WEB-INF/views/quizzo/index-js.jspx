@@ -20,12 +20,9 @@
         dojo.require("dojo.data.ItemFileReadStore");
     </script>
 
-    <spring:url value="/game/quizrun" var="quizrun_select_store_url" scope="request" />
-    <spring:url value="/game/team" var="team_url" scope="request"/>
-    <spring:url value="/play/quizzo/teamSetup" var="team_setup_url" scope="request" />
-    <spring:url value="/game/question" var="get_question_url" scope="request" />
-    <spring:url value="/game/answer" var="answer_url" scope="request" />
-    <spring:url value="/game/final_score" var="final_score_url" scope="request" />
-    <spring:url value="/game/poll" var="poll_url" scope="request"/>
+    <spring:url value="/quizzo/quizrun" var="quizrun_select_store_url" scope="request" />
+    <spring:url value="/quizzo/team" var="team_url" scope="request"/>
+    <spring:url value="/quizzo/question" var="ask_question_url" scope="request" />
+    <spring:url value="/quizzo/answer" var="answer__question_url" scope="request" />
 
 </div>

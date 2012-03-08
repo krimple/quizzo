@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Map;
 
-@RequestMapping("/game/**")
+@RequestMapping("/quizzo/**")
 @Controller
 public class GamePlayController {
 
@@ -36,11 +36,7 @@ public class GamePlayController {
    */
   @RequestMapping(method = RequestMethod.GET)
   public String index(HttpSession session) {
-//    if (QuizWebSessionUtils.getQuizRunIdFromSession(session, false) == null) {
-//      return "play/register/index";
-//    } else {
-      return "play/quizzo/index";
-//    }
+      return "quizzo/index";
   }
 
   @RequestMapping(value = "status")
@@ -123,4 +119,29 @@ public class GamePlayController {
         QuizRunSelectData.toJsonArray(QuizRunSelectData.convert(stateMachine.getAllReadyQuizRuns()));
     return DataStoreUtils.asReadStoreForSelect("id", "label", jsonArray);
   }
+
+//  @RequestMapping(value = "teamSetup")
+//  public String teamSetup() {
+//    return "quizzo/_teamSetup";
+//  }
+//
+//  @RequestMapping(value = "poller")
+//  public String poller() {
+//    return "quizzo/_poller";
+//  }
+//
+//  @RequestMapping(value = "question")
+//  public String question() {
+//    return "quizzo/_question";
+//  }
+//
+//  @RequestMapping(value = "review")
+//  public String review() {
+//    return "quizzo/_review";
+//  }
+//
+//  @RequestMapping(value = "gameover")
+//  public String gameover() {
+//    return "quizzo/_gameover";
+//  }
 }

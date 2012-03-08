@@ -436,8 +436,17 @@ fieldset th {
     width: 780px;
 
 }
-
-#gamePanel {
+#teamSetupPanel {
+    height: 800px;
+    width: 780px;
+}
+#questionPanel {
+    display:none;
+    height: 800px;
+    width: 780px;
+}
+#answerPanel {
+    display:none;
     height: 800px;
     width: 780px;
 }
