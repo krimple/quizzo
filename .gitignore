@@ -4,3 +4,4 @@ log.roo
 .idea
 *.iml
 overlays
+.DS_Store
