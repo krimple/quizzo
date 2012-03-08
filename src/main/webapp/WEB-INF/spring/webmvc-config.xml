@@ -15,7 +15,8 @@
 
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
-    <mvc:resources location="/, classpath:/dojo-release-1.7.2/, classpath:/META-INF/web-resources/" mapping="/resources/**"
+    <mvc:resources location="/, classpath:/dojo-release-1.7.2/, classpath:/META-INF/web-resources/" 
+      mapping="/resources/**"
       cache-period="30" />
     <!--mvc:resources location="/, /WEB-INF/classes/dojo_toolkit, classpath:/META-INF/web-resources/" mapping="/resources/**" -->
     <!-- was classpath:/META-INF/web-resources/ -->
@@ -90,6 +91,4 @@
             </props>
         </property>
     </bean>
-
-    <import resource="quizzo-view-config.xml" />
 </beans>

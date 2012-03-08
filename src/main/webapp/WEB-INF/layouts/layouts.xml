@@ -16,10 +16,12 @@
         <put-attribute name="footer" value="/WEB-INF/views/footer.jspx"/>
     </definition>
 
-    <definition name="bare" template="/WEB-INF/layouts/default.jspx">
+    <definition name="menuless" template="/WEB-INF/layouts/default.jspx">
 		    <put-attribute name="header" value="/WEB-INF/views/header.jspx"/>
 		    <put-attribute name="footer" value="/WEB-INF/views/footer.jspx"/>
     </definition>
+
+    <definition name="bare" template="/WEB-INF/layouts/bare.jspx"/>
 
     <definition name="extended" template="/WEB-INF/layouts/default.jspx">
         <put-attribute name="header" value="/WEB-INF/views/header.jspx"/>

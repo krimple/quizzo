@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+  <definition extends="menuless" name="quizzo/index">
+    <put-attribute name="body" value="/WEB-INF/views/quizzo/index.jspx" cascade="true"/>
+    <put-attribute name="htmlheaders" value="/WEB-INF/views/quizzo/index-js.jspx" cascade="true"/>
+    <put-attribute name="_teamSetup" value="/WEB-INF/views/quizzo/_teamSetup.jspx" cascade="true"/>
+    <put-attribute name="_question" value="/WEB-INF/views/quizzo/_question.jspx" cascade="true"/>
+    <!--<put-attribute name="_showAnswer" value="/WEB-INF/views/quizzo/_showAnswer.jspx" cascade="true"/>-->
+    <!--<put-attribute name="_endQuiz" value="/WEB-INF/views/quizzo/_endQuiz.jspx" cascade="true"/>-->
+    <!--<put-attribute name="content" value="/WEB-INF/views/quizzo/_poller.jspx"/>-->
+  </definition>
+
+
+</tiles-definitions>

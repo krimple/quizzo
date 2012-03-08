@@ -1,11 +1,8 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page"
      xmlns:tiles="http://tiles.apache.org/tags-tiles"
      version="2.0"
-     dojoType="dijit.layout.ContentPane"
-     title="Start a Quiz"
      style="width: 100%; height: 500px;"
      id="teamSetupPanel">
-    <tiles:insertAttribute name="htmlheaders" ignore="true"/>
 
   <div class="formRow">
     <label for="quizRun">Quiz Run:</label>
@@ -42,20 +39,17 @@
          dojoType="dijit.form.SimpleTextarea"/>
   </div>
 
-  <div class="formRow">
-    <div id="teamAjaxResult"></div>
-  </div>
-
   <div class="submitTeamInformation">
     <button id="submitTeamButton" type="button"
-            dojoType="dijit.form.Button">Create team!
-    </button>
+            dojoType="dijit.form.Button">Create team!</button>
   </div>
 
   <script type="text/javascript">
     dojo.ready(function () {
+
       var submitTeamButton = dijit.byId("submitTeamButton");
-      dojo.connect(submitTeamButton, "onClick", function () {
+
+       dojo.connect(submitTeamButton, "onClick",function() {
         console.log("submitting a team create request...");
         var data = {
           "quizRunId" : dijit.byId("quizRunSelect").attr("value"),
@@ -69,15 +63,16 @@
           headers : {"Content-Type":"application/json"},
           load :function(response, ioArgs) {
             alert("Successfully set up team.");
-            teamSetupDone();
+            dojo.style("teamSetupPanel", "display", "none");
+            dojo.style("questionPanel", "display", "block");
           },
           error:function (errorCode) {
             alert("Team create failed. Reason: " + errorCode);
           },
           handleAs:"json"});
+
       });
     });
-
   </script>
 </div>
 
