@@ -109,12 +109,13 @@ public class QuizRunStateMachineMemoryTest {
   @Transactional
   @DirtiesContext
   public void testFetchAllQuestionsAndDone() {
-    Assert.assertEquals(QuizRunState.ASK_QUESTION, stateMachine.getQuizRunState(quizRunId));
+    Assert.assertEquals(QuizRunState.READY_TO_PLAY, stateMachine.getQuizRunState(quizRunId));
     for (int i = 0; i < 5; i++) {
       Assert.assertTrue(stateMachine.askNextQuestion(quizRunId));
       stateMachine.reviewAnswer(quizRunId);
     }
     assertFalse(stateMachine.hasMoreQuestions(quizRunId));
+    stateMachine.endQuizRun(quizRunId);
     assertEquals(QuizRunState.COMPLETE, stateMachine.getQuizRunState(quizRunId));
   }
 

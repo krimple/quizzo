@@ -19,19 +19,21 @@ import java.util.Set;
 @RooJson
 public class Quiz {
 
-    @NotNull
-    @Size(max = 200)
-    private String title;
+  @NotNull
+  @Size(max = 200)
+  private String title;
 
-    @NotNull
-    @Size(max = 500)
-    private String description;
+  @NotNull
+  @Size(max = 500)
+  private String description;
 
-    @NotNull
-    private BigDecimal defaultPointValue = new BigDecimal("100.0");
+  @NotNull
+  private BigDecimal defaultPointValue = new BigDecimal("100.0");
 
-    @OneToMany(mappedBy = "quiz",
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Question> questions = new HashSet<Question>();
+  @OneToMany(mappedBy = "quiz",
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+  private Set<Question> questions = new HashSet<Question>();
 
+  @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+  private Set<QuizRun> quizRuns;
 }

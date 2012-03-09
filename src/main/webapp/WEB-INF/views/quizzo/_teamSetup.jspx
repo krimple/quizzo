@@ -4,75 +4,75 @@
      style="width: 100%; height: 500px;"
      id="teamSetupPanel">
 
-  <div class="formRow">
-    <label for="quizRun">Quiz Run:</label>
+    <div class="formRow">
+        <label for="quizRun">Quiz Run:</label>
 
-    <div id="quizRunSelect">
-      <script>
-        dojo.ready(function () {
-          var quizRunSelectStore = new dojo.data.ItemFileReadStore({
-            url:"${quizrun_select_store_url}"
-          });
-
-          var quizRunSelect = new dijit.form.Select({
-            name:"quizRunSelect",
-            store:quizRunSelectStore,
-            maxHeight:-1
-          }, "quizRunSelect");
-          quizRunSelect.startup();
-        });
-      </script>
+        <div id="quizRunSelect">
+            <script>
+                require(['dojo/parser', 'dojo/domReady!'], function () {
+                    var quizRunSelectStore = new dojo.data.ItemFileReadStore({
+                        url:"${quizrun_select_store_url}"
+                    });
+                    var quizRunSelect = new dijit.form.Select({
+                        name:"quizRunSelect",
+                        store:quizRunSelectStore,
+                        maxHeight:-1
+                    }, "quizRunSelect");
+                    quizRunSelect.startup();
+                });
+            </script>
+        </div>
     </div>
-  </div>
 
-  <div class="formRow">
-    <label for="teamName">Team Name:</label>
+    <div class="formRow">
+        <label for="teamName">Team Name:</label>
 
-    <input id="teamName" class="formInputField"
-           dojoType="dijit.form.TextBox"></input>
-  </div>
-  <div class="formRow">
-    <label for="teamMissionText">Your Mission:</label>
+        <input id="teamName" class="formInputField"
+               data-dojo-type="dijit.form.TextBox"></input>
+    </div>
+    <div class="formRow">
+        <label for="teamMissionText">Your Mission:</label>
 
-    <div id="teamMissionText"
-         class="formTextArea"
-         dojoType="dijit.form.SimpleTextarea"/>
-  </div>
+        <div id="teamMissionText"
+             class="formTextArea"
+             data-dojo-type="dijit.form.SimpleTextarea"/>
+    </div>
 
-  <div class="submitTeamInformation">
-    <button id="submitTeamButton" type="button"
-            dojoType="dijit.form.Button">Create team!</button>
-  </div>
+    <div class="submitTeamInformation">
+        <button id="submitTeamButton" type="button"
+                data-dojo-type="dijit.form.Button">Create team!
+        </button>
+    </div>
 
-  <script type="text/javascript">
-    dojo.ready(function () {
+    <script type="text/javascript">
+        dojo.ready(function () {
 
-      var submitTeamButton = dijit.byId("submitTeamButton");
+            var submitTeamButton = dijit.byId("submitTeamButton");
 
-       dojo.connect(submitTeamButton, "onClick",function() {
-        console.log("submitting a team create request...");
-        var data = {
-          "quizRunId" : dijit.byId("quizRunSelect").attr("value"),
-          "teamName" : dijit.byId("teamName").attr("value"),
-          "mission" : dijit.byId("teamMissionText").attr("value")
-        }
-        var actualData = dojo.toJson(data);
-        dojo.xhrPost({
-          url : "${team_url}",
-          postData : actualData,
-          headers : {"Content-Type":"application/json"},
-          load :function(response, ioArgs) {
-            alert("Successfully set up team.");
-            dojo.style("teamSetupPanel", "display", "none");
-            dojo.style("questionPanel", "display", "block");
-          },
-          error:function (errorCode) {
-            alert("Team create failed. Reason: " + errorCode);
-          },
-          handleAs:"json"});
+            dojo.connect(submitTeamButton, "onClick", function () {
+                console.log("submitting a team create request...");
+                var data = {
+                    "quizRunId":dijit.byId("quizRunSelect").attr("value"),
+                    "teamName":dijit.byId("teamName").attr("value"),
+                    "mission":dijit.byId("teamMissionText").attr("value")
+                };
+                var actualData = dojo.toJson(data);
+                dojo.xhrPost({
+                    url:"${team_url}",
+                    postData:actualData,
+                    headers:{"Content-Type":"application/json"},
+                    load:function (response, ioArgs) {
+                        alert("Successfully set up team.");
+                        dojo.style("teamSetupPanel", "display", "none");
+                        dojo.style("questionPanel", "display", "block");
+                    },
+                    error:function (errorCode) {
+                        alert("Team create failed. Reason: " + errorCode);
+                    },
+                    handleAs:"json"});
 
-      });
-    });
-  </script>
+            });
+        });
+    </script>
 </div>
 

@@ -131,7 +131,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     QuizRunData data = getQuizRunData(quizRunId);
 
     // during startup transition we will be in "ready to play" mode for a few milliseconds... but it is a true state
-    if (data.quizRunState != QuizRunState.REVIEW_ANSWER || data.quizRunState != QuizRunState.READY_TO_PLAY) {
+    if (data.quizRunState != QuizRunState.REVIEW_ANSWER && data.quizRunState != QuizRunState.READY_TO_PLAY) {
       throw new IllegalStateException("Cannot ask next question - finish existing one or start the quiz!");
     }
     // will switch to complete state or asking questions automatically depending on if
@@ -248,6 +248,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
   }
 
   @Override
+  @Transactional
   public QuizRunState getQuizRunState(long quizRunId) {
     QuizRunData data = quizRuns.get(quizRunId);
     return data.quizRunState;
@@ -261,6 +262,7 @@ public class QuizRunStateMachineInMemory implements QuizRunStateMachine {
     return quizRuns.get(quizRunId);
   }
 
+  @Transactional
   public List<QuizRun> getAllReadyQuizRuns() {
 
     List<QuizRun> validQuizRuns = new ArrayList<QuizRun>();

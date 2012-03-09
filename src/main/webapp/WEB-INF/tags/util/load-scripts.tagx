@@ -19,13 +19,7 @@
     <c:out value="${fn:replace(plocale, '_', '-')}" default="en" />
   </c:set>
 
-  <script type="text/javascript">var djConfig = {
-    parseOnLoad: true, isDebug: true,
-    debugAtAllCosts: true,
-    locale: '${fn:toLowerCase(userLocale)}'
-  };</script>
-
-  <script src="${dojo_url}" djConfig="parseOnLoad: true" type="text/javascript"><!-- required for FF3 and Opera --></script>
+  <script src="${dojo_url}" data-dojo-config="async: true, parseOnLoad: true, debugAtAllConsts: true, locale: '${fn:toLowerCase(userLocale)}'"  type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script src="${spring_url}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
   <script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script type="text/javascript">dojo.require("dojo.parser");</script>

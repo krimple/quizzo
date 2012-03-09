@@ -29,7 +29,7 @@ public class Question {
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
-  @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
   private Set<Choice> choices = new HashSet<Choice>();
 
 }
