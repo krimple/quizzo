@@ -13,11 +13,13 @@
     <button id="forwardButton" dojoType="dijit.form.Button" type="button">Next</button>
     <button id="reverseButton" dojoType="dijit.form.Button" type="button">Prev</button>
     <script type="text/javascript">
-        dojo.ready(function() {
-            var stacks = dijit.byId("stacks");
-            var forwardButton = dijit.byId("forwardButton");
-            var reverseButton = dijit.byId("reverseButton");
-            dojo.connect()
+      require(["dojo/dom",
+        "dijit/registry",
+        "dojo/domReady!"], function(dom, registry) {
+            var stacks = registry.byId("stacks");
+            var forwardButton = registry.byId("forwardButton");
+            var reverseButton = registry.byId("reverseButton");
+            dom.connect()
         });
     </script>
     <div id="stacks" dojoType="dijit.layout.StackController">

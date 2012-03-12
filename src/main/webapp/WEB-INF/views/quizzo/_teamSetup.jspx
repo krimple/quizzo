@@ -9,7 +9,10 @@
 
         <div id="quizRunSelect">
             <script>
-                require(['dojo/parser', 'dojo/domReady!'], function () {
+                require(['dojo/parser',
+                         "dojo/data/ItemFileReadStore",
+                         "dojo/dom",
+                         'dojo/domReady!'], function (parser, dom) {
                     var quizRunSelectStore = new dojo.data.ItemFileReadStore({
                         url:"${quizrun_select_store_url}"
                     });
@@ -45,26 +48,29 @@
     </div>
 
     <script type="text/javascript">
-        dojo.ready(function () {
+      require(["dojo/dom",
+        "dojo/xhr",
+        "dijit/registry",
+        "dojo/domReady!"], function(dom, xhr, registry) {
 
-            var submitTeamButton = dijit.byId("submitTeamButton");
+            var submitTeamButton = registry.byId("submitTeamButton");
 
-            dojo.connect(submitTeamButton, "onClick", function () {
+            registry.connect(submitTeamButton, "onClick", function () {
                 console.log("submitting a team create request...");
                 var data = {
-                    "quizRunId":dijit.byId("quizRunSelect").attr("value"),
-                    "teamName":dijit.byId("teamName").attr("value"),
-                    "mission":dijit.byId("teamMissionText").attr("value")
+                    "quizRunId":registry.byId("quizRunSelect").attr("value"),
+                    "teamName":registry.byId("teamName").attr("value"),
+                    "mission":registry.byId("teamMissionText").attr("value")
                 };
-                var actualData = dojo.toJson(data);
-                dojo.xhrPost({
+                var actualData = dom.toJson(data);
+                xhr.xhrPost({
                     url:"${team_url}",
                     postData:actualData,
                     headers:{"Content-Type":"application/json"},
                     load:function (response, ioArgs) {
                         alert("Successfully set up team.");
-                        dojo.style("teamSetupPanel", "display", "none");
-                        dojo.style("questionPanel", "display", "block");
+                        dom.style("teamSetupPanel", "display", "none");
+                        dom.style("questionPanel", "display", "block");
                     },
                     error:function (errorCode) {
                         alert("Team create failed. Reason: " + errorCode);

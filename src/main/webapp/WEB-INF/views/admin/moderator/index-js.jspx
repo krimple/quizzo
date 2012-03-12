@@ -11,20 +11,29 @@
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
     <script type="text/javascript">
-        dojo.require("dojo.parser");
-        dojo.require("dijit.form.Form");
-        dojo.require("dijit.layout.ContentPane");
-        dojo.require("dijit.form.Button");
-        dojo.require("dijit.form.Select");
-        dojo.require("dijit.Dialog");
-        dojo.require("dijit.form.SimpleTextarea");
-        dojo.require("dijit.Editor");
-        dojo.require("dijit.Toolbar");
-        dojo.require("dijit.layout.TabContainer");
-        dojo.require("dijit.form.Button");
-        dojo.require("dijit.layout.StackContainer");
-        dojo.require("dijit.layout.StackController");
-        dojo.require("dojo.data.ItemFileReadStore");
+
+
+      require([
+        "dojo/dom",
+        "dijit/registry",
+        "dojo/domReady!",
+        "dojo/parser",
+        "dojo/xhr",
+        "dijit/form/Form",
+        "dijit/layout/ContentPane",
+        "dijit/form/Button",
+        "dijit/form/Select",
+        "dijit/Dialog",
+        "dijit/form/SimpleTextarea",
+        "dijit/Editor",
+        "dijit/Toolbar",
+        "dijit/layout/TabContainer",
+        "dijit/layout/StackContainer",
+        "dijit/layout/StackController",
+        "dojo/data/ItemFileReadStore"], function (dom, registry) {
+
+      });
+
     </script>
 
     <spring:url value="/admin/moderator_ajax/quiz" var="quiz_url" scope="request"/>

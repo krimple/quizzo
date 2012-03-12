@@ -15,7 +15,7 @@
 
 
     <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
-    <mvc:resources location="/, classpath:/dojo-release-1.7.2/, classpath:/META-INF/web-resources/" 
+    <mvc:resources location="/, classpath:/dojo-release-1.7.2/, classpath:/META-INF/web-resources/"
       mapping="/resources/**"
       cache-period="30" />
     <!--mvc:resources location="/, /WEB-INF/classes/dojo_toolkit, classpath:/META-INF/web-resources/" mapping="/resources/**" -->
@@ -43,8 +43,7 @@
     application.properties resource bundle localizes all application specific messages such as entity names and menu items. -->
     <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource"
           p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application" p:fallbackToSystemLocale="false"
-          p:cacheSeconds="2"
-            />
+          p:cacheSeconds="2" />
 
     <!-- Store preferred language configuration in a cookie -->
     <bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale"/>

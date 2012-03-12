@@ -16,34 +16,11 @@
 
 
   <script type="text/javascript">
-
-    dojo.ready(function () {
+    require(["dojo/dom",
+        "dijit/registry",
+        "dojo/domReady!"], function(dom, registry) {
       var gamePanel = dijit.byId("gamePanel");
       gamePanel.startup();
-
-      // TODO - setup timer
-      //gamePanel.set('href', '${team_setup_url}');
     });
-
-//    function teamSetupDone() {
-//      var contentPane = dijit.byId("contentPane");
-//      contentPane.set('href', '${get_question_url}');
-//    }
-
-//    function managePane() {
-//      var runState = getRunState();
-//      if (runState == "ENROLL_TEAMS") {
-//        contentPane.set('href', '${team_url}');
-//      } else if (runState == "NOT_STARTED" || runState == "READY_TO_PLAY") {
-//        // TODO polling view
-//      } else if (runState == "ASK_QUESTION") {
-//        contentPane.set('href', '${get_question_url}');
-//      } else if (runState == "REVIEW_ANSWER") {
-//        contentPane.set('href', '${answer_url}');
-//      } else if (runState == "COMPLETE") {
-//        contentPane.set('href', '${final_score_url}')
-//      }
-//    }
-  </script>
-
+    </script>
 </div>

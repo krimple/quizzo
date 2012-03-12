@@ -27,8 +27,7 @@
     <li>
       <div id="quizRunManagerSelectQuiz">
         <script type="text/javascript">
-
-          dojo.ready(function () {
+         require(["dojo/domReady!"], function() {
             var quizManagerListStore = new dojo.data.ItemFileReadStore({
               url : "${quiz_list_store_url}"
             });
@@ -53,15 +52,15 @@
       </button>
 
       <script type="text/javascript">
-        dojo.ready(function () {
+        require(["dojo/xhr", "dojo/domReady!"], function(xhr) {
           var createQuizRunButton = dijit.byId("createQuizRunButton");
-          dojo.connect(createQuizRunButton, "onClick", function () {
+          xhr.connect(createQuizRunButton, "onClick", function () {
             var data = {
               "quizId" : dijit.byId('quizRunManagerSelectQuiz').attr("value"),
               "text" : dijit.byId('quizRunTextManager').attr("value") };
             var actualData = dojo.toJson(data);
 
-            dojo.xhrPost({
+            xhr.xhrPost({
               url : "${quiz_run_url}",
               postData : actualData,
               headers : {"Content-Type" : "application/json"},
