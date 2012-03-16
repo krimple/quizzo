@@ -6,10 +6,18 @@
     <jsp:output omit-xml-declaration="yes"/>
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
-    <script type="text/javascript">
+
+  <spring:url value="/quizzo/quizrun" var="quizrun_select_store_url" scope="request"/>
+  <spring:url value="/quizzo/team" var="team_url" scope="request"/>
+  <spring:url value="/quizzo/question" var="ask_question_url" scope="request"/>
+  <spring:url value="/quizzo/answer" var="answer__question_url" scope="request"/>
+  <spring:url value="/quizzo/scores" var="quizzo_scores_url" scope="request" />
+
+  <script type="text/javascript">
         require([
             "dojo/dom",
             "dijit/registry",
+            "dojo/_base/xhr",
             "dojo/domReady!",
             "dojo/parser",
             "dijit/form/Form",
@@ -22,15 +30,39 @@
             "dijit/Editor",
             "dijit/Toolbar",
             "dijit/layout/TabContainer",
-            "dojo/data/ItemFileReadStore"], function (dom, registry) {
+            "dojo/data/ItemFileReadStore"], function (dom, registry, xhr) {
 
+          pollScores = function pollScores() {
+            xhr.get({
+              url: "${quizzo_scores_url}",
+              handleAs: "json",
+              load: function(data) {
+                var yourScore = dom.byId("scores");
+                var targetStr = "";
+                yourScore.innerHTML = "";
+                data.score.forEach(function(scoreValue) {
+                  //TODO - make this nice with spans and a div for each score instead
+                  //TODO - put on rhs in layout
+                  targetStr +=  scoreValue.team + " : " + scoreValue.value + "&lt;br /&gt;";
+                });
+                yourScore.innerHTML = targetStr;
+
+                console.log(data);
+              },
+              error: function(err) {
+                console.log(err);
+                dom.byId("yourScore").innerHTML = "error.";
+              }
+            });
+            console.log("polled...");
+          };
+
+          pollQuizRunInfo = function pollQuizRunInfo() {
+            console.log("polled.. .");
+          };
+
+          quizRunInfo = { };
         });
-
     </script>
-
-    <spring:url value="/quizzo/quizrun" var="quizrun_select_store_url" scope="request"/>
-    <spring:url value="/quizzo/team" var="team_url" scope="request"/>
-    <spring:url value="/quizzo/question" var="ask_question_url" scope="request"/>
-    <spring:url value="/quizzo/answer" var="answer__question_url" scope="request"/>
 
 </div>

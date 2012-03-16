@@ -42,7 +42,7 @@
             <button id="nextQuestionButton" type="button"
                     data-dojo-type="dijit.form.Button">Get A Question
             </button>
-    
+
             <script type="text/javascript">
                 require(["dojo/_base/xhr", "dojo/dom", "dijit/registry", "dojo/on", "dojo/domReady",
                     "dojo/data/ItemFileReadStore", "dijit/form/Select", "dojo/query", "dojo/dom-attr"],
@@ -75,9 +75,9 @@
                                 quizRunSelect.store = quizManagerListStore;
                                 quizRunSelect.startup();
 
-                                $("#nextQuestionButton").on("click", function() {
+                                $("#nextQuestionButton").on( 'click', function() {
                                     xhr.put({
-                                        url:"${question_url}",
+                                        url:'${question_url}',
                                         load:function (data, stats) {
                                             if (data.nodata === true) {
                                                 alert("The game is over! Check scores!");

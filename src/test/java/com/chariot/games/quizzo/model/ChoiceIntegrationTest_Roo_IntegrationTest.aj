@@ -55,7 +55,7 @@ privileged aspect ChoiceIntegrationTest_Roo_IntegrationTest {
     public void ChoiceIntegrationTest.testFindAllChoices() {
         Assert.assertNotNull("Data on demand for 'Choice' failed to initialize correctly", dod.getRandomChoice());
         long count = choiceService.countAllChoices();
-        Assert.assertTrue("Too expensive to perform a find all test for 'Choice', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
+        Assert.assertTrue("Too expensive to perform a find all test for 'Choice', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 400);
         List<Choice> result = choiceService.findAllChoices();
         Assert.assertNotNull("Find all method for 'Choice' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Choice' failed to return any data", result.size() > 0);

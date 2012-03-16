@@ -4,84 +4,97 @@
      style="width: 100%; height: 500px;"
      id="teamSetupPanel">
 
-    <div class="formRow">
-        <label for="quizRun">Quiz Run:</label>
+  <div class="formRow">
+    <label for="quizRun">Quiz Run:</label>
 
-        <div id="quizRunSelect">
-            <script type="text/javascript">
-                require(["dojo/data/ItemFileReadStore",
-                         "dijit/form/Select"],
-                        function(ItemFileReadStore, Select) {
+    <div id="quizRunSelect">
+      <script type="text/javascript">
+        require(["dojo/data/ItemFileReadStore",
+          "dijit/form/Select"],
+            function (ItemFileReadStore, Select) {
 
-                            var quizRunSelectStore = new ItemFileReadStore({
-                                url:"${quizrun_select_store_url}"
-                            });
+              var quizRunSelectStore = new ItemFileReadStore({
+                url:"${quizrun_select_store_url}"
+              });
 
-                            var quizRunSelect = new Select({
-                                name:"quizRunSelect",
-                                store:quizRunSelectStore,
-                                maxHeight:-1
-                            }, "quizRunSelect");
-                            quizRunSelect.startup();
-                        });
-            </script>
-        </div>
+              var quizRunSelect = new Select({
+                name:"quizRunSelect",
+                store:quizRunSelectStore,
+                maxHeight:-1
+              }, "quizRunSelect");
+              quizRunSelect.startup();
+            });
+      </script>
     </div>
+  </div>
 
-    <label for="teamName">Team Name:</label>
+  <label for="teamName">Team Name:</label>
 
-    <input id="teamName" class="formInputField"
-           data-dojo-type="dijit.form.TextBox"></input>
-    <br/>
+  <input id="teamName" class="formInputField"
+         data-dojo-type="dijit.form.TextBox"></input>
+  <br/>
 
-    <label for="teamMissionText">Your Mission:</label>
+  <label for="teamMissionText">Your Mission:</label>
 
-    <input id="teamMissionText"
+  <input id="teamMissionText"
          class="formTextArea"
          data-dojo-type="dijit.form.SimpleTextarea"/>
-    <br/>
+  <br/>
 
 
-    <button id="submitTeamButton" type="button"
-            data-dojo-type="dijit.form.Button">Create team!
-    </button>
+  <button id="submitTeamButton" type="button"
+          data-dojo-type="dijit.form.Button">Create team!
+  </button>
 
-    <script type="text/javascript">
-        require(["dojo/dom",
-            "dojo/_base/xhr",
-            "dijit/registry",
-            "dojo/on",
-            "dojo/query",
-            "dojo/ready"],
-                function(dom, xhr, registry, on, $, ready) {
-            ready(function() {
-                $("#submitTeamButton").on("click", function() {
-                    console.log("submitting a team create request...");
-                    var data = {
-                        "quizRunId":registry.byId("quizRunSelect").get("value"),
-                        "teamName":registry.byId("teamName").get("value"),
-                        "mission":registry.byId("teamMissionText").get("value")
-                    };
-                    console.log(data);
-                    var actualData = dojo.toJson(data);
-                    console.log(actualData);
-                    xhr.post({
-                        url:"${team_url}",
-                        postData:actualData,
-                        headers:{"Content-Type":"application/json"},
-                        load:function (response, ioArgs) {
-                            console.log("Successfully set up team.");
-                            dojo.style("teamSetupPanel", "display", "none");
-                            dojo.style("questionPanel", "display", "block");
-                        },
-                        error:function (errorCode) {
-                            console.log("Team create failed. Reason: " + errorCode);
-                        },
-                        handleAs:"json"});
-                });
-                console.log("finished setup.");
+  <script type="text/javascript">
+    require(["dojo/dom",
+      "dojo/_base/xhr",
+      "dijit/registry",
+      "dojo/on",
+      "dojo/query",
+      "dojo/ready"],
+        function (dom, xhr, registry, on, $, ready) {
+          ready(function () {
+            $("#submitTeamButton").on("click", function () {
+              console.log("submitting a team create request...");
+              var data = {
+                "quizRunId":registry.byId("quizRunSelect").get("value"),
+                "teamName":registry.byId("teamName").get("value"),
+                "mission":registry.byId("teamMissionText").get("value")
+              };
+              console.log(data);
+              var actualData = dojo.toJson(data);
+              console.log(actualData);
+              xhr.post({
+                url:"${team_url}",
+                postData:actualData,
+                headers:{"Content-Type":"application/json"},
+                load:function (response, ioArgs) {
+                  console.log("Successfully set up team.");
+
+                  setupQuizRunInfo(response);
+                  quizRunInfo["quizRunId"] = response;
+                  quizRunInfo["mission"] = data.mission;
+                  quizRunInfo["teamName"] = data.teamName;
+                  dom.byId("statusTeamName").innerHTML = data.teamName;
+
+                  dojo.style("teamSetupPanel", "display", "none");
+                  dojo.style("questionPanel", "display", "block");
+                  window.setInterval(pollScores, 4000);
+                  window.setInterval(pollQuizRunInfo, 4000);
+                },
+                error:function (errorCode) {
+                  console.log("Team create failed. Reason: " + errorCode);
+                },
+                handleAs:"json"});
             });
+            console.log("finished setup.");
+
+            function setupQuizRunInfo(response){
+
+            }
+          });
         });
-    </script>
+  </script>
 </div>
 

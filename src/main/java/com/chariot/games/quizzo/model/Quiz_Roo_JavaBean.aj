@@ -5,6 +5,7 @@ package com.chariot.games.quizzo.model;
 
 import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.model.Quiz;
+import com.chariot.games.quizzo.model.QuizRun;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -40,6 +41,14 @@ privileged aspect Quiz_Roo_JavaBean {
     
     public void Quiz.setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+    
+    public Set<QuizRun> Quiz.getQuizRuns() {
+        return this.quizRuns;
+    }
+    
+    public void Quiz.setQuizRuns(Set<QuizRun> quizRuns) {
+        this.quizRuns = quizRuns;
     }
     
 }

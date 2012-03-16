@@ -368,15 +368,6 @@ fieldset th {
     width: 16px;
 }
 
-#statusPanel {
-    width: 300px;
-    border: 2px solid red;
-    padding-left: 100px;
-    padding-right: 100px;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
-}
-
 /* Quizzo-specific elements */
 #teamSetupPanel {
     height: 190px;
@@ -409,6 +400,35 @@ fieldset th {
     display:none;
     height: 800px;
     width: 780px;
+}
+
+#statusPanel {
+    width: 175px;
+    display: block;
+    overflow: hidden;
+    float: right;
+    border: 1px solid grey;
+    margin-left: 10px;
+    padding: 5px;
+    font-family: Lucida; !important;
+    font-size: 0.7em; !important;
+
+}
+
+#statusPanel .title {
+    font-weight: bold;
+}
+
+#statusPanel #scores {
+    font-weight: normal;
+}
+
+#statusPanel .quizRunInfo #label {
+    font-weight: bold;
+}
+
+#statusPanel .value {
+    display: block;
 }
 
 

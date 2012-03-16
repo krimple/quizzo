@@ -18,9 +18,9 @@
         "dijit/registry",
         "dojo/domReady!",
         "dojo/query"], function(dom, registry, $) {
-        if ()
+//        if ()
 //          var gamePanel = registry.byId("gamePanel");
 //      gamePanel.startup();
-    });
+         });
     </script>
 </div>

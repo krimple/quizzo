@@ -6,6 +6,7 @@ import com.chariot.games.quizzo.model.Question;
 import com.chariot.games.quizzo.web.QuizWebSessionUtils;
 import com.chariot.games.quizzo.web.ajax.request.NewTeamRequest;
 import com.chariot.games.quizzo.web.ajax.request.VotingForm;
+import com.chariot.games.quizzo.web.ajax.response.CurrentScoreResponse;
 import com.chariot.games.quizzo.web.ajax.response.QuizRunSelectData;
 import com.chariot.games.quizzo.web.form.ChoiceForm;
 import com.chariot.games.quizzo.web.form.QuestionAndChoicesForm;
@@ -16,11 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/quizzo/**")
 @Controller
@@ -35,12 +37,16 @@ public class GamePlayController {
    * Render the player panels - first register, then use dojo app to play game
    */
   @RequestMapping(method = RequestMethod.GET)
-  public String index(HttpSession session) {
-      return "quizzo/index";
+  public String index(HttpSession session, ModelMap model) {
+    Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, false);
+
+    return "quizzo/index";
   }
 
   @RequestMapping(value = "status")
-  public @ResponseBody String getGameStatus(HttpSession session) {
+  public
+  @ResponseBody
+  String getGameStatus(HttpSession session) {
     Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, false);
     if (quizRunId == null) {
       return "NOT_STARTED";
@@ -50,7 +56,9 @@ public class GamePlayController {
   }
 
   @RequestMapping(value = "question", method = RequestMethod.GET)
-  public @ResponseBody String getCurrentQuestion(HttpSession session) {
+  public
+  @ResponseBody
+  String getCurrentQuestion(HttpSession session) {
     Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, true);
     Question currentQuestion = stateMachine.getCurrentQuestion(quizRunId);
     Long currentQuestionId = currentQuestion.getId();
@@ -74,7 +82,9 @@ public class GamePlayController {
 
   @RequestMapping(value = "team", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public @ResponseBody String registerTeamForQuizRun(
+  public
+  @ResponseBody
+  String registerTeamForQuizRun(
       HttpSession session,
       @RequestBody String teamJson) {
     logger.trace("incoming Json request for team POST");
@@ -104,12 +114,27 @@ public class GamePlayController {
     return true;
   }
 
-   // TODO - convert to JSON object result
   @RequestMapping(value = "scores", method = RequestMethod.GET)
-  public @ResponseBody String getScores(HttpSession session) {
-    Long teamId = (Long) session.getAttribute("currentTeamId");
-    Map<String, BigDecimal> scores = stateMachine.getScores(teamId);
-    return scores.toString();
+  public
+  @ResponseBody
+  String getScores(HttpSession session) {
+    Long quizRunId = QuizWebSessionUtils.getQuizRunIdFromSession(session, true);
+    //Long teamId = (Long) session.getAttribute("currentTeamId");
+    Map<String, BigDecimal> scores = stateMachine.getScores(quizRunId);
+    //TODO should sort by name - my Java collections memory is getting a tad fuzzy this week - verify in test
+    SortedSet<String> keys = new TreeSet(scores.keySet());
+    List<CurrentScoreResponse> responses = new ArrayList<CurrentScoreResponse>();
+    Iterator<String> keyIterator = keys.iterator();
+    while (keyIterator.hasNext()) {
+      CurrentScoreResponse response = new CurrentScoreResponse();
+      String team = keyIterator.next();
+      response.setTeam(team);
+      BigDecimal score = scores.get(team);
+      // TODO - maybe make our points BigInteger anyway
+      response.setValue(score.toBigInteger().toString());
+      responses.add(response);
+    }
+    return CurrentScoreResponse.toJsonArray(responses);
   }
 
   @RequestMapping(value = "quizrun", method = RequestMethod.GET)

@@ -5,6 +5,7 @@ package com.chariot.games.quizzo.web;
 
 import com.chariot.games.quizzo.model.Quiz;
 import com.chariot.games.quizzo.service.QuestionService;
+import com.chariot.games.quizzo.service.QuizRunService;
 import com.chariot.games.quizzo.service.QuizService;
 import com.chariot.games.quizzo.web.QuizController;
 import java.io.UnsupportedEncodingException;
@@ -27,6 +28,9 @@ privileged aspect QuizController_Roo_Controller {
     
     @Autowired
     QuestionService QuizController.questionService;
+    
+    @Autowired
+    QuizRunService QuizController.quizRunService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String QuizController.create(@Valid Quiz quiz, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -96,6 +100,7 @@ privileged aspect QuizController_Roo_Controller {
     void QuizController.populateEditForm(Model uiModel, Quiz quiz) {
         uiModel.addAttribute("quiz", quiz);
         uiModel.addAttribute("questions", questionService.findAllQuestions());
+        uiModel.addAttribute("quizruns", quizRunService.findAllQuizRuns());
     }
     
     String QuizController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

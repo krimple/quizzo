@@ -10,18 +10,7 @@
      style="width: 100%; height: 500px;"
      id="playQuizzoPanel">
 
-    <button id="forwardButton" dojoType="dijit.form.Button" type="button">Next</button>
-    <button id="reverseButton" dojoType="dijit.form.Button" type="button">Prev</button>
-    <script type="text/javascript">
-      require(["dojo/dom",
-        "dijit/registry",
-        "dojo/domReady!"], function(dom, registry) {
-            var stacks = registry.byId("stacks");
-            var forwardButton = registry.byId("forwardButton");
-            var reverseButton = registry.byId("reverseButton");
-            dom.connect()
-        });
-    </script>
+
     <div id="stacks" dojoType="dijit.layout.StackController">
 
         <div dojoType="dijit.layout.ContentPane">
