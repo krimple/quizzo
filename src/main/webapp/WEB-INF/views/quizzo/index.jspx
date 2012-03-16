@@ -13,14 +13,14 @@
     <tiles:insertAttribute name="_teamSetup"/>
 
     <tiles:insertAttribute name="_question"/>
-
-
   <script type="text/javascript">
     require(["dojo/dom",
         "dijit/registry",
-        "dojo/domReady!"], function(dom, registry) {
-      var gamePanel = dijit.byId("gamePanel");
-      gamePanel.startup();
+        "dojo/domReady!",
+        "dojo/query"], function(dom, registry, $) {
+        if ()
+//          var gamePanel = registry.byId("gamePanel");
+//      gamePanel.startup();
     });
     </script>
 </div>

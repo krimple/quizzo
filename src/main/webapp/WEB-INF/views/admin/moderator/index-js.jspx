@@ -16,9 +16,8 @@
       require([
         "dojo/dom",
         "dijit/registry",
-        "dojo/domReady!",
         "dojo/parser",
-        "dojo/xhr",
+        "dojo/_base/xhr",
         "dijit/form/Form",
         "dijit/layout/ContentPane",
         "dijit/form/Button",

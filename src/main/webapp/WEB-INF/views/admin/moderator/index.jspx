@@ -10,11 +10,11 @@
 
     <spring:message code="application_name" htmlEscape="false" var="app_name"/>
 
-    <div data-dojo-type="dijit.layout.TabContainer" id="moderatorTabContainer">
+    <!--<div data-dojo-type="dijit.layout.TabContainer" id="moderatorTabContainer">-->
 
         <!--<tiles:insertAttribute name="quizRunSetupPanel"/> -->
         <tiles:insertAttribute name="quizRunManagerPanel" />
         <!--<tiles:insertAttribute name="quizSetupPanel"/> -->
-    </div>
+    <!--</div>-->
 
 </div>

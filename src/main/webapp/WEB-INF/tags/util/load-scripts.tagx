@@ -10,7 +10,7 @@
   <spring:url value="/resources/spring/Spring-Dojo.js.uncompressed.js" var="spring_dojo_url" />
   <spring:url value="/resources/images/favicon.ico" var="favicon" />
   <link rel="stylesheet" type="text/css" href="${tundra_url}" />
-  <link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />
+      <!--<link rel="stylesheet" type="text/css" media="screen" href="${roo_css_url}" />-->
   <link rel="SHORTCUT ICON" href="${favicon}" />
 
   <!-- Get the user local from the page context (it was set by Spring MVC's locale resolver) -->
@@ -21,5 +21,5 @@
 
   <script src="${dojo_url}" data-dojo-config="async: true, parseOnLoad: true, debugAtAllConsts: true, locale: '${fn:toLowerCase(userLocale)}'"  type="text/javascript"><!-- required for FF3 and Opera --></script>
   <script src="${spring_url}" type="text/javascript"><!-- /required for FF3 and Opera --></script>
-  <script src="${spring_dojo_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
+  <!--<script src="${spring_dojo_url}" type="text/javascript">&lt;!&ndash; required for FF3 and Opera &ndash;&gt;</script>-->
 </jsp:root>

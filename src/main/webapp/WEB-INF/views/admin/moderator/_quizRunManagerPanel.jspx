@@ -5,150 +5,146 @@
      xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
      xmlns:c="http://java.sun.com/jsp/jstl/core"
      version="2.0"
-     dojoType="dijit.layout.ContentPane"
-     title="Manage Quiz Runs"
-     id="quizRunManagerPanel"
-     style="width: 100%; height: 500px;">
+     data-dojo-type="dijit.layout.ContentPane"
+     id="contentPaneQuizRun"
+     title="Manage Quiz Runs">
 
+    <h4>Critical Information</h4>
+    <b>Current Quiz Run</b>: ${currentQuizRunId}<br/>
+    <br/>
+    <b>Status</b>
 
-  <script type="text/javascript">
-    function setMessage(message) {
-      alert(message);
-    }
-  </script>
+    <div id="quizManagerStatus"></div>
+    <br/>
+    <h4>Actions</h4>
 
-  <h4>Critical Information</h4>
-  <b>Current Quiz Run</b>: ${currentQuizRunId}<br/>
-  <br/>
-  <b>Status</b> <div id="quizManagerStatus"></div>
-  <br/>
-  <h4>Actions</h4>
-  <ol class="verticalButtons">
-    <li>
-      <div id="quizRunManagerSelectQuiz">
-        <script type="text/javascript">
-         require(["dojo/domReady!"], function() {
-            var quizManagerListStore = new dojo.data.ItemFileReadStore({
-              url : "${quiz_list_store_url}"
-            });
+            <label for="quizRunManagerSelectQuiz">Select Quiz</label> :
+            <select id="quizRunManagerSelectQuiz"
+                    data-dojo-type="dijit.form.Select"></select>
+            <br/>
 
-            var quizManagerSelect = new dijit.form.Select({
-              name : "quizRunSelect",
-              store : quizManagerListStore,
-              maxHeight : -1
-            }, "quizRunManagerSelectQuiz");
-            quizManagerSelect.startup();
-          });
-        </script>
-      </div>
-      <br/>
-      <label for="quizRunTextManager">Message:</label><br/>
-      <input id="quizRunTextManager" class="formTextArea"
-             dojoType="dijit.form.SimpleTextarea"/>
-      <br/>
+            <label for="quizRunTextManager">Message</label> :
+            <input id="quizRunTextManager"
+                   data-dojo-type="dijit.form.SimpleTextarea"></input>
+            <br/>
 
-      <button id="createQuizRunButton" type="button"
-              dojoType="dijit.form.Button">Run the Quiz!
-      </button>
+            <button id="createQuizRunButton" type="button"
+                    data-dojo-type="dijit.form.Button">Run the Quiz!
+            </button>
+            <button id="enrollTeamsButton" type="button"
+                    data-dojo-type="dijit.form.Button">Set to Enroll Mode
+            </button>
 
-      <script type="text/javascript">
-        require(["dojo/xhr", "dojo/domReady!"], function(xhr) {
-          var createQuizRunButton = dijit.byId("createQuizRunButton");
-          xhr.connect(createQuizRunButton, "onClick", function () {
-            var data = {
-              "quizId" : dijit.byId('quizRunManagerSelectQuiz').attr("value"),
-              "text" : dijit.byId('quizRunTextManager').attr("value") };
-            var actualData = dojo.toJson(data);
+            <button id="startQuizRunButton" type="button"
+                    data-dojo-type="dijit.form.Button">Start the Quiz
+            </button>
 
-            xhr.xhrPost({
-              url : "${quiz_run_url}",
-              postData : actualData,
-              headers : {"Content-Type" : "application/json"},
-              load : function(response, ioArgs) {
-                setMessage("Quiz Run is created - you may now enable registrations.");
-                createQuizRunButton.set("disable", "true");
-              },
-              error : function(errorCode) {
-                setMessage("failure during quiz run setup. " + errorCode);
-              },
-              handleAs:"json"
-            });
-          });
-        });
-      </script>
-    </li>
-    <li>
-      <button id="enrollTeamsButton" type="button"
-              dojoType="dijit.form.Button">Set to Enroll Mode
-      </button>
-      <script type="text/javascript">
-        dojo.ready(function () {
-          var enrollTeamsButton = dijit.byId("enrollTeamsButton");
-          dojo.connect(enrollTeamsButton, "onClick", function () {
-            dojo.xhrPut({
-              url:"${enroll_teams_url}",
-              load:function (data, stats) {
-                enrollTeamsButton.set("disable", "true");
-                setMessage("Please sign up teams.");
-              },
-              error:function (error) {
-                setMessage("Error setting state. " + error);
-              }
-            });
-          });
-        });
-      </script>
-    </li>
-    <li>
-      <button id="startQuizRunButton" type="button"
-              dojoType="dijit.form.Button">Start the Quiz
-      </button>
-      <script type="text/javascript">
-        dojo.ready(function () {
-          var startQuizRunButton = dijit.byId("startQuizRunButton");
-          dojo.connect(startQuizRunButton, "onClick", function () {
-            dojo.xhrPut({
-              url:"${quiz_run_url}",
-              load:function (data, stats) {
-                dojo.byId("quizManagerStatus").innerHTML = "You may play the game, Mr. Falkken.";
-                startQuizRunButton.set("disable", "true");
-              },
-              error:function (error) {
-                dojo.byId("quizManagerStatus").innerHTML = "Error setting state. " + error;
-              }
-            });
-          })
-        })
-      </script>
-    </li>
-    <li>
-      <button id="nextQuestionButton" type="button"
-              dojoType="dijit.form.Button">Get A Question
-      </button>
-      <script type="text/javascript">
-        dojo.ready(function () {
-          var nextQuestionButton = dijit.byId("nextQuestionButton");
-          dojo.connect(nextQuestionButton, "onClick", function () {
-            dojo.xhrPut({
-              url:"${question_url}",
-              load:function (data, stats) {
-                if (data.nodata == true) {
-                  alert("The game is over! Check scores!");
-                } else {
-                  setMessage("Next question is up.");
-                  // TODO - render question in panel.
-                  // data is here.
-                  console.log("success, next question fetched.", data);
-                }
-              },
-              error:function (error) {
-                setMessage("Error setting state. " + error);
-              },
-              handleAs:"json"
-            });
-          })
-        })
-      </script>
-    </li>
-  </ol>
-</div>
+            <button id="nextQuestionButton" type="button"
+                    data-dojo-type="dijit.form.Button">Get A Question
+            </button>
+    
+            <script type="text/javascript">
+                require(["dojo/_base/xhr", "dojo/dom", "dijit/registry", "dojo/on", "dojo/domReady",
+                    "dojo/data/ItemFileReadStore", "dijit/form/Select", "dojo/query", "dojo/dom-attr"],
+                        function (xhr, dom, registry, on, domReady, ItemFileReadStore, Select, $,
+                                  domAttr) {
+
+                            function setMessage(message) {
+                                alert(message);
+                            }
+
+                            function handleError(error) {
+                                console.log(error.src, error.id);
+                            }
+
+                            require.on("error", handleError);
+
+                            var contentPaneQuizRun = dom.byId("contentPaneQuizRun");
+                            var createQuizRunButton = dom.byId("createQuizRunButton");
+                            var nextQuestionButton = dom.byId("nextQuestionButton");
+                            var startQuizRunButton = dom.byId("startQuizRunButton");
+                            var enrollTeamsButton = dom.byId("enrollTeamsButton");
+
+                            domReady(function () {
+
+                                var quizManagerListStore = new ItemFileReadStore({
+                                    url:"${quiz_list_store_url}"
+                                });
+
+                                var quizRunSelect = registry.byId("quizRunManagerSelectQuiz");
+                                quizRunSelect.store = quizManagerListStore;
+                                quizRunSelect.startup();
+
+                                $("#nextQuestionButton").on("click", function() {
+                                    xhr.put({
+                                        url:"${question_url}",
+                                        load:function (data, stats) {
+                                            if (data.nodata === true) {
+                                                alert("The game is over! Check scores!");
+                                            } else {
+                                                setMessage("Next question is up.");
+                                                // TODO - render question in panel.
+                                                // data is here.
+                                                console.log("success, next question fetched.", data);
+                                            }
+                                        },
+                                        error:function (error) {
+                                            setMessage("Error setting state. " + error);
+                                        },
+                                        handleAs:"json"
+                                    });
+                                });
+
+                                $("#createQuizRunButton").on("click", function () {
+                                    var button = $("#createQuizRunButton");
+                                    var data = {
+                                        "quizId": registry.byId('quizRunManagerSelectQuiz').get("value"),
+                                        "text": registry.byId('quizRunTextManager').get("value")
+                                    };
+
+                                    var actualData = dojo.toJson(data);
+
+                                    xhr.post({
+                                        url:"${quiz_run_url}",
+                                        postData:actualData,
+                                        headers:{"Content-Type":"application/json"},
+                                        load:function (response, ioArgs) {
+                                            setMessage("Quiz Run is created - you may now enable registrations.");
+                                            // somehow disable button
+                                        },
+                                        error:function (errorCode) {
+                                            setMessage("failure during quiz run setup. " + errorCode);
+                                        },
+                                        handleAs:"json"
+                                    });
+                                });
+
+                                $("#startQuizRunButton").on("click", function () {
+                                    xhr.put({
+                                        url:"${quiz_run_url}",
+                                        load:function (data, stats) {
+                                            dom.byId("quizManagerStatus").innerHTML = "You may play the game, Mr. Falkken.";
+                                            $("#startQuizRunButton").set("disable", "true");
+                                        },
+                                        error:function (error) {
+                                            $("#quizManagerStatus").innerHTML = "Error setting state. " + error;
+                                        }
+                                    });
+                                });
+
+                                $("#enrollTeamsButton").on("click", function () {
+                                    xhr.put({
+                                        url:"${enroll_teams_url}",
+                                        load:function (data, stats) {
+                                            //enrollTeamsButton.set("disable", "true");
+                                            setMessage("Please sign up teams.");
+                                        },
+                                        error:function (error) {
+                                            setMessage("Error setting state. " + error);
+                                        }
+                                    });
+                                });
+                            });
+                        });
+            </script>
+        </div>

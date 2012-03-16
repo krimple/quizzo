@@ -17,7 +17,7 @@ body {
 
 #wrapper {
     width: 800px;
-    min-width: 800px;
+// min-width: 800px;
     max-width: 800px;
     margin-right: auto;
     margin-left: auto;
@@ -362,21 +362,6 @@ fieldset th {
     color: #888888;
 }
 
-.dijitArrowButton {
-    height: 20px;
-}
-
-.dijitTextArea {
-    min-height: 5.5em !important;
-    max-height: 22em !important;
-    overflow-y: auto !important;
-    max-width: 175px;
-}
-
-.RichTextEditable {
-    min-height: 18em !important;
-    max-height: 18em !important;
-}
 
 .flag {
     height: 11px;
@@ -399,31 +384,6 @@ fieldset th {
     width: 436px;
     padding-left: 20px;
     margin-left: 20px;
-}
-
-.formRow {
-    width: 70%;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.formRow label {
-    width: 100%;
-    text-align: left;
-    font-weight: bold;
-    float: left;
-    margin-left: 10px;
-}
-
-
-.formInputField {
-    width: 300px;
-}
-
-.formTextArea {
-    width: 600px;
 }
 
 #moderatorTabContainer {

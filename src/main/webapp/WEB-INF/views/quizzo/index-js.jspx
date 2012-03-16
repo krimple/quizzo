@@ -13,6 +13,7 @@
             "dojo/domReady!",
             "dojo/parser",
             "dijit/form/Form",
+            "dijit/form/TextBox",
             "dijit/layout/ContentPane",
             "dijit/form/Button",
             "dijit/form/Select",

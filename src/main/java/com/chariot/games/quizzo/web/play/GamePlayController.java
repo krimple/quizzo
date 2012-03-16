@@ -74,7 +74,7 @@ public class GamePlayController {
 
   @RequestMapping(value = "team", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void registerTeamForQuizRun(
+  public @ResponseBody String registerTeamForQuizRun(
       HttpSession session,
       @RequestBody String teamJson) {
     logger.trace("incoming Json request for team POST");
@@ -90,6 +90,7 @@ public class GamePlayController {
     // now, store team in session as well
     // so long, spoofers (ok, at least it's tougher for them)
     session.setAttribute("currentTeamId", teamId);
+    return String.valueOf(teamId);
   }
 
   @Transactional
